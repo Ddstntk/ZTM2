@@ -19,6 +19,7 @@
                 <th>{{ knp_pagination_sortable(pagination, 'label_created_at'|trans, 'task.createdAt') }}</th>
                 <th>{{ knp_pagination_sortable(pagination, 'label_updated_at'|trans, 'task.updatedAt') }}</th>
                 <th>{{ knp_pagination_sortable(pagination, 'label_title'|trans, 'task.title') }}</th>
+                <th>{{ 'label_category'|trans }}</th>
                 <th>{{ 'label_actions'|trans }}</th>
             </tr>
             </thead>
@@ -26,9 +27,10 @@
             {% for task in pagination.items %}
                 <tr>
                     <td>{{ task.id }}</td>
-                    <td>{{ task.createdAt|date('Y/m/d') }}</td>
-                    <td>{{ task.updatedAt|date('Y/m/d') }}</td>
+                    <td>{{ task.createdAt|format_date('long') }}</td>
+                    <td>{{ task.updatedAt|format_date('long') }}</td>
                     <td>{{ task.title }}</td>
+                    <td>{{ task.category.title }}</td>
                     <td>
                         <a href="{{ url('task_show', {id: task.id}) }}" title="{{ 'action_view'|trans }}">
                             {{ 'action_view'|trans }}
