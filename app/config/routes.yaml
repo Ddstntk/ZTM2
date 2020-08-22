@@ -1,3 +1,12 @@
-#index:
-#    path: /
-#    controller: App\Controller\DefaultController::index
+index:
+  path: /
+  controller: App\Controller\HelloWorldController::index
+records:
+  path: /record
+  controller: App\Controller\RecordController::index
+tasks:
+  path: /tasks
+  controller: App\Controller\TaskController::index
+show:
+  path: /{id}
+  controller: App\Controller\RecordController::show
