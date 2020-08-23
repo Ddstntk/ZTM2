@@ -10,3 +10,15 @@ tasks:
 show:
   path: /{id}
   controller: App\Controller\RecordController::show
+category_index:
+  path: /category/index
+  controller: App\Controller\CategoryController::index
+category_create:
+  path: /category/create
+  controller: App\Controller\CategoryController::create
+category_edit:
+  path: /category/{id}/edit
+  controller: App\Controller\CategoryController::edit
+category_delete:
+  path: /category/{id}/delete
+  controller: App\Controller\CategoryController::delete
