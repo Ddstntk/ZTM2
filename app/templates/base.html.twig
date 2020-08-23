@@ -15,6 +15,16 @@
     {% block body %}{% endblock %}
 </div>
 
+{% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+    <div>{{ app.user.email }}</div>
+    <div>
+        <a href="{{ url('app_logout') }}">{{ 'action_logout'|trans }}</a>
+    </div>
+{% else %}
+    <div>
+        <a href="{{ url('app_login') }}">{{ 'action_login'|trans }}</a>
+    </div>
+{% endif %}
 
 {% block javascripts %}
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
