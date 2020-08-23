@@ -5,6 +5,18 @@
 {% endblock %}
 
 {% block body %}
+
+    {% include 'default/_form.html.twig' with {
+        page_title: 'title_category_create',
+        attr: {
+            method: 'POST',
+            action: url('category_create')
+        },
+        form: form,
+        submit_label: 'action_create'|trans,
+        back_to_list_path: 'category_index',
+    } %}
+
     <h1>{{ 'title_category_create'|trans }}</h1>
     {{ form_start(form, { method: 'POST', action: url('category_create') }) }}
     {{ form_widget(form) }}
