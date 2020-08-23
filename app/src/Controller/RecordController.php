@@ -8,22 +8,17 @@ namespace App\Controller;
 use App\Repository\RecordRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Class RecordController.php.
- * @package App\Controller
- *
  */
 class RecordController extends AbstractController
 {
-
     /**
      * Show action.
      *
      * @param \App\Repository\RecordRepository $repository Record repository
      * @param int                              $id         Record id
-     *
      *
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
      */
@@ -35,14 +30,12 @@ class RecordController extends AbstractController
         );
     }
 
-
     /**
      * Index action.
      *
      * @param \App\Repository\RecordRepository $repository Record repository
      *
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
-     *
      */
     public function index(RecordRepository $repository): Response
     {
