@@ -33,7 +33,7 @@ class AdminDashboardController extends AbstractController
      * @Route(
      *     "/index",
      *     methods={"GET"},
-     *     name="User_index",
+     *     name="admin_index",
      * )
      */
     public function index(Request $request, UserRepository $userRepository, PaginatorInterface $paginator): Response
@@ -45,7 +45,7 @@ class AdminDashboardController extends AbstractController
         );
 
         return $this->render(
-            'user/index.html.twig',
+            'admin/index.html.twig',
             ['pagination' => $pagination]
         );
     }
@@ -58,16 +58,16 @@ class AdminDashboardController extends AbstractController
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
      *
      * @Route(
-     *     "/{id}",
+     *     "/user/{id}",
      *     methods={"GET"},
-     *     name="user_show",
+     *     name="admin_show",
      *     requirements={"id": "[1-9]\d*"},
      * )
      */
     public function show(User $user): Response
     {
         return $this->render(
-            'user/show.html.twig',
+            'admin/show.html.twig',
             ['user' => $user]
         );
     }
@@ -106,7 +106,7 @@ class AdminDashboardController extends AbstractController
         }
 
         return $this->render(
-            'user/edit.html.twig',
+            'admin/edit.html.twig',
             [
                 'form' => $form->createView(),
                 'user' => $user,
@@ -156,7 +156,7 @@ class AdminDashboardController extends AbstractController
         }
 
         return $this->render(
-            'user/delete.html.twig',
+            'admin/delete.html.twig',
             [
                 'form' => $form->createView(),
                 'user' => $user,

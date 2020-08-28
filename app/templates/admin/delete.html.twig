@@ -1,33 +1,19 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-    {{ 'title_category_delete'|trans({'%id%': category.id|default('')}) }}
+    {{ 'title_user_delete'|trans({'%id%': user.id|default('')}) }}
 {% endblock %}
 
 {% block body %}
 
-    {% include 'default/_form.html.twig' with {
-        page_title: 'title_category_delete',
-        page_title_param: {'%id%': category.id},
-        attr: {
-            method: 'DELETE',
-            action: url('category_delete', {'id': category.id}),
-        },
-        form: form,
-        submit_label: 'action_delete'|trans,
-        back_to_list_path: 'category_index',
-    } %}
+    <h1>{{ 'title_user_delete'|trans({'%id%': user.id|default('')}) }}</h1>
 
-    <h1>{{ 'title_category_delete'|trans({'%id%': category.id|default('')}) }}</h1>
-    {{ form_start(form, { method: 'DELETE', action: url('category_delete', {id: category.id}) }) }}
-    {{ form_widget(form) }}
     <div class="form-group row float-sm-right">
         <input type="submit" value="{{ 'action_save'|trans }}" class="btn btn-primary" />
     </div>
     <div class="form-group row float-sm-left">
-        <a href="{{ url('category_index') }}" class="btn btn-link">
+        <a href="{{ url('user_index') }}" class="btn btn-link">
             {{ 'action_back_to_list'|trans }}
         </a>
     </div>
-    {{ form_end(form) }}
 {% endblock %}

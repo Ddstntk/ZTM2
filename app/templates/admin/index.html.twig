@@ -1,11 +1,11 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-    {{ 'title_category_list'|trans }}
+    {{ 'user_list'|trans }}
 {% endblock %}
 
 {% block body %}
-    <h1>{{ 'title_category_list'|trans }}</h1>
+    <h1>{{ 'user_list'|trans }}</h1>
     {% if pagination is defined and pagination.items|length %}
 
         <div class="navigation text-center">
@@ -15,31 +15,19 @@
         <table class="table table-striped">
             <thead>
             <tr>
-                <th>{{ knp_pagination_sortable(pagination, 'label_id'|trans, 'category.id') }}</th>
-                <th>{{ knp_pagination_sortable(pagination, 'label_created_at'|trans, 'category.createdAt') }}</th>
-                <th>{{ knp_pagination_sortable(pagination, 'label_updated_at'|trans, 'category.updatedAt') }}</th>
-                <th>{{ knp_pagination_sortable(pagination, 'label_title'|trans, 'category.title') }}</th>
-                <th>{{ 'label_category'|trans }}</th>
-                <th>{{ 'label_actions'|trans }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'user_id'|trans, 'user.id') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'user_email'|trans, 'user.email') }}</th>
             </tr>
             </thead>
             <tbody>
-            {% for category in pagination.items %}
+            {% for user in pagination.items %}
                 <tr>
-                    <td>{{ category.id }}</td>
-                    <td>{{ category.createdAt|format_date('long') }}</td>
-                    <td>{{ category.updatedAt|format_date('long') }}</td>
-                    <td>{{ category.title }}</td>
-                    <td>{{ category.title }}</td>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.email }}</td>
                     <td>
-                        <a href="{{ url('category_show', {id: category.id}) }}" title="{{ 'action_view'|trans }}">
+                        <a href="{{ url('admin_show', {id: user.id}) }}" title="{{ 'action_view'|trans }}">
                             {{ 'action_view'|trans }}
                         </a>
-                        {% if not category.tasks|length %}
-                            <a href="{{ url('category_delete', {id: category.id}) }}" title="{{ 'action_delete'|trans }}">
-                                {{ 'action_delete'|trans }}
-                            </a>
-                        {% endif %}
                     </td>
                 </tr>
             {% endfor %}

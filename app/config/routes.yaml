@@ -7,9 +7,9 @@ records:
 tasks:
   path: /tasks
   controller: App\Controller\TaskController::index
-show:
-  path: /{id}
-  controller: App\Controller\RecordController::show
+#show:
+#  path: /{id}
+#  controller: App\Controller\RecordController::show
 category_index:
   path: /category/index
   controller: App\Controller\CategoryController::index

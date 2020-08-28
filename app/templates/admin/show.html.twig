@@ -1,26 +1,22 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-    {{ 'title_category_details'|trans({'%id%': category.id|default('')}) }}
+    {{ 'user_details'|trans({'%id%': user.id|default('')}) }}
 {% endblock %}
 
 {% block body %}
-    <h1>{{ 'title_category_details'|trans({'%id%': category.id|default('')}) }}</h1>
-    {% if category is defined and category|length %}
+    <h1>{{ 'user_details'|trans({'%id%': user.id|default('')}) }}</h1>
+    {% if user is defined and user|length %}
         <dl class="dl-horizontal">
-            <dt>{{ 'label_id'|trans }}</dt>
-            <dd>{{ category.id }}</dd>
-            <dt>{{ 'label_created_at'|trans }}</dt>
-            <dd>{{ category.createdAt|format_date('long') }}</dd>
-            <dt>{{ 'label_updated_at'|trans }}</dt>
-            <dd>{{ category.updatedAt|format_date('long') }}</dd>
-            <dt>{{ 'label_category'|trans }}</dt>
-            <dd>{{  category.title }}</dd>
-            <dt>{{ 'label_title'|trans }}</dt>
-            <dd>{{  category.title }}</dd>
+            <dt>{{ 'user_id'|trans }}</dt>
+            <dd>{{ user.id }}</dd>
+            <dt>{{ 'user_roles'|trans }}</dt>
+            <dd>{{ user.roles|join }}</dd>
+            <dt>{{ 'user_email'|trans }}</dt>
+            <dd>{{ user.email }}</dd>
         </dl>
         <p>
-            <a href="{{ url('category_index') }}" title="{{ 'action_back_to_list'|trans }}">
+            <a href="{{ url('admin_index') }}" title="{{ 'action_back_to_list'|trans }}">
                 {{ 'action_back_to_list'|trans }}
             </a>
         </p>
