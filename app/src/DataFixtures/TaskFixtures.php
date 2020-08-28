@@ -21,12 +21,23 @@ class TaskFixtures extends AbstractBaseFixtures implements DependentFixtureInter
      */
     public function loadData(ObjectManager $manager): void
     {
-        $this->createMany(50, 'tasks', function ($i) {
+        $this->createMany(100, 'tasks', function ($i) {
             $task = new Task();
             $task->setTitle($this->faker->sentence);
             $task->setCreatedAt($this->faker->dateTimeBetween('-100 days', '-1 days'));
             $task->setUpdatedAt($this->faker->dateTimeBetween('-100 days', '-1 days'));
             $task->setCategory($this->getRandomReference('categories'));
+
+            $tags = $this->getRandomReferences(
+                'tags',
+                $this->faker->numberBetween(0, 5)
+            );
+
+            foreach ($tags as $tag) {
+                $task->addTag($tag);
+            }
+
+            $task->setAuthor($this->getRandomReference('users'));
 
             return $task;
         });
@@ -42,6 +53,6 @@ class TaskFixtures extends AbstractBaseFixtures implements DependentFixtureInter
      */
     public function getDependencies(): array
     {
-        return [CategoryFixtures::class];
+        return [CategoryFixtures::class, TagFixtures::class, UserFixtures::class];
     }
 }

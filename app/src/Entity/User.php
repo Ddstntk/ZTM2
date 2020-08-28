@@ -93,6 +93,10 @@ class User implements UserInterface
      */
     private $password;
 
+
+    private $plainPassword;
+
+
     /**
      * Getter for the Id.
      *
