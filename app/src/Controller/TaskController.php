@@ -101,7 +101,6 @@ class TaskController extends AbstractController
         $task = new Task();
         $form = $this->createForm(TaskType::class, $task);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             $task->setAuthor($this->getUser());
             $taskRepository->save($task);

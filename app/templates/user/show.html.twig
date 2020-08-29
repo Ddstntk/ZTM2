@@ -1,0 +1,7 @@
+{% block body %}
+
+{% if app.user.avatar.filename is defined and app.user.avatar.filename|length %}
+    <img class="nav-profile-img" src="{{ asset('uploads/avatars/'~ app.user.avatar.filename) }}">
+{% endif %}
+
+{% endblock %}

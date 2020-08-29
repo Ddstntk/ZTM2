@@ -27,6 +27,8 @@ class TaskFixtures extends AbstractBaseFixtures implements DependentFixtureInter
             $task->setCreatedAt($this->faker->dateTimeBetween('-100 days', '-1 days'));
             $task->setUpdatedAt($this->faker->dateTimeBetween('-100 days', '-1 days'));
             $task->setCategory($this->getRandomReference('categories'));
+            $task->setCategory($this->getRandomReference('categories'));
+            $task->setComment($this->faker->sentence);
 
             $tags = $this->getRandomReferences(
                 'tags',

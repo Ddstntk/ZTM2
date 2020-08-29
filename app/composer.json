@@ -11,6 +11,7 @@
         "doctrine/doctrine-bundle": "*",
         "doctrine/doctrine-migrations-bundle": "*",
         "doctrine/orm": "*",
+        "erusev/parsedown": "^1.7",
         "knplabs/knp-paginator-bundle": "^5.3",
         "sensio/framework-extra-bundle": "^5.5",
         "sensiolabs/security-checker": "^6.0",
@@ -34,7 +35,9 @@
         "symfony/validator": "4.4.*",
         "symfony/web-link": "*",
         "symfony/yaml": "*",
-        "twig/intl-extra": "^3.0"
+        "twig/intl-extra": "^3.0",
+        "twig/markdown-extra": "^3.0",
+      "ext-intl": "*"
     },
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^3.3",

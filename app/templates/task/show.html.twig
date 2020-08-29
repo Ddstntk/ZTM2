@@ -18,6 +18,8 @@
             <dd>{{  task.category.title }}</dd>
             <dt>{{ 'label_title'|trans }}</dt>
             <dd>{{  task.title }}</dd>
+            <dt>{{ 'label_comment'|trans }}</dt>
+            <dd>{{ task.comment|markdown_to_html }}</dd>
         </dl>
         <p>
             <a href="{{ url('task_index') }}" title="{{ 'action_back_to_list'|trans }}">

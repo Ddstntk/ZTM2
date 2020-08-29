@@ -1,0 +1,26 @@
+{% block body %}
+
+    {% include 'default/_form.html.twig' with {
+        page_title: 'title_task_create',
+        attr: {
+            method: 'POST',
+            action: url('task_create')
+        },
+        form: form,
+        submit_label: 'task_create'|trans,
+        back_to_list_path: 'task_index',
+    } %}
+
+    <h1>{{ 'title_task_create'|trans }}</h1>
+    {{ form_start(form, { method: 'POST', action: url('task_create') }) }}
+    {{ form_widget(form) }}
+    <div class="form-group row float-sm-right">
+        <input type="submit" value="{{ 'action_save'|trans }}" class="btn btn-primary" />
+    </div>
+    <div class="form-group row float-sm-left">
+        <a href="{{ url('task_index') }}" class="btn btn-link">
+            {{ 'action_back_to_list'|trans }}
+        </a>
+    </div>
+    {{ form_end(form) }}
+{% endblock %}

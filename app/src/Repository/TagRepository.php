@@ -19,10 +19,10 @@ class TagRepository extends ServiceEntityRepository
         parent::__construct($registry, Tag::class);
     }
 
-    // /**
-    //  * @return Tag[] Returns an array of Tag objects
-    //  */
-    /*
+    /**
+     * @return Tag[] Returns an array of Tag objects
+     */
+
     public function findByExampleField($value)
     {
         return $this->createQueryBuilder('t')
@@ -34,9 +34,7 @@ class TagRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
-    */
 
-    /*
     public function findOneBySomeField($value): ?Tag
     {
         return $this->createQueryBuilder('t')
@@ -46,5 +44,18 @@ class TagRepository extends ServiceEntityRepository
             ->getOneOrNullResult()
         ;
     }
-    */
+
+    /**
+     * Save record.
+     *
+     * @param \App\Entity\Tag $tag Tag entity
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function save(Tag $tag): void
+    {
+        $this->_em->persist($tag);
+        $this->_em->flush($tag);
+    }
 }

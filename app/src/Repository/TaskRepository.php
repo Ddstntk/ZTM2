@@ -6,6 +6,7 @@
 namespace App\Repository;
 
 use App\Entity\Task;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
@@ -102,9 +103,8 @@ class TaskRepository extends ServiceEntityRepository
     public function queryByAuthor(User $user): QueryBuilder
     {
         $queryBuilder = $this->queryAll();
-
-        $queryBuilder->andWhere('task.author = :author')
-            ->setParameter('author', $user);
+        $queryBuilder->andWhere('task.author = :author_id')
+            ->setParameter('author_id', $user->getId());
 
         return $queryBuilder;
     }

@@ -81,6 +81,16 @@ class TaskType extends AbstractType
             ]
         );
 
+        $builder->add(
+            'comment',
+            TextType::class,
+            [
+                'label' => 'label_comment',
+                'required' => false,
+                'attr' => ['max_length' => 1000],
+            ]
+        );
+
         $builder->get('tags')->addModelTransformer(
             $this->tagsDataTransformer
         );

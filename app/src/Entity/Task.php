@@ -101,6 +101,11 @@ class Task
     private $author;
 
     /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $comment;
+
+    /**
      * Task constructor.
      */
     public function __construct()
@@ -240,6 +245,18 @@ class Task
     public function setAuthor(?User $author): self
     {
         $this->author = $author;
+
+        return $this;
+    }
+
+    public function getComment(): ?string
+    {
+        return $this->comment;
+    }
+
+    public function setComment(?string $comment): self
+    {
+        $this->comment = $comment;
 
         return $this;
     }
