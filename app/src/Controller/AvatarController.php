@@ -84,7 +84,7 @@ class AvatarController extends AbstractController
 
             $this->addFlash('success', 'message_created_successfully');
 
-            return $this->redirectToRoute('task_index');
+            return $this->redirectToRoute('post_index');
         }
 
         return $this->render(
@@ -133,7 +133,7 @@ class AvatarController extends AbstractController
 
             $this->addFlash('success', 'message_updated_successfully');
 
-            return $this->redirectToRoute('task_index');
+            return $this->redirectToRoute('post_index');
         }
 
         return $this->render(

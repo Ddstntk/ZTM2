@@ -1,12 +1,12 @@
 <?php
 /**
- * Task type.
+ * Post type.
  */
 
 namespace App\Form;
 
 use App\Entity\Category;
-use App\Entity\Task;
+use App\Entity\Post;
 use App\Form\DataTransformer\TagsDataTransformer;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -15,9 +15,9 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class TaskType.
+ * Class PostType.
  */
-class TaskType extends AbstractType
+class PostType extends AbstractType
 {
     /**
      * Tags data transformer.
@@ -27,7 +27,7 @@ class TaskType extends AbstractType
     private $tagsDataTransformer;
 
     /**
-     * TaskType constructor.
+     * PostType constructor.
      *
      * @param \App\Form\DataTransformer\TagsDataTransformer $tagsDataTransformer Tags data transformer
      */
@@ -103,7 +103,7 @@ class TaskType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults(['data_class' => Task::class]);
+        $resolver->setDefaults(['data_class' => Post::class]);
     }
 
     /**
@@ -116,6 +116,6 @@ class TaskType extends AbstractType
      */
     public function getBlockPrefix(): string
     {
-        return 'task';
+        return 'post';
     }
 }

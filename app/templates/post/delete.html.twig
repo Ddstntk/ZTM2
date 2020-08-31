@@ -7,7 +7,7 @@
 {% block body %}
 
   U SURE???
-    {{ form_start(form, { method: 'DELETE', action: url('task_delete', {id: task.id}) }) }}
+    {{ form_start(form, { method: 'DELETE', action: url('post_delete', {id: post.id}) }) }}
     {{ form_widget(form) }}
     <div class="form-group row float-sm-right">
         <input type="submit" value="{{ 'action_delete'|trans }}" class="btn btn-primary" />

@@ -1,19 +1,19 @@
 <?php
 /**
- * Task security voter.
+ * Post security voter.
  */
 namespace App\Security\Voter;
 
-use App\Entity\Task;
+use App\Entity\Post;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * Class TaskVoter.
+ * Class PostVoter.
  */
-class TaskVoter extends Voter
+class PostVoter extends Voter
 {
     /**
      * Security helper.
@@ -43,7 +43,7 @@ class TaskVoter extends Voter
     protected function supports($attribute, $subject)
     {
         return in_array($attribute, ['VIEW', 'EDIT', 'DELETE'])
-            && $subject instanceof Task;
+            && $subject instanceof Post;
     }
 
     /**
@@ -69,7 +69,8 @@ class TaskVoter extends Voter
             case 'VIEW':
             case 'EDIT':
             case 'DELETE':
-                if ($subject->getAuthor() === $user) {
+//            or $user->getRoles()
+                if ($subject->getAuthor() === $user or in_array("ROLE_ADMIN",$user->getRoles())) {
                     return true;
                 }
                 break;

@@ -8,6 +8,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\ChangePasswordType;
 use App\Repository\UserRepository;
+use App\Form\UserType;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -83,7 +84,7 @@ class UserController extends AbstractController
 //    }
 
     /**
-     * Edit action.
+     * Change password action.
      *
      * @param \Symfony\Component\HttpFoundation\Request $request            HTTP request
      * @param \App\Repository\UserRepository        $userRepository User repository
@@ -94,12 +95,12 @@ class UserController extends AbstractController
      * @throws \Doctrine\ORM\OptimisticLockException
      *
      * @Route(
-     *     "/edit",
+     *     "/password",
      *     methods={"GET", "POST"},
-     *     name="user_edit",
+     *     name="user_passwd",
      * )
      */
-    public function edit(Request $request, UserRepository $userRepository, UserPasswordEncoderInterface $encoder): Response
+    public function changePassword(Request $request, UserRepository $userRepository, UserPasswordEncoderInterface $encoder): Response
     {
         $user = $this->getUser();
         $form = $this->createForm(ChangePasswordType::class);
@@ -110,7 +111,6 @@ class UserController extends AbstractController
 //            $userRepository->save($user);
 
             $newData = $form->getData();
-            var_dump($user->getSalt());
             $oldPassword = $newData['password'];
             $newPassword = $newData['plainPassword'];
             $isPassValid = $encoder->isPasswordValid($user, $oldPassword, $user->getSalt());
@@ -124,6 +124,47 @@ class UserController extends AbstractController
                 $this->addFlash('danger', 'message_wrong_password');
 
             }
+            $this->addFlash('success', 'message_updated_successfully');
+
+            return $this->redirectToRoute('user_show');
+        }
+
+        return $this->render(
+            'user/edit.html.twig',
+            [
+                'form' => $form->createView(),
+                'user' => $user,
+            ]
+        );
+    }
+
+    /**
+     * Edit action.
+     *
+     * @param \Symfony\Component\HttpFoundation\Request $request HTTP request
+     * @param User $user
+     * @param \App\Repository\UserRepository $userRepository User repository
+     *
+     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     * @Route(
+     *     "/edit",
+     *     methods={"GET", "EDIT"},
+     *     name="user_edit",
+     * )
+     */
+    public function edit(Request $request, UserRepository $userRepository): Response
+    {
+        $user = $this->getUser();
+        $form = $this->createForm(UserType::class, $user, ['method' => 'EDIT']);
+        $form->handleRequest($request);
+        var_dump($user);
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $userRepository->save($user);
+
             $this->addFlash('success', 'message_updated_successfully');
 
             return $this->redirectToRoute('user_show');

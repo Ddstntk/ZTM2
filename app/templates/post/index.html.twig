@@ -1,0 +1,77 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ 'title_post_list'|trans }}
+{% endblock %}
+
+{% block body %}
+    <section class="jumbotron text-center">
+        <div class="container">
+            <h1 class="jumbotron-heading">Album example</h1>
+            <p class="lead text-muted">Something short and leading about the collection below—its contents, the creator, etc. Make it short and sweet, but not too short so folks don't simply skip over it entirely.</p>
+            <p>
+                <a href="#" class="btn btn-primary my-2">Main call to action</a>
+                <a href="#" class="btn btn-secondary my-2">Secondary action</a>
+            </p>
+        </div>
+    </section>
+<div class="album py-5 bg-light">
+    {% if pagination is defined and pagination.items|length %}
+    <div class="navigation text-center">
+        {{ knp_pagination_render(pagination) }}
+    </div>
+    <div class="container">
+        <div class="row">
+
+            {% for post in pagination.items %}
+            <div class="col-md-4">
+                <div class="card mb-4 box-shadow">
+                    <img class="card-img-top" src="{{ asset('uploads/avatars/anyf1000020latinf1000020latinf1000020asciif1000020af1000020zaf1000020z0f10000209f1000020removef1000020lowerf-5f4a9ea9ec140.jpeg') }}">
+{#                    <img class="card-img-top" data-src="holder.js/100px225?theme=thumb&bg=55595c&fg=eceeef&text=Thumbnail" alt="Card image cap">#}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ post.title }}</h5>
+                        <p class="card-text">{{ post.comment }}</p>
+                        <small class="text-muted">{{ post.updatedAt|date("m/d/Y") }}</small>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="btn-group">
+                                {% if is_granted('VIEW', post) %}
+                                    <a href="{{ url('post_show', {id: post.id}) }}" title="{{ 'action_view'|trans }}">
+                                        <button type="button" class="btn btn-sm btn-outline-secondary">
+                                        {{ 'action_view'|trans }}
+                                        </button>
+                                    </a>
+                                {% endif %}
+                                {% if is_granted('EDIT', post) %}
+                                    <a href="{{ url('post_edit', {id: post.id}) }}" title="{{ 'action_edit'|trans }}">
+                                        <button type="button" class="btn btn-sm btn-outline-secondary">
+                                        {{ 'action_edit'|trans }}
+                                        </button>
+                                    </a>
+                                {% endif %}
+                                {% if is_granted('DELETE', post) %}
+                                    <a href="{{ url('post_delete', {id: post.id}) }}" title="{{ 'action_delete'|trans }}">
+                                        <button type="button" class="btn btn-sm btn-outline-secondary">
+                                        {{ 'action_delete'|trans }}
+                                        </button>
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {% endfor %}
+
+        </div>
+    </div>
+    <div class="navigation text-center">
+        {{ knp_pagination_render(pagination) }}
+    </div>
+    {% else %}
+        <p>
+            {{ 'message_empty_list'|trans }}
+        </p>
+    {% endif %}
+</div>
+{% endblock %}

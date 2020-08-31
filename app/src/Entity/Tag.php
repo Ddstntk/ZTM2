@@ -100,20 +100,20 @@ class Tag
     private $title;
 
     /**
-     * Tasks.
+     * Posts.
      *
-     * @var \Doctrine\Common\Collections\ArrayCollection|\App\Entity\Task[] Tasks
+     * @var \Doctrine\Common\Collections\ArrayCollection|\App\Entity\Post[] Posts
      *
-     * @ORM\ManyToMany(targetEntity="App\Entity\Task", mappedBy="tags")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Post", mappedBy="tags")
      */
-    private $tasks;
+    private $posts;
 
     /**
      * Tag constructor.
      */
     public function __construct()
     {
-        $this->tasks = new ArrayCollection();
+        $this->posts = new ArrayCollection();
     }
 
     /**
@@ -207,38 +207,38 @@ class Tag
     }
 
     /**
-     * Getter for tasks.
+     * Getter for posts.
      *
-     * @return \Doctrine\Common\Collections\Collection|\App\Entity\Task[] Tasks collection
+     * @return \Doctrine\Common\Collections\Collection|\App\Entity\Post[] Posts collection
      */
-    public function getTasks(): Collection
+    public function getPosts(): Collection
     {
-        return $this->tasks;
+        return $this->posts;
     }
 
     /**
-     * Add task to collection.
+     * Add post to collection.
      *
-     * @param \App\Entity\Task $task Task entity
+     * @param \App\Entity\Post $post Post entity
      */
-    public function addTask(Task $task): void
+    public function addPost(Post $post): void
     {
-        if (!$this->tasks->contains($task)) {
-            $this->tasks[] = $task;
-            $task->addTag($this);
+        if (!$this->posts->contains($post)) {
+            $this->posts[] = $post;
+            $post->addTag($this);
         }
     }
 
     /**
-     * Remove task from collection.
+     * Remove post from collection.
      *
-     * @param \App\Entity\Task $task Task entity
+     * @param \App\Entity\Post $post Post entity
      */
-    public function removeTask(Task $task): void
+    public function removePost(Post $post): void
     {
-        if ($this->tasks->contains($task)) {
-            $this->tasks->removeElement($task);
-            $task->removeTag($this);
+        if ($this->posts->contains($post)) {
+            $this->posts->removeElement($post);
+            $post->removeTag($this);
         }
     }
 }

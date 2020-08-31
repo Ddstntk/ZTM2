@@ -1,18 +1,18 @@
 <?php
 /**
- * Task fixtures.
+ * Post fixtures.
  */
 
 namespace App\DataFixtures;
 
-use App\Entity\Task;
+use App\Entity\Post;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
 /**
- * Class TaskFixtures.
+ * Class PostFixtures.
  */
-class TaskFixtures extends AbstractBaseFixtures implements DependentFixtureInterface
+class PostFixtures extends AbstractBaseFixtures implements DependentFixtureInterface
 {
     /**
      * Load data.
@@ -21,14 +21,14 @@ class TaskFixtures extends AbstractBaseFixtures implements DependentFixtureInter
      */
     public function loadData(ObjectManager $manager): void
     {
-        $this->createMany(100, 'tasks', function ($i) {
-            $task = new Task();
-            $task->setTitle($this->faker->sentence);
-            $task->setCreatedAt($this->faker->dateTimeBetween('-100 days', '-1 days'));
-            $task->setUpdatedAt($this->faker->dateTimeBetween('-100 days', '-1 days'));
-            $task->setCategory($this->getRandomReference('categories'));
-            $task->setCategory($this->getRandomReference('categories'));
-            $task->setComment($this->faker->sentence);
+        $this->createMany(100, 'posts', function ($i) {
+            $post = new Post();
+            $post->setTitle($this->faker->sentence);
+            $post->setCreatedAt($this->faker->dateTimeBetween('-100 days', '-1 days'));
+            $post->setUpdatedAt($this->faker->dateTimeBetween('-100 days', '-1 days'));
+            $post->setCategory($this->getRandomReference('categories'));
+            $post->setCategory($this->getRandomReference('categories'));
+            $post->setComment($this->faker->text);
 
             $tags = $this->getRandomReferences(
                 'tags',
@@ -36,12 +36,12 @@ class TaskFixtures extends AbstractBaseFixtures implements DependentFixtureInter
             );
 
             foreach ($tags as $tag) {
-                $task->addTag($tag);
+                $post->addTag($tag);
             }
 
-            $task->setAuthor($this->getRandomReference('users'));
+            $post->setAuthor($this->getRandomReference('users'));
 
-            return $task;
+            return $post;
         });
 
         $manager->flush();

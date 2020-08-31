@@ -135,8 +135,8 @@ class AdminDashboardController extends AbstractController
      */
     public function delete(Request $request, User $user, UserRepository $repository): Response
     {
-        if ($user->getTasks()->count()) {
-            $this->addFlash('warning', 'message_user_contains_tasks');
+        if ($user->getPosts()->count()) {
+            $this->addFlash('warning', 'message_user_contains_posts');
 
             return $this->redirectToRoute('user_index');
         }

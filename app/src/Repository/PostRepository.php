@@ -1,25 +1,25 @@
 <?php
 /**
- * Task repository.
+ * Post repository.
  */
 
 namespace App\Repository;
 
-use App\Entity\Task;
+use App\Entity\Post;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
 
 /**
- * Class TaskRepository.
+ * Class PostRepository.
  *
- * @method Task|null find($id, $lockMode = null, $lockVersion = null)
- * @method Task|null findOneBy(array $criteria, array $orderBy = null)
- * @method Task[]    findAll()
- * @method Task[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Post|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Post|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Post[]    findAll()
+ * @method Post[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class TaskRepository extends ServiceEntityRepository
+class PostRepository extends ServiceEntityRepository
 {
     /**
      * Items per page.
@@ -30,44 +30,44 @@ class TaskRepository extends ServiceEntityRepository
      *
      * @constant int
      */
-    const PAGINATOR_ITEMS_PER_PAGE = 3;
+    const PAGINATOR_ITEMS_PER_PAGE = 15;
 
     /**
-     * TaskRepository constructor.
+     * PostRepository constructor.
      *
      * @param \Doctrine\Common\Persistence\ManagerRegistry $registry Manager registry
      */
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Task::class);
+        parent::__construct($registry, Post::class);
     }
 
     /**
      * Save record.
      *
-     * @param \App\Entity\Task $task Task entity
+     * @param \App\Entity\Post $post Post entity
      *
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function save(Task $task): void
+    public function save(Post $post): void
     {
-        $this->_em->persist($task);
-        $this->_em->flush($task);
+        $this->_em->persist($post);
+        $this->_em->flush($post);
     }
 
     /**
      * Delete record.
      *
-     * @param \App\Entity\Task $task Task entity
+     * @param \App\Entity\Post $post Post entity
      *
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function delete(Task $task): void
+    public function delete(Post $post): void
     {
-        $this->_em->remove($task);
-        $this->_em->flush($task);
+        $this->_em->remove($post);
+        $this->_em->flush($post);
     }
 
     /**
@@ -78,7 +78,7 @@ class TaskRepository extends ServiceEntityRepository
     public function queryAll(): QueryBuilder
     {
         return $this->getOrCreateQueryBuilder()
-            ->orderBy('task.updatedAt', 'DESC');
+            ->orderBy('post.updatedAt', 'DESC');
     }
 
     /**
@@ -90,11 +90,11 @@ class TaskRepository extends ServiceEntityRepository
      */
     private function getOrCreateQueryBuilder(QueryBuilder $queryBuilder = null): QueryBuilder
     {
-        return $queryBuilder ?? $this->createQueryBuilder('task');
+        return $queryBuilder ?? $this->createQueryBuilder('post');
     }
 
     /**
-     * Query tasks by author.
+     * Query posts by author.
      *
      * @param \App\Entity\User $user User entity
      *
@@ -103,7 +103,7 @@ class TaskRepository extends ServiceEntityRepository
     public function queryByAuthor(User $user): QueryBuilder
     {
         $queryBuilder = $this->queryAll();
-        $queryBuilder->andWhere('task.author = :author_id')
+        $queryBuilder->andWhere('post.author = :author_id')
             ->setParameter('author_id', $user->getId());
 
         return $queryBuilder;

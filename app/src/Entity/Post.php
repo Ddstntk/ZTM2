@@ -1,6 +1,6 @@
 <?php
 /**
- * Task entity.
+ * Post entity.
  */
 
 namespace App\Entity;
@@ -12,12 +12,12 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * Class Task.
+ * Class Post.
  *
- * @ORM\Entity(repositoryClass="App\Repository\TaskRepository")
- * @ORM\Table(name="tasks")
+ * @ORM\Entity(repositoryClass="App\Repository\PostRepository")
+ * @ORM\Table(name="posts")
  */
-class Task
+class Post
 {
     /**
      * Primary key.
@@ -71,7 +71,7 @@ class Task
      *
      * @ORM\ManyToOne(
      *     targetEntity="App\Entity\Category",
-     *     inversedBy="tasks",
+     *     inversedBy="posts",
      * )
      * @ORM\JoinColumn(nullable=false)
      */
@@ -84,9 +84,9 @@ class Task
      *
      * @ORM\ManyToMany(
      *     targetEntity="App\Entity\Tag",
-     *     inversedBy="tasks",
+     *     inversedBy="posts",
      * )
-     * @ORM\JoinTable(name="tasks_tags")
+     * @ORM\JoinTable(name="posts_tags")
      */
     private $tags;
 
@@ -106,11 +106,17 @@ class Task
     private $comment;
 
     /**
-     * Task constructor.
+     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="post_id")
+     */
+    private $comments;
+
+    /**
+     * Post constructor.
      */
     public function __construct()
     {
         $this->tags = new ArrayCollection();
+        $this->comments = new ArrayCollection();
     }
 
     /**
@@ -257,6 +263,37 @@ class Task
     public function setComment(?string $comment): self
     {
         $this->comment = $comment;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Comment[]
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    public function addComment(Comment $comment): self
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments[] = $comment;
+            $comment->setPostId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComment(Comment $comment): self
+    {
+        if ($this->comments->contains($comment)) {
+            $this->comments->removeElement($comment);
+            // set the owning side to null (unless already changed)
+            if ($comment->getPostId() === $this) {
+                $comment->setPostId(null);
+            }
+        }
 
         return $this;
     }

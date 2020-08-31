@@ -80,16 +80,16 @@ class Category
     private $title;
 
     /**
-     * Tasks.
+     * Posts.
      *
-     * @var \Doctrine\Common\Collections\ArrayCollection|\App\Entity\Task[] $tasks Tasks
+     * @var \Doctrine\Common\Collections\ArrayCollection|\App\Entity\Post[] $posts Posts
      *
      * @ORM\OneToMany(
-     *     targetEntity="App\Entity\Task",
+     *     targetEntity="App\Entity\Post",
      *     mappedBy="category",
      * )
      */
-    private $tasks;
+    private $posts;
 
     /**
      * Code.
@@ -113,7 +113,7 @@ class Category
 
     public function __construct()
     {
-        $this->tasks = new ArrayCollection();
+        $this->posts = new ArrayCollection();
     }
 
     /**
@@ -187,30 +187,30 @@ class Category
     }
 
     /**
-     * @return Collection|Task[]
+     * @return Collection|Post[]
      */
-    public function getTasks(): Collection
+    public function getPosts(): Collection
     {
-        return $this->tasks;
+        return $this->posts;
     }
 
-    public function addTask(Task $task): self
+    public function addPost(Post $post): self
     {
-        if (!$this->tasks->contains($task)) {
-            $this->tasks[] = $task;
-            $task->setCategory($this);
+        if (!$this->posts->contains($post)) {
+            $this->posts[] = $post;
+            $post->setCategory($this);
         }
 
         return $this;
     }
 
-    public function removeTask(Task $task): self
+    public function removePost(Post $post): self
     {
-        if ($this->tasks->contains($task)) {
-            $this->tasks->removeElement($task);
+        if ($this->posts->contains($post)) {
+            $this->posts->removeElement($post);
             // set the owning side to null (unless already changed)
-            if ($task->getCategory() === $this) {
-                $task->setCategory(null);
+            if ($post->getCategory() === $this) {
+                $post->setCategory(null);
             }
         }
 

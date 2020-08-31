@@ -1,7 +1,37 @@
+{% extends 'base.html.twig' %}
+
+
 {% block body %}
 
-{% if app.user.avatar.filename is defined and app.user.avatar.filename|length %}
-    <img class="nav-profile-img" src="{{ asset('uploads/avatars/'~ app.user.avatar.filename) }}">
-{% endif %}
+{#{% if app.user.avatar.filename is defined and app.user.avatar.filename|length %}#}
+{#    <img class="nav-profile-img" src="{{ asset('uploads/avatars/'~ app.user.avatar.filename) }}">#}
+{#{% endif %}#}
+    {% if app.user.avatar.filename is defined and app.user.avatar.filename|length %}
+
+    <div class="starter-template" style="padding: 3rem 1.5rem;text-align: center;">
+    {% if app.user.avatar.filename is defined and app.user.avatar.filename|length %}
+        <div class = "nav-profile-img">
+            <img class="nav-profile-img avatar-img" src="{{ asset('uploads/avatars/'~ app.user.avatar.filename) }}">
+        </div>
+    {% else %}
+        <div class = "nav-profile-img">
+            <img class="nav-profile-img avatar-img" src="{{ asset('uploads/avatars/avatarPlaceHolder.jpg') }}">
+        </div>
+    {% endif %}
+        <h1>{{ 'logged_as'|trans }}</h1>
+        <h1>{{ app.user.email }}</h1>
+            <a href="{{ url('user_passwd')}} " title="{{ 'action_passwd'|trans }}">
+                <button type="button" class="btn btn-sm btn-outline-secondary">
+                    {{ 'action_passwd'|trans }}
+                </button>
+            </a>
+            <a href="{{ url('user_edit') }}" title="{{ 'action_edit'|trans }}">
+                <button type="button" class="btn btn-sm btn-outline-secondary">
+                    {{ 'action_edit'|trans }}
+                </button>
+            </a>
+    </div>
+    {% endif %}
+
 
 {% endblock %}
