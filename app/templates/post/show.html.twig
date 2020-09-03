@@ -34,11 +34,20 @@
 
     <!-- Main jumbotron for a primary marketing message or call to action -->
     {% if post is defined and post|length %}
-    <div class="jumbotron">
+    {% if post.image is defined and post.image|length %}
+
+        <div class="jumbotron" style="background-image: url('{{ asset('uploads/avatars/'~ post.image)}}');background-size: cover;">
         <div class="container">
             <h1 class="display-3">{{ post.title }}</h1>
         </div>
     </div>
+    {% else %}
+        <div class="jumbotron" style="background-image: url('{{ asset('uploads/post_images/church.jpeg') }}');background-size: cover;">
+        <div class="container">
+            <h1 class="display-3">{{ post.title }}</h1>
+        </div>
+        </div>
+    {% endif %}
 
     <div class="container">
         <!-- Example row of columns -->
@@ -56,7 +65,7 @@
     {% if comments is defined and comments|length %}
     {% for comment in comments %}
 {#        <p>{{ comment.user_id_id }}</p>#}
-        <p><b>{{ comment.userId.email }}</b></p>
+        <p><b>{{ comment.userId.nickname }}</b></p>
         <p><small>{{ comment.createdAt|date("m/d/Y") }}</small></p>
         <p>{{ comment.content }}</p>
 

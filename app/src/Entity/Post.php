@@ -106,9 +106,14 @@ class Post
     private $comment;
 
     /**
-     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="post_id")
+     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="post_id", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     private $comments;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $image;
 
     /**
      * Post constructor.
@@ -294,6 +299,18 @@ class Post
                 $comment->setPostId(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(?string $image): self
+    {
+        $this->image = $image;
 
         return $this;
     }

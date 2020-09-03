@@ -6,7 +6,7 @@
 
 {% block body %}
 
-  U SURE???
+    <h1>{{ 'r_u_sure'|trans }}</h1>
     {{ form_start(form, { method: 'DELETE', action: url('post_delete', {id: post.id}) }) }}
     {{ form_widget(form) }}
     <div class="form-group row float-sm-right">

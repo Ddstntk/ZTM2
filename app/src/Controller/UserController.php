@@ -160,7 +160,7 @@ class UserController extends AbstractController
         $user = $this->getUser();
         $form = $this->createForm(UserType::class, $user, ['method' => 'EDIT']);
         $form->handleRequest($request);
-        var_dump($user);
+//        var_dump($user);
         if ($form->isSubmitted() && $form->isValid()) {
 
             $userRepository->save($user);

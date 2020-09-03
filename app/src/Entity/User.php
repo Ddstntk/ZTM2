@@ -98,14 +98,19 @@ class User implements UserInterface
 //    private $plainPassword;
 
     /**
-     * @ORM\OneToOne(targetEntity=Avatar::class, mappedBy="user", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity=Avatar::class, mappedBy="user", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     private $avatar;
 
     /**
-     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="user_id")
+     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="user_id", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     private $comments;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $nickname;
 
     public function __construct()
     {
@@ -264,6 +269,18 @@ class User implements UserInterface
                 $comment->setUserId(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getNickname(): ?string
+    {
+        return $this->nickname;
+    }
+
+    public function setNickname(string $nickname): self
+    {
+        $this->nickname = $nickname;
 
         return $this;
     }

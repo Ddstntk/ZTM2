@@ -117,7 +117,6 @@ class AvatarController extends AbstractController
         }
 
         $avatar = $this->getUser()->getAvatar();
-        var_dump($this->filesystem);
         $form = $this->createForm(AvatarType::class, $avatar);
         $form->handleRequest($request);
 

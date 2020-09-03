@@ -1,12 +1,12 @@
 <?php
 /**
- * Post type.
+ * Comment type.
  */
 
 namespace App\Form;
 
 use App\Entity\Category;
-use App\Entity\Post;
+use App\Entity\Comment;
 use App\Form\DataTransformer\TagsDataTransformer;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -17,9 +17,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Image;
 
 /**
- * Class PostType.
+ * Class CommentType.
  */
-class PostType extends AbstractType
+class CommentType extends AbstractType
 {
     /**
      * Tags data transformer.
@@ -29,7 +29,7 @@ class PostType extends AbstractType
     private $tagsDataTransformer;
 
     /**
-     * PostType constructor.
+     * CommentType constructor.
      *
      * @param \App\Form\DataTransformer\TagsDataTransformer $tagsDataTransformer Tags data transformer
      */
@@ -52,70 +52,12 @@ class PostType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add(
-            'title',
+            'content',
             TextType::class,
             [
                 'label' => 'label_title',
                 'required' => true,
-                'attr' => ['max_length' => 64],
-            ]
-        );
-        $builder->add(
-            'category',
-            EntityType::class,
-            [
-                'class' => Category::class,
-                'choice_label' => function ($category) {
-                    return $category->getTitle();
-                },
-                'label' => 'label_category',
-                'placeholder' => 'label_none',
-                'required' => true,
-            ]
-        );
-        $builder->add(
-            'tags',
-            TextType::class,
-            [
-                'label' => 'label_tags',
-                'required' => false,
-                'attr' => ['max_length' => 128],
-            ]
-        );
-
-        $builder->add(
-            'comment',
-            TextType::class,
-            [
-                'label' => 'label_content',
-                'required' => false,
                 'attr' => ['max_length' => 1000],
-            ]
-        );
-
-        $builder->get('tags')->addModelTransformer(
-            $this->tagsDataTransformer
-        );
-
-        $builder->add(
-            'file',
-            FileType::class,
-            [
-                'mapped' => false,
-                'label' => 'label_image',
-                'required' => true,
-                'constraints' => new Image(
-                    [
-                        'maxSize' => '1024k',
-                        'mimeTypes' => [
-                            'image/png',
-                            'image/jpeg',
-                            'image/pjpeg',
-                            'image/jpeg',
-                            'image/pjpeg',
-                        ],
-                    ]
-                ),
             ]
         );
     }
@@ -127,7 +69,7 @@ class PostType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults(['data_class' => Post::class]);
+        $resolver->setDefaults(['data_class' => Comment::class]);
     }
 
     /**
@@ -140,6 +82,6 @@ class PostType extends AbstractType
      */
     public function getBlockPrefix(): string
     {
-        return 'post';
+        return 'comment';
     }
 }

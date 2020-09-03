@@ -7,6 +7,8 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\UserType;
+use App\Repository\CommentRepository;
+use App\Repository\PostRepository;
 use App\Repository\UserRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -133,15 +135,9 @@ class AdminDashboardController extends AbstractController
      *     name="user_delete",
      * )
      */
-    public function delete(Request $request, User $user, UserRepository $repository): Response
+    public function delete(Request $request, User $user, UserRepository $userRepository, PostRepository $postRepository, CommentRepository $commentRepository): Response
     {
-        if ($user->getPosts()->count()) {
-            $this->addFlash('warning', 'message_user_contains_posts');
-
-            return $this->redirectToRoute('user_index');
-        }
-
-        $form = $this->createForm(FormType::class, $user, ['method' => 'DELETE']);
+        $form = $this->createForm(UserType::class, $user, ['method' => 'DELETE']);
         $form->handleRequest($request);
 
         if ($request->isMethod('DELETE') && !$form->isSubmitted()) {
@@ -149,10 +145,14 @@ class AdminDashboardController extends AbstractController
         }
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $repository->delete($user);
+            $commentRepository->deleteByAuthor($user->getId());
+            $post_ids = $postRepository->queryByAuthor($user);
+            $commentRepository->deleteByPost($post_ids);
+            $postRepository->deleteByAuthor($user->getId());
+            $userRepository->delete($user);
             $this->addFlash('success', 'message_deleted_successfully');
 
-            return $this->redirectToRoute('user_index');
+            return $this->redirectToRoute('admin_index');
         }
 
         return $this->render(

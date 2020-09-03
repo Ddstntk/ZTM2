@@ -71,6 +71,25 @@ class PostRepository extends ServiceEntityRepository
     }
 
     /**
+     * Delete by author record.
+     *
+     * @param \App\Entity\Post $post Post entity
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function deleteByAuthor($user_id): void
+    {
+        $this->createQueryBuilder('p')
+            ->delete()
+            ->andWhere('p.author = :val')
+            ->setParameter('val', $user_id)
+            ->getQuery()
+            ->execute()
+            ;
+    }
+
+    /**
      * Query all records.
      *
      * @return \Doctrine\ORM\QueryBuilder Query builder
@@ -98,14 +117,15 @@ class PostRepository extends ServiceEntityRepository
      *
      * @param \App\Entity\User $user User entity
      *
-     * @return \Doctrine\ORM\QueryBuilder Query builder
+     * @return array
      */
-    public function queryByAuthor(User $user): QueryBuilder
+    public function queryByAuthor(User $user): array
     {
-        $queryBuilder = $this->queryAll();
-        $queryBuilder->andWhere('post.author = :author_id')
-            ->setParameter('author_id', $user->getId());
-
-        return $queryBuilder;
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.author = :author')
+            ->setParameter('author', $user->getId())
+            ->getQuery()
+            ->getResult()
+            ;
     }
 }

@@ -5,13 +5,17 @@
 
 namespace App\Controller;
 
+use App\Entity\Comment;
 use App\Entity\Post;
 use App\Form\PostType;
+use App\Repository\AvatarRepository;
 use App\Repository\CommentRepository;
 use App\Repository\PostRepository;
+use App\Service\FileUploader;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,6 +28,28 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class PostController extends AbstractController
 {
+    /**
+     * File uploader.
+     *
+     * @var \App\Service\FileUploader
+     */
+    private $fileUploader;
+    private $filesystem;
+
+
+    /**
+     * PostController constructor.
+     *
+     * @param \Symfony\Component\Filesystem\Filesystem $filesystem       Filesystem component
+     * @param \App\Service\FileUploader                $fileUploader     File uploader
+     */
+    public function __construct(Filesystem $filesystem, FileUploader $fileUploader)
+    {
+        $this->filesystem = $filesystem;
+        $this->fileUploader = $fileUploader;
+    }
+
+
     /**
      * Index action.
      *
@@ -76,7 +102,7 @@ class PostController extends AbstractController
 
         return $this->render(
             'post/show.html.twig',
-                ['post' => $post,
+            ['post' => $post,
                 'comments'=>$comments]
         );
     }
@@ -105,11 +131,55 @@ class PostController extends AbstractController
         $form = $this->createForm(PostType::class, $post);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            $imageFilename = $this->fileUploader->upload(
+                $form->get('file')->getData()
+            );
+            $post->setImage($imageFilename);
+
             $post->setAuthor($this->getUser());
             $postRepository->save($post);
             $this->addFlash('success', 'message_created_successfully');
 
             return $this->redirectToRoute('post_index');
+        }
+
+        return $this->render(
+            'post/create.html.twig',
+            ['form' => $form->createView()]
+        );
+    }
+
+    /**
+     * Comment action.
+     *
+     * @param \Symfony\Component\HttpFoundation\Request $request        HTTP request
+     * @param \App\Repository\PostRepository            $postRepository Post repository
+     *
+     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     *
+     * @Route(
+     *     "/{id}/comment",
+     *     methods={"GET", "POST"},
+     *     name="comment_create",
+     * )
+     *
+     */
+    public function comment($id, Request $request, Comment $comment, CommentRepository $commentRepository): Response
+    {
+        $comment = new Comment();
+
+        $form = $this->createForm(Comment::class, $comment);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $comment->setUserId($this->getUser());
+
+            $commentRepository->save($comment);
+            $this->addFlash('success', 'message_created_successfully');
+
+            return $this->redirectToRoute('post_show');
         }
 
         return $this->render(
@@ -147,9 +217,13 @@ class PostController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $imageFilename = $this->fileUploader->upload(
+                $form->get('file')->getData()
+            );
+            $post->setImage($imageFilename);
             $postRepository->save($post);
             $this->addFlash('success', 'message_updated_successfully');
-
+//            var_dump($post);
             return $this->redirectToRoute('post_index');
         }
 
