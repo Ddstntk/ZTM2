@@ -42,7 +42,7 @@ class PostVoter extends Voter
      */
     protected function supports($attribute, $subject)
     {
-        return in_array($attribute, ['VIEW', 'EDIT', 'DELETE'])
+        return in_array($attribute, ['VIEW', 'EDIT', 'DELETE', 'CREATE'])
             && $subject instanceof Post;
     }
 
@@ -66,17 +66,28 @@ class PostVoter extends Voter
 
         // ... (check conditions and return true to grant permission) ...
         switch ($attribute) {
+            case 'CREATE':
+                if (
+//                    $subject->getAuthor() === $user or
+                    in_array("ROLE_ADMIN",$user->getRoles())) {
+                    return true;
+                }
+                break;
             case 'VIEW':
                 return true;
                 break;
             case 'EDIT':
-                if ($subject->getAuthor() === $user or in_array("ROLE_ADMIN",$user->getRoles())) {
+                if (
+//                    $subject->getAuthor() === $user or
+                    in_array("ROLE_ADMIN",$user->getRoles())) {
                     return true;
                 }
                 break;
             case 'DELETE':
 //            or $user->getRoles()
-                if ($subject->getAuthor() === $user or in_array("ROLE_ADMIN",$user->getRoles())) {
+                if (
+//                    $subject->getAuthor() === $user or
+                    in_array("ROLE_ADMIN",$user->getRoles())) {
                     return true;
                 }
                 break;

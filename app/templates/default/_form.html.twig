@@ -10,7 +10,7 @@ parameters:
     - form: form view variable
     - submit_label: label for submit button
 #}
-{% extends 'base.html.twig' %}
+{#{% extends 'base.html.twig' %}#}
 
 {% block title %}
     {% if page_title_param is defined %}{{ page_title|trans(page_title_param) }}{% else %}{{ page_title|trans }}{% endif %}

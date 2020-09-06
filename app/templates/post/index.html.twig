@@ -17,14 +17,43 @@
     </section>
 <div class="album py-5 bg-light">
     {% if pagination is defined and pagination.items|length %}
+        <div class="dropdown" style="margin: 8px">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                {{ 'category_label'|trans }}
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="{{ url('post_index')}}" >
+                    {{ 'category_all'|trans }}
+                </a>
+                {% for item in category %}
+                    <a class="dropdown-item" href="{{ url('post_index', {'item.id' : item.id}) }}" title="{{ item.title }}">
+                        {{ item.title }}
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
     <div class="navigation text-center">
         {{ knp_pagination_render(pagination) }}
     </div>
     <div class="container">
-        <div class="row">
 
+{#        <a href="{{ url('post_index', {'filters.category_id' : post.category.id}) }}" title="{{ post.category.title }}">#}
+{#            {{ post.category.title }}#}
+{#        </a>#}
+{#        {% if post.tags is defined and post.tags|length %}#}
+{#            {% for tag in post.tags %}#}
+{#                <a href="{{ url('post_index', {'filters.tag_id' : tag.id}) }}" title="{{ tag.title }}">#}
+{#                    {{ tag.title }}#}
+{#                </a>#}
+{#            {% endfor %}#}
+{#        {% else %}#}
+{#            &nbsp;#}
+{#        {% endif %}#}
+
+        <div class="row">
             {% for post in pagination.items %}
             <div class="col-md-4">
+
                 <div class="card mb-4 box-shadow">
                     {% if post.image is defined and post.image|length %}
                         <img class="card-img-top" src="{{ asset('uploads/avatars/'~ post.image) }}">
@@ -36,6 +65,22 @@
                         <h5 class="card-title">{{ post.title }}</h5>
 {#                        <p class="card-text">{{ post.comment }}</p>#}
                         <small class="text-muted">{{ post.updatedAt|date("m/d/Y") }}</small>
+                        <small class="text-muted">{{ 'category_label'|trans }}:
+                            <a href="{{ url('post_index', {'filters.category_id' : post.category.id}) }}" title="{{ post.category.title }}">
+                                {{ post.category.title }}
+                            </a>
+                        </small>
+                        <small class="text-muted">{{ 'tags_label'|trans }}:
+                        {% if post.tags is defined and post.tags|length %}
+                            {% for tag in post.tags %}
+                                <a href="{{ url('post_index', {'filters.tag_id' : tag.id}) }}" title="{{ tag.title }}">
+                                    {{ tag.title }}
+                                </a>
+                            {% endfor %}
+                        {% else %}
+                            &nbsp;
+                        {% endif %}
+                        </small>
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="btn-group">
                                 {% if is_granted('VIEW', post) %}

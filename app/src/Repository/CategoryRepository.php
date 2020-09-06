@@ -6,6 +6,7 @@
 namespace App\Repository;
 
 use App\Entity\Category;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
@@ -29,7 +30,7 @@ class CategoryRepository extends ServiceEntityRepository
      *
      * @constant int
      */
-    const PAGINATOR_ITEMS_PER_PAGE = 3;
+    const PAGINATOR_ITEMS_PER_PAGE = 10;
 
     /**
      * CategoryRepository constructor.
@@ -50,6 +51,21 @@ class CategoryRepository extends ServiceEntityRepository
     {
         return $this->getOrCreateQueryBuilder()
             ->orderBy('category.updatedAt', 'DESC');
+    }
+
+    /**
+     * @param $id
+     * @return Category|null
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function findOneById($id): ?Category
+    {
+        return $this->createQueryBuilder('c')
+           ->andWhere('c.id = :id')
+           ->setParameter('id', $id)
+           ->getQuery()
+           ->getOneOrNullResult()
+        ;
     }
 
     /**

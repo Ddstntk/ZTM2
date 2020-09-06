@@ -38,19 +38,19 @@
     {#{% if app.user.avatar.filename is defined and app.user.avatar.filename|length %}#}
     {#    <img class="nav-profile-img" src="{{ asset('uploads/avatars/'~ app.user.avatar.filename) }}">#}
     {#{% endif %}#}
-    {% if app.user.avatar.filename is defined and app.user.avatar.filename|length %}
+{#    {% if app.user.avatar.filename is defined and app.user.avatar.filename|length %}#}
 
         <div class="starter-template" style="padding: 3rem 1.5rem;text-align: center;">
-            {% if app.user.avatar.filename is defined and app.user.avatar.filename|length %}
+            {% if user.avatar.filename is defined and user.avatar.filename|length %}
                 <div class = "nav-profile-img">
-                    <img class="nav-profile-img avatar-img" src="{{ asset('uploads/avatars/'~ app.user.avatar.filename) }}">
+                    <img class="nav-profile-img avatar-img" src="{{ asset('uploads/avatars/'~ user.avatar.filename) }}">
                 </div>
             {% else %}
                 <div class = "nav-profile-img">
                     <img class="nav-profile-img avatar-img" src="{{ asset('uploads/avatars/avatarPlaceHolder.jpg') }}">
                 </div>
             {% endif %}
-            <h1>{{ app.user.email }}</h1>
+            <h1>{{ user.email }}</h1>
             <h2>{{ 'user_roles'|trans }}</h2>
             <h2>{{ user.roles|join }}</h2>
             <a href="{{ url('user_delete', {id: user.id}) }}" title="{{ 'action_user_delete'|trans }}">
@@ -64,7 +64,7 @@
                 </button>
             </a>
         </div>
-    {% endif %}
+{#    {% endif %}#}
 
 
 {% endblock %}

@@ -5,7 +5,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Comment;
 use App\Entity\User;
+use App\Form\CommentType;
 use App\Form\UserType;
 use App\Repository\CommentRepository;
 use App\Repository\PostRepository;
@@ -60,14 +62,16 @@ class AdminDashboardController extends AbstractController
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
      *
      * @Route(
-     *     "/user/{id}",
+     *     "/user/",
      *     methods={"GET"},
      *     name="admin_show",
      *     requirements={"id": "[1-9]\d*"},
      * )
      */
-    public function show(User $user): Response
+    public function show(Request $request, UserRepository $userRepository): Response
     {
+        $id = $request->query->getInt('id');
+        $user =  $userRepository->findOneBy(array('id'=>$id));
         return $this->render(
             'admin/show.html.twig',
             ['user' => $user]
@@ -162,5 +166,55 @@ class AdminDashboardController extends AbstractController
                 'user' => $user,
             ]
         );
+    }
+
+    /**
+     * Index comments.
+     *
+     * @param \Symfony\Component\HttpFoundation\Request $request            HTTP request
+     * @param \Knp\Component\Pager\PaginatorInterface   $paginator          Paginator
+     *
+     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     *
+     * @Route(
+     *     "/comment_index",
+     *     methods={"GET"},
+     *     name="admin_index_comments",
+     * )
+     */
+    public function indexComments(Request $request, PaginatorInterface $paginator, CommentRepository $commentRepository): Response
+    {
+        $pagination = $paginator->paginate(
+            $commentRepository->findAll(),
+            $request->query->getInt('page', 1),
+            commentRepository::PAGINATOR_ITEMS_PER_PAGE
+        );
+
+        return $this->render(
+            'admin/comments.html.twig',
+            ['pagination' => $pagination]
+        );
+    }
+
+    /**
+     * Delete action.
+     *
+     * @param \Symfony\Component\HttpFoundation\Request $request HTTP request
+     * @param Comment $comment
+     * @param CommentRepository $commentRepository
+     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     *
+     * @Route(
+     *     "/comment/{id}/delete",
+     *     methods={"GET", "DELETE"},
+     *     name="comment_delete",
+     * )
+     */
+    public function deleteComment(Request $request, Comment $comment, CommentRepository $commentRepository): Response
+    {
+        $commentRepository->deleteById($comment->getId());
+
+
+        return $this->redirectToRoute('admin_index_comments');
     }
 }

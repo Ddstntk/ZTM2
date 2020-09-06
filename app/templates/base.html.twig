@@ -66,10 +66,18 @@
                     <h4 class="text-white">Contact</h4>
                     <ul class="list-unstyled">
                         <li><a href="{{ url('post_index') }}" class="text-white">{{ 'post_index'|trans }}</a></li>
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <li><a href="{{ url('post_create') }}" class="text-white">{{ 'post_create'|trans }}</a></li>
+
+                        {% endif %}
                         <li><a href="{{ url('user_show') }}" class="text-white">{{ 'user_show'|trans }}</a></li>
                         <li><a href="{{ url('user_edit') }}" class="text-white">{{ 'user_edit'|trans }}</a></li>
                         <li><a href="{{ url('user_passwd') }}" class="text-white">{{ 'user_passwd'|trans }}</a></li>
                         <li><a href="{{ url('avatar_edit') }}" class="text-white">{{ 'avatar_edit'|trans }}</a></li>
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <li><a href="{{ url('admin_index') }}" class="text-white">{{ 'admin_index'|trans }}</a></li>
+
+                        {% endif %}
                         <li><a href="{{ path('app_logout') }}" class="text-white"><b>{{ 'user_logout'|trans }}</b></a></li>
                     </ul>
                 </div>

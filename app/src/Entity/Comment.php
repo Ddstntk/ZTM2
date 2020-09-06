@@ -3,7 +3,10 @@
 namespace App\Entity;
 
 use App\Repository\CommentRepository;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
+
 
 /**
  * @ORM\Entity(repositoryClass=CommentRepository::class)
@@ -35,7 +38,13 @@ class Comment
     private $content;
 
     /**
+     * Created at.
+     *
+     * @var DateTimeInterface
+     *
      * @ORM\Column(type="datetime")
+     *
+     * @Gedmo\Timestampable(on="create")
      */
     private $createdAt;
 

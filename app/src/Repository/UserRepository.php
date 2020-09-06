@@ -107,6 +107,20 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     }
 
     /**
+     * Find    onne  by  id
+     *
+     */
+    public function findOneById($id)
+    {
+        return $this->getOrCreateQueryBuilder()
+            ->andWhere('user.id = :val')
+            ->setParameter('val',$id)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    /**
      * Get or create new query builder.
      *
      * @param \Doctrine\ORM\QueryBuilder|null $queryBuilder Query builder

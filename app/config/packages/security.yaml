@@ -45,4 +45,5 @@ security:
         - { path: ^/admin, roles: ROLE_ADMIN}
         - { path: ^/post/edit, roles: ROLE_ADMIN}
         - { path: ^/post/delete, roles: ROLE_ADMIN }
+        - { path: ^/post/create, roles: ROLE_ADMIN }
         - { path: ^/, roles: ROLE_USER}

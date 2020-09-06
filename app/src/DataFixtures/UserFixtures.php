@@ -5,6 +5,7 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Avatar;
 use App\Entity\User;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -49,7 +50,9 @@ class UserFixtures extends AbstractBaseFixtures
                     'user1234'
                 )
             );
-
+//            $avatar = new Avatar();
+//            $avatar->setFilename("avatarPlaceHolder.jpg");
+//            $user->setAvatar($avatar);
             return $user;
         });
 

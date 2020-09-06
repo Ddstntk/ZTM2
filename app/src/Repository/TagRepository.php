@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Category;
 use App\Entity\Tag;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -45,6 +46,20 @@ class TagRepository extends ServiceEntityRepository
         ;
     }
 
+    /**
+     * @param $id
+     * @return Tag|null
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function findOneById($id): ?Tag
+    {
+        return $this->createQueryBuilder('t')
+            ->andWhere('t.id = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getOneOrNullResult()
+            ;
+    }
     /**
      * Save record.
      *
