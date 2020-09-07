@@ -7,7 +7,6 @@ namespace App\Service;
 
 use App\Entity\Post;
 use App\Repository\PostRepository;
-use Doctrine\ORM\QueryBuilder;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -47,8 +46,12 @@ class PostService
      * @param \App\Service\CategoryService            $categoryService Category service
      * @param \App\Service\TagService                 $tagService      Tag service
      */
-    public function __construct(PostRepository $postRepository, PaginatorInterface $paginator, CategoryService $categoryService, TagService $tagService)
-    {
+    public function __construct(
+        PostRepository $postRepository,
+        PaginatorInterface $paginator,
+        CategoryService $categoryService,
+        TagService $tagService
+    ) {
         $this->postRepository = $postRepository;
         $this->paginator = $paginator;
         $this->categoryService = $categoryService;
@@ -117,8 +120,7 @@ class PostService
     }
 
     /**
-     * Get categories
-     *
+     * Get categories.
      *
      * @return \App\Entity\Category[] Paginated list
      */

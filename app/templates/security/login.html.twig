@@ -29,18 +29,18 @@
                 You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
             </div>
         {% endif %}
-        <img class="mb-4" src="https://getbootstrap.com/docs/4.0/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
-        <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-        <label for="inputEmail" class="sr-only">Email address</label>
+{#        <img class="mb-4" src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/A_Smiley.jpg/1200px-A_Smiley.jpg" alt="" width="72" height="72">#}
+        <h1 class="h3 mb-3 font-weight-normal">{{ 'label_login'|trans }}</h1>
+        <label for="inputEmail" class="sr-only">Email</label>
         <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" required autofocus>
-        <label for="inputPassword" class="sr-only">Password</label>
+        <label for="inputPassword" class="sr-only">{{ 'label_password'|trans }}</label>
         <input type="password" name="password" id="inputPassword" class="form-control" required>
         <input type="hidden" name="_csrf_token"
                value="{{ csrf_token('authenticate') }}"
         >
         <div class="checkbox mb-3">
             <label>
-                <input type="checkbox" name="_remember_me"> Remember me
+                <input type="checkbox" name="_remember_me">{{ 'label_remember'|trans }}
             </label>
         </div>
         <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>

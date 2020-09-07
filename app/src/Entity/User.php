@@ -93,7 +93,7 @@ class User implements UserInterface
      * @Assert\Type(type="string")
      */
     private $password;
-//   @SecurityAssert\UserPassword
+    //   @SecurityAssert\UserPassword
 
 //    private $plainPassword;
 
@@ -103,7 +103,8 @@ class User implements UserInterface
     private $avatar;
 
     /**
-     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="user_id", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Comment::class,
+     *     mappedBy="user_id", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     private $comments;
 
@@ -116,7 +117,6 @@ class User implements UserInterface
     {
         $this->comments = new ArrayCollection();
     }
-
 
     /**
      * Getter for the Id.

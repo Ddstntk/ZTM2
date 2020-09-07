@@ -21,8 +21,7 @@ class AvatarRepository extends ServiceEntityRepository
 
     /**
     /* @return Avatar[] Returns an array of Avatar objects
-    */
-
+     */
     public function findByExampleField($value)
     {
         return $this->createQueryBuilder('a')
@@ -58,6 +57,4 @@ class AvatarRepository extends ServiceEntityRepository
         $this->_em->persist($avatar);
         $this->_em->flush($avatar);
     }
-
-
 }

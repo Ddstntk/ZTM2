@@ -2,7 +2,6 @@
 
 namespace App\Repository;
 
-use App\Entity\Category;
 use App\Entity\Tag;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -23,7 +22,6 @@ class TagRepository extends ServiceEntityRepository
     /**
      * @return Tag[] Returns an array of Tag objects
      */
-
     public function findByExampleField($value)
     {
         return $this->createQueryBuilder('t')
@@ -48,7 +46,7 @@ class TagRepository extends ServiceEntityRepository
 
     /**
      * @param $id
-     * @return Tag|null
+     *
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function findOneById($id): ?Tag
@@ -60,6 +58,7 @@ class TagRepository extends ServiceEntityRepository
             ->getOneOrNullResult()
             ;
     }
+
     /**
      * Save record.
      *

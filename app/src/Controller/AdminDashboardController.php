@@ -7,7 +7,6 @@ namespace App\Controller;
 
 use App\Entity\Comment;
 use App\Entity\User;
-use App\Form\CommentType;
 use App\Form\UserType;
 use App\Repository\CommentRepository;
 use App\Repository\PostRepository;
@@ -19,7 +18,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * Class AdminDashboardController
+ * Class AdminDashboardController.
  *
  * @Route("/admin")
  */
@@ -28,9 +27,9 @@ class AdminDashboardController extends AbstractController
     /**
      * Index action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request            HTTP request
-     * @param \App\Repository\UserRepository        $UserRepository User repository
-     * @param \Knp\Component\Pager\PaginatorInterface   $paginator          Paginator
+     * @param \Symfony\Component\HttpFoundation\Request $request        HTTP request
+     * @param \App\Repository\UserRepository            $UserRepository User repository
+     * @param \Knp\Component\Pager\PaginatorInterface   $paginator      Paginator
      *
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
      *
@@ -71,7 +70,8 @@ class AdminDashboardController extends AbstractController
     public function show(Request $request, UserRepository $userRepository): Response
     {
         $id = $request->query->getInt('id');
-        $user =  $userRepository->findOneBy(array('id'=>$id));
+        $user = $userRepository->findOneBy(['id' => $id]);
+
         return $this->render(
             'admin/show.html.twig',
             ['user' => $user]
@@ -81,9 +81,9 @@ class AdminDashboardController extends AbstractController
     /**
      * Edit action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request            HTTP request
-     * @param \App\Entity\User                      $user           User entity
-     * @param \App\Repository\UserRepository        $userRepository User repository
+     * @param \Symfony\Component\HttpFoundation\Request $request        HTTP request
+     * @param \App\Entity\User                          $user           User entity
+     * @param \App\Repository\UserRepository            $userRepository User repository
      *
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
      *
@@ -123,9 +123,9 @@ class AdminDashboardController extends AbstractController
     /**
      * Delete action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request            HTTP request
-     * @param \App\Entity\User                      $user           User entity
-     * @param \App\Repository\UserRepository        $userRepository User repository
+     * @param \Symfony\Component\HttpFoundation\Request $request        HTTP request
+     * @param \App\Entity\User                          $user           User entity
+     * @param \App\Repository\UserRepository            $userRepository User repository
      *
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
      *
@@ -139,8 +139,13 @@ class AdminDashboardController extends AbstractController
      *     name="user_delete",
      * )
      */
-    public function delete(Request $request, User $user, UserRepository $userRepository, PostRepository $postRepository, CommentRepository $commentRepository): Response
-    {
+    public function delete(
+        Request $request,
+        User $user,
+        UserRepository $userRepository,
+        PostRepository $postRepository,
+        CommentRepository $commentRepository
+    ): Response {
         $form = $this->createForm(UserType::class, $user, ['method' => 'DELETE']);
         $form->handleRequest($request);
 
@@ -171,8 +176,8 @@ class AdminDashboardController extends AbstractController
     /**
      * Index comments.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request            HTTP request
-     * @param \Knp\Component\Pager\PaginatorInterface   $paginator          Paginator
+     * @param \Symfony\Component\HttpFoundation\Request $request   HTTP request
+     * @param \Knp\Component\Pager\PaginatorInterface   $paginator Paginator
      *
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
      *
@@ -182,8 +187,11 @@ class AdminDashboardController extends AbstractController
      *     name="admin_index_comments",
      * )
      */
-    public function indexComments(Request $request, PaginatorInterface $paginator, CommentRepository $commentRepository): Response
-    {
+    public function indexComments(
+        Request $request,
+        PaginatorInterface $paginator,
+        CommentRepository $commentRepository
+    ): Response {
         $pagination = $paginator->paginate(
             $commentRepository->findAll(),
             $request->query->getInt('page', 1),
@@ -200,8 +208,7 @@ class AdminDashboardController extends AbstractController
      * Delete action.
      *
      * @param \Symfony\Component\HttpFoundation\Request $request HTTP request
-     * @param Comment $comment
-     * @param CommentRepository $commentRepository
+     *
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
      *
      * @Route(
@@ -213,7 +220,6 @@ class AdminDashboardController extends AbstractController
     public function deleteComment(Request $request, Comment $comment, CommentRepository $commentRepository): Response
     {
         $commentRepository->deleteById($comment->getId());
-
 
         return $this->redirectToRoute('admin_index_comments');
     }

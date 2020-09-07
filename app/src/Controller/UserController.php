@@ -7,9 +7,8 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\ChangePasswordType;
-use App\Repository\UserRepository;
 use App\Form\UserType;
-use Knp\Component\Pager\PaginatorInterface;
+use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,7 +22,6 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
  */
 class UserController extends AbstractController
 {
-
     /**
      * Show action.
      *
@@ -68,8 +66,8 @@ class UserController extends AbstractController
 //        $form->handleRequest($request);
 //
 //        if ($form->isSubmitted() && $form->isValid()) {
-////            $user->setCreatedAt(new \DateTime());
-////            $user->setUpdatedAt(new \DateTime());
+    ////            $user->setCreatedAt(new \DateTime());
+    ////            $user->setUpdatedAt(new \DateTime());
 //            $userRepository->save($user);
 //
 //            $this->addFlash('success', 'message_created_successfully');
@@ -86,8 +84,8 @@ class UserController extends AbstractController
     /**
      * Change password action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request            HTTP request
-     * @param \App\Repository\UserRepository        $userRepository User repository
+     * @param \Symfony\Component\HttpFoundation\Request $request        HTTP request
+     * @param \App\Repository\UserRepository            $userRepository User repository
      *
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
      *
@@ -100,8 +98,11 @@ class UserController extends AbstractController
      *     name="user_passwd",
      * )
      */
-    public function changePassword(Request $request, UserRepository $userRepository, UserPasswordEncoderInterface $encoder): Response
-    {
+    public function changePassword(
+        Request $request,
+        UserRepository $userRepository,
+        UserPasswordEncoderInterface $encoder
+    ): Response {
         $user = $this->getUser();
         $form = $this->createForm(ChangePasswordType::class);
         $form->handleRequest($request);
@@ -122,7 +123,6 @@ class UserController extends AbstractController
             } else {
                 $result = false;
                 $this->addFlash('danger', 'message_wrong_password');
-
             }
             $this->addFlash('success', 'message_updated_successfully');
 
@@ -141,9 +141,9 @@ class UserController extends AbstractController
     /**
      * Edit action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request HTTP request
-     * @param User $user
-     * @param \App\Repository\UserRepository $userRepository User repository
+     * @param \Symfony\Component\HttpFoundation\Request $request        HTTP request
+     * @param User                                      $user
+     * @param \App\Repository\UserRepository            $userRepository User repository
      *
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
      *
@@ -160,9 +160,7 @@ class UserController extends AbstractController
         $user = $this->getUser();
         $form = $this->createForm(UserType::class, $user, ['method' => 'EDIT']);
         $form->handleRequest($request);
-//        var_dump($user);
         if ($form->isSubmitted() && $form->isValid()) {
-
             $userRepository->save($user);
 
             $this->addFlash('success', 'message_updated_successfully');

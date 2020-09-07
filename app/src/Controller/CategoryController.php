@@ -36,8 +36,11 @@ class CategoryController extends AbstractController
      *     name="category_index",
      * )
      */
-    public function index(Request $request, CategoryRepository $categoryRepository, PaginatorInterface $paginator): Response
-    {
+    public function index(
+        Request $request,
+        CategoryRepository $categoryRepository,
+        PaginatorInterface $paginator
+    ): Response {
         $pagination = $paginator->paginate(
             $categoryRepository->queryAll(),
             $request->query->getInt('page', 1),
@@ -180,7 +183,7 @@ class CategoryController extends AbstractController
             return $this->redirectToRoute('category_index');
         }
 
-        $form = $this->createForm(FormType::class, $category, ['method' => 'DELETE']);
+        $form = $this->createForm(CategoryType::class, $category, ['method' => 'DELETE']);
         $form->handleRequest($request);
 
         if ($request->isMethod('DELETE') && !$form->isSubmitted()) {

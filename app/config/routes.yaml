@@ -1,6 +1,6 @@
-#index:
-#  path: /
-#  controller: App\Controller\HelloWorldController::index
+index:
+  path: /
+  controller: App\Controller\PostController::index
 #records:
 #  path: /record
 #  controller: App\Controller\RecordController::index

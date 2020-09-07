@@ -6,7 +6,6 @@
 namespace App\Repository;
 
 use App\Entity\Category;
-use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
@@ -55,7 +54,7 @@ class CategoryRepository extends ServiceEntityRepository
 
     /**
      * @param $id
-     * @return Category|null
+     *
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function findOneById($id): ?Category

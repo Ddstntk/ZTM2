@@ -27,13 +27,16 @@
             {% for category in pagination.items %}
                 <tr>
                     <td>{{ category.id }}</td>
-                    <td>{{ category.createdAt|format_date('long') }}</td>
-                    <td>{{ category.updatedAt|format_date('long') }}</td>
+                    <td>{{ category.createdAt|date("m/d/Y") }}</td>
+                    <td>{{ category.updatedAt|date("m/d/Y") }}</td>
                     <td>{{ category.title }}</td>
                     <td>{{ category.title }}</td>
                     <td>
                         <a href="{{ url('category_show', {id: category.id}) }}" title="{{ 'action_view'|trans }}">
                             {{ 'action_view'|trans }}
+                        </a>
+                        <a href="{{ url('category_edit', {id: category.id}) }}" title="{{ 'action_edit'|trans }}">
+                            {{ 'action_edit'|trans }}
                         </a>
                         {% if not category.posts|length %}
                             <a href="{{ url('category_delete', {id: category.id}) }}" title="{{ 'action_delete'|trans }}">

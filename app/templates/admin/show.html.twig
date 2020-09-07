@@ -50,9 +50,10 @@
                     <img class="nav-profile-img avatar-img" src="{{ asset('uploads/avatars/avatarPlaceHolder.jpg') }}">
                 </div>
             {% endif %}
-            <h1>{{ user.email }}</h1>
+            <h1>{{ user.nickname }}</h1>
+            <h2>{{ user.email }}</h2>
             <h2>{{ 'user_roles'|trans }}</h2>
-            <h2>{{ user.roles|join }}</h2>
+            <h2>{{ user.roles|join|trans }}</h2>
             <a href="{{ url('user_delete', {id: user.id}) }}" title="{{ 'action_user_delete'|trans }}">
                 <button type="button" class="btn btn-sm btn-outline-secondary">
                     {{ 'action_user_delete'|trans }}

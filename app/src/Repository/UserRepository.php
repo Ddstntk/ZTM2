@@ -18,7 +18,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class UserRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
 {
-
     /**
      * Items per page.
      *
@@ -29,7 +28,6 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
      * @constant int
      */
     const PAGINATOR_ITEMS_PER_PAGE = 10;
-
 
     public function __construct(ManagerRegistry $registry)
     {
@@ -52,7 +50,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 
     /**
      * Used to upgrade (rehash) the user's password automatically over time.
-     * @param UserInterface $user
+     *
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
@@ -103,18 +101,17 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     public function queryAll(): QueryBuilder
     {
         return $this->getOrCreateQueryBuilder()
-            ->orderBy('user.id' );
+            ->orderBy('user.id');
     }
 
     /**
-     * Find    onne  by  id
-     *
+     * Find    onne  by  id.
      */
     public function findOneById($id)
     {
         return $this->getOrCreateQueryBuilder()
             ->andWhere('user.id = :val')
-            ->setParameter('val',$id)
+            ->setParameter('val', $id)
             ->getQuery()
             ->getResult()
             ;
@@ -131,7 +128,6 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     {
         return $queryBuilder ?? $this->createQueryBuilder('user');
     }
-
 
     /**
      * Delete record.

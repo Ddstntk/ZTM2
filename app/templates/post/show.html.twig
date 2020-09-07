@@ -74,13 +74,24 @@
     } %}
 
     {% if comments is defined and comments|length %}
+        <div style="padding: 16px">
     {% for comment in comments %}
 {#        <p>{{ comment.user_id_id }}</p>#}
-        <p><b>{{ comment.userId.nickname }}</b></p>
+        {% if comment.userId.avatar.filename is defined and comment.userId.avatar.filename|length %}
+            <div class = "nav-profile-img" style="width: 50px; height: 50px">
+        <img class="img-thumbnail" src="{{ asset('uploads/avatars/'~ comment.userId.avatar.filename) }}">
+            </div>
+        {% else %}
+            <div class = "nav-profile-img" style="width: 50px; height: 50px">
+        <img class="img-thumbnail" src="{{ asset('uploads/avatars/avatarPlaceHolder.jpg') }}">
+            </div>
+        {% endif %}
+            <p><b>{{ comment.userId.nickname }}</b></p>
         <p><small>{{ comment.createdAt|date("m/d/Y") }}</small></p>
         <p>{{ comment.content }}</p>
 
     {% endfor %}
+        </div>
     {% else %}
     <p>
         {{ 'message_item_not_found'|trans }}

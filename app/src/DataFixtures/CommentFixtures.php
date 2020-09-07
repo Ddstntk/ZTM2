@@ -28,7 +28,6 @@ class CommentFixtures extends AbstractBaseFixtures implements DependentFixtureIn
 
             $comment->setPostId($this->getRandomReference('posts'));
 
-
             $comment->setUserId($this->getRandomReference('users'));
 
             return $comment;

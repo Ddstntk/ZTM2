@@ -82,7 +82,7 @@ class Category
     /**
      * Posts.
      *
-     * @var \Doctrine\Common\Collections\ArrayCollection|\App\Entity\Post[] $posts Posts
+     * @var \Doctrine\Common\Collections\ArrayCollection|\App\Entity\Post[] Posts
      *
      * @ORM\OneToMany(
      *     targetEntity="App\Entity\Post",

@@ -106,7 +106,8 @@ class Post
     private $comment;
 
     /**
-     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="post_id", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Comment::class,
+     *     mappedBy="post_id", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     private $comments;
 

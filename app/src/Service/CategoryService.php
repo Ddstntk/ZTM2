@@ -7,7 +7,6 @@ namespace App\Service;
 
 use App\Entity\Category;
 use App\Repository\CategoryRepository;
-use Doctrine\ORM\QueryBuilder;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\PaginatorInterface;
 
@@ -44,12 +43,11 @@ class CategoryService
      */
     public function findOneById(int $id): ?Category
     {
-        return $this->categoryRepository->findOneBy(array('id'=>$id));
+        return $this->categoryRepository->findOneBy(['id' => $id]);
     }
 
     /**
-     * Find all
-     *
+     * Find all.
      *
      * @return Category[]
      */
@@ -57,17 +55,6 @@ class CategoryService
     {
         return $this->categoryRepository->findAll();
     }
-
-
-
-
-
-
-
-
-
-
-
 
 //    /**
 //     * Paginator.

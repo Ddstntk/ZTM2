@@ -9,8 +9,8 @@ use App\Entity\Avatar;
 use App\Form\AvatarType;
 use App\Repository\AvatarRepository;
 use App\Service\FileUploader;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -36,7 +36,6 @@ class AvatarController extends AbstractController
      */
     private $fileUploader;
     private $filesystem;
-
 
     /**
      * AvatarController constructor.

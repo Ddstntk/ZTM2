@@ -16,7 +16,6 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class CommentRepository extends ServiceEntityRepository
 {
-
     /**
      * Items per page.
      *
@@ -27,7 +26,6 @@ class CommentRepository extends ServiceEntityRepository
      * @constant int
      */
     const PAGINATOR_ITEMS_PER_PAGE = 10;
-
 
     public function __construct(ManagerRegistry $registry)
     {
@@ -64,13 +62,14 @@ class CommentRepository extends ServiceEntityRepository
         $this->_em->persist($comment);
         $this->_em->flush($comment);
     }
+
     /**
      * @return Comment[] Returns an array of Comment objects
      */
 
-
     /**
      * @param $postId
+     *
      * @return int|mixed|string
      */
     public function findByPost($postId)
@@ -114,6 +113,7 @@ class CommentRepository extends ServiceEntityRepository
             ->execute()
         ;
     }
+
     /**
      * Delete by Id.
      *
@@ -129,6 +129,7 @@ class CommentRepository extends ServiceEntityRepository
             ->execute()
         ;
     }
+
     /*
     public function findOneBySomeField($value): ?Comment
     {

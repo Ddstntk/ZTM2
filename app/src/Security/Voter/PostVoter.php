@@ -2,6 +2,7 @@
 /**
  * Post security voter.
  */
+
 namespace App\Security\Voter;
 
 use App\Entity\Post;
@@ -69,7 +70,7 @@ class PostVoter extends Voter
             case 'CREATE':
                 if (
 //                    $subject->getAuthor() === $user or
-                    in_array("ROLE_ADMIN",$user->getRoles())) {
+                    in_array('ROLE_ADMIN', $user->getRoles())) {
                     return true;
                 }
                 break;
@@ -79,7 +80,7 @@ class PostVoter extends Voter
             case 'EDIT':
                 if (
 //                    $subject->getAuthor() === $user or
-                    in_array("ROLE_ADMIN",$user->getRoles())) {
+                    in_array('ROLE_ADMIN', $user->getRoles())) {
                     return true;
                 }
                 break;
@@ -87,7 +88,7 @@ class PostVoter extends Voter
 //            or $user->getRoles()
                 if (
 //                    $subject->getAuthor() === $user or
-                    in_array("ROLE_ADMIN",$user->getRoles())) {
+                    in_array('ROLE_ADMIN', $user->getRoles())) {
                     return true;
                 }
                 break;
