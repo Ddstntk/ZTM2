@@ -1,45 +1,7 @@
-{#{% extends 'base.html.twig' %}#}
-
-{#{% block title %}#}
-{#    {{ 'user_details'|trans({'%id%': user.id|default('')}) }}#}
-{#{% endblock %}#}
-
-{#{% block body %}#}
-{#    <h1>{{ 'user_details'|trans({'%id%': user.id|default('')}) }}</h1>#}
-{#    {% if user is defined and user|length %}#}
-{#        <dl class="dl-horizontal">#}
-{#            <dt>{{ 'user_id'|trans }}</dt>#}
-{#            <dd>{{ user.id }}</dd>#}
-{#            <dt>{{ 'user_roles'|trans }}</dt>#}
-{#            <dd>{{ user.roles|join }}</dd>#}
-{#            <dt>{{ 'user_email'|trans }}</dt>#}
-{#            <dd>{{ user.email }}</dd>#}
-{#        </dl>#}
-{#        <p>#}
-{#            <a href="{{ url('user_delete', {id: user.id}) }}" title="{{ 'action_user_delete'|trans }}">#}
-{#                {{ 'action_user_delete'|trans }}#}
-{#            </a>#}
-{#            <a href="{{ url('admin_index') }}" title="{{ 'action_back_to_list'|trans }}">#}
-{#                {{ 'action_back_to_list'|trans }}#}
-{#            </a>#}
-{#        </p>#}
-{#    {% else %}#}
-{#        <p>#}
-{#            {{ 'message_item_not_found'|trans }}#}
-{#        </p>#}
-{#    {% endif %}#}
-{#{% endblock %}#}
-
 {% extends 'base.html.twig' %}
 
 
 {% block body %}
-
-    {#{% if app.user.avatar.filename is defined and app.user.avatar.filename|length %}#}
-    {#    <img class="nav-profile-img" src="{{ asset('uploads/avatars/'~ app.user.avatar.filename) }}">#}
-    {#{% endif %}#}
-{#    {% if app.user.avatar.filename is defined and app.user.avatar.filename|length %}#}
-
         <div class="starter-template" style="padding: 3rem 1.5rem;text-align: center;">
             {% if user.avatar.filename is defined and user.avatar.filename|length %}
                 <div class = "nav-profile-img">
@@ -65,7 +27,5 @@
                 </button>
             </a>
         </div>
-{#    {% endif %}#}
-
 
 {% endblock %}

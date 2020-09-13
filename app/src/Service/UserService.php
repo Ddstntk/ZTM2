@@ -1,0 +1,124 @@
+<?php
+/**
+ * User service.
+ */
+
+namespace App\Service;
+
+use App\Entity\Category;
+use App\Repository\CommentRepository;
+use App\Repository\UserRepository;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
+use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+
+/**
+ * Class UserService.
+ */
+class UserService
+{
+    /**
+     * Category service.
+     *
+     * @var CategoryService
+     */
+    private $categoryService;
+
+    /**
+     * Tag service.
+     *
+     * @var TagService
+     */
+    private $tagService;
+    /**
+     * @var PaginatorInterface
+     */
+    private $paginator;
+    /**
+     * @var UserRepository
+     */
+    private $postRepository;
+    private $commentRepository;
+    private $fileUploader;
+    private $encoder;
+    private $userRepository;
+
+    /**
+     * UserService constructor.
+     *
+     * @param UserRepository $postRepository User repository
+     * @param PaginatorInterface $paginator Paginator
+     * @param CommentRepository $commentRepository
+     * @param FileUploader $fileUploader
+     * @param CategoryService $categoryService Category service
+     * @param TagService $tagService Tag service
+     * @param UserPasswordEncoderInterface $encoder
+     * @param UserRepository $userRepository
+     */
+    public function __construct(
+        UserRepository $postRepository,
+        PaginatorInterface $paginator,
+        CommentRepository $commentRepository,
+        FileUploader $fileUploader,
+        CategoryService $categoryService,
+        TagService $tagService,
+        UserPasswordEncoderInterface $encoder,
+        UserRepository $userRepository
+    ) {
+        $this->postRepository = $postRepository;
+        $this->paginator = $paginator;
+        $this->categoryService = $categoryService;
+        $this->tagService = $tagService;
+        $this->commentRepository = $commentRepository;
+        $this->fileUploader = $fileUploader;
+        $this->encoder = $encoder;
+        $this->userRepository = $userRepository;
+    }
+
+
+    /**
+     * Get categories.
+     *
+     * @param $user
+     * @param $oldPassword
+     * @param $newPassword
+     * @return bool Paginated list
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    public function checkAndChange($user, $oldPassword, $newPassword): bool
+    {
+        $isPassValid = $this->encoder->isPasswordValid($user, $oldPassword, $user->getSalt());
+
+        if ($isPassValid) {
+            $newPasswordEncoded = $this->encoder->encodePassword($user, $newPassword);
+            $this->userRepository->upgradePassword($user, $newPasswordEncoded);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+    /**
+     * @param $post
+     * @param $formfile
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    public function editUser($user)
+    {
+        $this->userRepository->save($user);
+    }
+
+    /**
+     * @param $post
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    public function delete($post)
+    {
+        $this->postRepository->delete($post);
+    }
+}

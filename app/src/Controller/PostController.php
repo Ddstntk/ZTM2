@@ -13,6 +13,8 @@ use App\Repository\CommentRepository;
 use App\Repository\PostRepository;
 use App\Service\FileUploader;
 use App\Service\PostService;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Filesystem\Filesystem;
@@ -31,7 +33,7 @@ class PostController extends AbstractController
     /**
      * File uploader.
      *
-     * @var \App\Service\FileUploader
+     * @var FileUploader
      */
     private $fileUploader;
     private $filesystem;
@@ -40,8 +42,9 @@ class PostController extends AbstractController
     /**
      * PostController constructor.
      *
-     * @param \Symfony\Component\Filesystem\Filesystem $filesystem   Filesystem component
-     * @param \App\Service\FileUploader                $fileUploader File uploader
+     * @param Filesystem $filesystem Filesystem component
+     * @param FileUploader $fileUploader File uploader
+     * @param PostService $postService
      */
     public function __construct(Filesystem $filesystem, FileUploader $fileUploader, PostService $postService)
     {
@@ -53,11 +56,8 @@ class PostController extends AbstractController
     /**
      * Index action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request        HTTP request
-     * @param \App\Repository\PostRepository            $postRepository Post repository
-     * @param \Knp\Component\Pager\PaginatorInterface   $paginator      Paginator
-     *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @param Request $request HTTP request
+     * @return Response HTTP response
      *
      * @Route(
      *     "/",
@@ -67,17 +67,6 @@ class PostController extends AbstractController
      */
     public function index(Request $request): Response
     {
-//        $pagination = $paginator->paginate(
-        ////            $postRepository->queryByAuthor($this->getUser()),
-//            $postRepository->queryAll(),
-//            $request->query->getInt('page', 1),
-//            PostRepository::PAGINATOR_ITEMS_PER_PAGE
-//        );
-//        return $this->render(
-//            'post/index.html.twig',
-//            ['pagination' => $pagination]
-//        );
-
         $filters = [];
         $filters['category_id'] = $request->query->getInt('filters_category_id');
         $filters['tag_id'] = $request->query->getInt('filters_tag_id');
@@ -98,10 +87,11 @@ class PostController extends AbstractController
     /**
      * Show action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request HTTP request
-     * @param \App\Entity\Post                          $post    Post entity
+     * @param Request $request HTTP request
+     * @param Post $post Post entity
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @param CommentRepository $commentRepository
+     * @return Response HTTP response
      *
      * @Route(
      *     "/{id}",
@@ -113,13 +103,11 @@ class PostController extends AbstractController
     public function show(Request $request, Post $post, CommentRepository $commentRepository): Response
     {
         $comment = new Comment();
-
+        $user = $this->getUser();
         $form = $this->createForm(CommentType::class, $comment);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $comment->setUserId($this->getUser());
-            $comment->setPostId($post);
-            $commentRepository->save($comment);
+            $this->postService->addComment($comment, $post, $user);
             $this->addFlash('success', 'message_created_successfully');
 
 //            return $this->redirectToRoute('post_show');
@@ -139,13 +127,13 @@ class PostController extends AbstractController
     /**
      * Create action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request        HTTP request
-     * @param \App\Repository\PostRepository            $postRepository Post repository
+     * @param Request $request        HTTP request
+     * @param PostRepository $postRepository Post repository
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @return Response HTTP response
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      *
      * @Route(
      *     "/create",
@@ -153,19 +141,15 @@ class PostController extends AbstractController
      *     name="post_create",
      * )
      */
-    public function create(Request $request, PostRepository $postRepository): Response
+    public function create(Request $request): Response
     {
         $post = new Post();
         $form = $this->createForm(PostType::class, $post);
         $form->handleRequest($request);
+        $formfile = $form->get('file')->getData();
+        $user = $this->getUser();
         if ($form->isSubmitted() && $form->isValid()) {
-            $imageFilename = $this->fileUploader->upload(
-                $form->get('file')->getData()
-            );
-            $post->setImage($imageFilename);
-
-            $post->setAuthor($this->getUser());
-            $postRepository->save($post);
+            $this->postService->createPost($post, $formfile, $user);
             $this->addFlash('success', 'message_created_successfully');
 
             return $this->redirectToRoute('post_index');
@@ -176,56 +160,18 @@ class PostController extends AbstractController
             ['form' => $form->createView()]
         );
     }
-//
-//    /**
-//     * Comment action.
-//     *
-//     * @param \Symfony\Component\HttpFoundation\Request $request        HTTP request
-//     * @param \App\Repository\PostRepository            $postRepository Post repository
-//     *
-//     * @return \Symfony\Component\HttpFoundation\Response HTTP response
-//     *
-//     * @throws \Doctrine\ORM\ORMException
-//     * @throws \Doctrine\ORM\OptimisticLockException
-//     *
-//     * @Route(
-//     *     "/{id}/comment",
-//     *     methods={"GET", "POST"},
-//     *     name="comment_create",
-//     * )
-//     */
-//    public function comment($id, Request $request, Comment $comment, CommentRepository $commentRepository): Response
-//    {
-//        $comment = new Comment();
-//
-//        $form = $this->createForm(Comment::class, $comment);
-//        $form->handleRequest($request);
-//        if ($form->isSubmitted() && $form->isValid()) {
-//            $comment->setUserId($this->getUser());
-//
-//            $commentRepository->save($comment);
-//            $this->addFlash('success', 'message_created_successfully');
-//
-//            return $this->redirectToRoute('post_show');
-//        }
-//
-//        return $this->render(
-//            'post/create.html.twig',
-//            ['form' => $form->createView()]
-//        );
-//    }
+
 
     /**
      * Edit action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request        HTTP request
-     * @param \App\Entity\Post                          $post           Post entity
-     * @param \App\Repository\PostRepository            $postRepository Post repository
+     * @param Request $request        HTTP request
+     * @param Post $post           Post entity
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @return Response HTTP response
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      *
      * @Route(
      *     "/{id}/edit",
@@ -238,17 +184,14 @@ class PostController extends AbstractController
      *     subject="post",
      * )
      */
-    public function edit(Request $request, Post $post, PostRepository $postRepository): Response
+    public function edit(Request $request, Post $post): Response
     {
         $form = $this->createForm(PostType::class, $post, ['method' => 'PUT']);
         $form->handleRequest($request);
+        $formfile = $form->get('file')->getData();
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $imageFilename = $this->fileUploader->upload(
-                $form->get('file')->getData()
-            );
-            $post->setImage($imageFilename);
-            $postRepository->save($post);
+            $this->postService->editPost($post, $formfile);
             $this->addFlash('success', 'message_updated_successfully');
             return $this->redirectToRoute('post_index');
         }
@@ -265,15 +208,12 @@ class PostController extends AbstractController
     /**
      * Delete action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request        HTTP request
-     * @param \App\Entity\Post                          $post           Post entity
-     * @param \App\Repository\PostRepository            $postRepository Post repository
+     * @param Request $request HTTP request
+     * @param Post $post Post entity
+     * @return Response HTTP response
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
-     *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
-     *
+     * @throws ORMException
+     * @throws OptimisticLockException
      * @Route(
      *     "/{id}/delete",
      *     methods={"GET", "DELETE"},
@@ -285,7 +225,7 @@ class PostController extends AbstractController
      *     subject="post",
      * )
      */
-    public function delete(Request $request, Post $post, PostRepository $postRepository): Response
+    public function delete(Request $request, Post $post): Response
     {
         $form = $this->createForm(FormType::class, $post, ['method' => 'DELETE']);
         $form->handleRequest($request);
@@ -295,7 +235,7 @@ class PostController extends AbstractController
         }
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $postRepository->delete($post);
+            $this->postService->delete($post);
             $this->addFlash('success', 'message_deleted_successfully');
 
             return $this->redirectToRoute('post_index');

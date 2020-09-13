@@ -9,11 +9,13 @@ use App\Entity\User;
 use App\Form\ChangePasswordType;
 use App\Form\UserType;
 use App\Repository\UserRepository;
+use App\Service\UserService;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
  * Class UserController.
@@ -22,12 +24,19 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
  */
 class UserController extends AbstractController
 {
+    private $userService;
+
+    public function __construct(
+        UserService $userService
+    ) {
+        $this->userService = $userService;
+    }
     /**
      * Show action.
      *
      * @param \App\Entity\User $user User entity
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @return Response HTTP response
      *
      * @Route(
      *     "/me",
@@ -42,55 +51,14 @@ class UserController extends AbstractController
         );
     }
 
-//    /**
-//     * Create action.
-//     *
-//     * @param \Symfony\Component\HttpFoundation\Request $request            HTTP request
-//     * @param \App\Repository\UserRepository        $userRepository User repository
-//     *
-//     * @return \Symfony\Component\HttpFoundation\Response HTTP response
-//     *
-//     * @throws \Doctrine\ORM\ORMException
-//     * @throws \Doctrine\ORM\OptimisticLockException
-//     *
-//     * @Route(
-//     *     "/register",
-//     *     methods={"GET", "POST"},
-//     *     name="user_create",
-//     * )
-//     */
-//    public function create(Request $request, UserRepository $userRepository): Response
-//    {
-//        $user = new User();
-//        $form = $this->createForm(UserType::class, $user);
-//        $form->handleRequest($request);
-//
-//        if ($form->isSubmitted() && $form->isValid()) {
-    ////            $user->setCreatedAt(new \DateTime());
-    ////            $user->setUpdatedAt(new \DateTime());
-//            $userRepository->save($user);
-//
-//            $this->addFlash('success', 'message_created_successfully');
-//
-//            return $this->redirectToRoute('user_index');
-//        }
-//
-//        return $this->render(
-//            'user/create.html.twig',
-//            ['form' => $form->createView()]
-//        );
-//    }
-
     /**
      * Change password action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request        HTTP request
-     * @param \App\Repository\UserRepository            $userRepository User repository
+     * @param Request $request        HTTP request
+     * @param UserRepository            $userRepository User repository
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @return Response HTTP response
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
      *
      * @Route(
      *     "/password",
@@ -99,38 +67,26 @@ class UserController extends AbstractController
      * )
      */
     public function changePassword(
-        Request $request,
-        UserRepository $userRepository,
-        UserPasswordEncoderInterface $encoder
+        Request $request
     ): Response {
         $user = $this->getUser();
         $form = $this->createForm(ChangePasswordType::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-//            $user->setUpdatedAt(new \DateTime());
-//            $userRepository->save($user);
-
             $newData = $form->getData();
             $oldPassword = $newData['password'];
             $newPassword = $newData['plainPassword'];
-            $isPassValid = $encoder->isPasswordValid($user, $oldPassword, $user->getSalt());
-
-            if ($isPassValid) {
-                $newPasswordEncoded = $encoder->encodePassword($user, $newPassword);
-                $userRepository->upgradePassword($user, $newPasswordEncoded);
-                $result = true;
+            if ($this->userService->checkAndChange($user, $oldPassword, $newPassword)) {
+                $this->addFlash('success', 'message_updated_successfully');
             } else {
-                $result = false;
                 $this->addFlash('danger', 'message_wrong_password');
             }
-            $this->addFlash('success', 'message_updated_successfully');
-
             return $this->redirectToRoute('user_show');
         }
 
         return $this->render(
-            'user/edit.html.twig',
+            'user/password.html.twig',
             [
                 'form' => $form->createView(),
                 'user' => $user,
@@ -141,27 +97,24 @@ class UserController extends AbstractController
     /**
      * Edit action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request        HTTP request
-     * @param User                                      $user
-     * @param \App\Repository\UserRepository            $userRepository User repository
+     * @param Request $request HTTP request
+     * @return Response HTTP response
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
-     *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      * @Route(
      *     "/edit",
      *     methods={"GET", "EDIT"},
      *     name="user_edit",
      * )
      */
-    public function edit(Request $request, UserRepository $userRepository): Response
+    public function edit(Request $request): Response
     {
         $user = $this->getUser();
         $form = $this->createForm(UserType::class, $user, ['method' => 'EDIT']);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $userRepository->save($user);
+            $this->userService->editUser($user);
 
             $this->addFlash('success', 'message_updated_successfully');
 

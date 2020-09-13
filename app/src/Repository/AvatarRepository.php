@@ -4,6 +4,8 @@ namespace App\Repository;
 
 use App\Entity\Avatar;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -20,7 +22,8 @@ class AvatarRepository extends ServiceEntityRepository
     }
 
     /**
-    /* @return Avatar[] Returns an array of Avatar objects
+     * /* @return Avatar[] Returns an array of Avatar objects
+     * @return int|mixed|string
      */
     public function findByExampleField($value)
     {
@@ -47,10 +50,10 @@ class AvatarRepository extends ServiceEntityRepository
     /**
      * Save record.
      *
-     * @param \App\Entity\Avatar $avatar Avatar entity
+     * @param Avatar $avatar Avatar entity
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     public function save(Avatar $avatar): void
     {

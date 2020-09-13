@@ -8,7 +8,9 @@ namespace App\Controller;
 use App\Entity\Category;
 use App\Form\CategoryType;
 use App\Repository\CategoryRepository;
-use Knp\Component\Pager\PaginatorInterface;
+use App\Service\CategoryService;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,14 +23,28 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class CategoryController extends AbstractController
 {
+
+    /**
+     * @var CategoryService
+     */
+    private $categoryService;
+
+    /**
+     * CategoryController constructor.
+     *
+     * @param CategoryService $categoryService Category Service
+     */
+    public function __construct(
+        CategoryService $categoryService
+    ) {
+        $this->categoryService = $categoryService;
+    }
+
     /**
      * Index action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request            HTTP request
-     * @param \App\Repository\CategoryRepository        $categoryRepository Category repository
-     * @param \Knp\Component\Pager\PaginatorInterface   $paginator          Paginator
-     *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @param Request $request HTTP request
+     * @return Response HTTP response
      *
      * @Route(
      *     "/",
@@ -37,28 +53,22 @@ class CategoryController extends AbstractController
      * )
      */
     public function index(
-        Request $request,
-        CategoryRepository $categoryRepository,
-        PaginatorInterface $paginator
+        Request $request
     ): Response {
-        $pagination = $paginator->paginate(
-            $categoryRepository->queryAll(),
-            $request->query->getInt('page', 1),
-            CategoryRepository::PAGINATOR_ITEMS_PER_PAGE
-        );
+        $page = $request->query->getInt('page', 1);
 
         return $this->render(
             'category/index.html.twig',
-            ['pagination' => $pagination]
+            ['pagination' => $this->categoryService->createPaginatedList($page)]
         );
     }
 
     /**
      * Show action.
      *
-     * @param \App\Entity\Category $category Category entity
+     * @param Category $category Category entity
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @return Response HTTP response
      *
      * @Route(
      *     "/{id}",
@@ -78,34 +88,28 @@ class CategoryController extends AbstractController
     /**
      * Create action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request            HTTP request
-     * @param \App\Repository\CategoryRepository        $categoryRepository Category repository
+     * @param Request $request HTTP request
+     * @return Response HTTP response
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
-     *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
-     *
+     * @throws ORMException
+     * @throws OptimisticLockException
      * @Route(
      *     "/create",
      *     methods={"GET", "POST"},
      *     name="category_create",
      * )
      */
-    public function create(Request $request, CategoryRepository $categoryRepository): Response
+    public function create(Request $request): Response
     {
         $category = new Category();
         $form = $this->createForm(CategoryType::class, $category);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-//            $category->setCreatedAt(new \DateTime());
-//            $category->setUpdatedAt(new \DateTime());
-            $categoryRepository->save($category);
-
-            $this->addFlash('success', 'message_created_successfully');
-
-            return $this->redirectToRoute('category_index');
+            if ($this->categoryService->createCategory($category)) {
+                $this->addFlash('success', 'message_created_successfully');
+                return $this->redirectToRoute('category_index');
+            }
         }
 
         return $this->render(
@@ -117,14 +121,14 @@ class CategoryController extends AbstractController
     /**
      * Edit action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request            HTTP request
-     * @param \App\Entity\Category                      $category           Category entity
-     * @param \App\Repository\CategoryRepository        $categoryRepository Category repository
+     * @param Request $request            HTTP request
+     * @param Category $category           Category entity
+     * @param CategoryRepository $categoryRepository Category repository
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @return Response HTTP response
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      *
      * @Route(
      *     "/{id}/edit",
@@ -133,18 +137,17 @@ class CategoryController extends AbstractController
      *     name="category_edit",
      * )
      */
-    public function edit(Request $request, Category $category, CategoryRepository $categoryRepository): Response
+    public function edit(Request $request, Category $category): Response
     {
         $form = $this->createForm(CategoryType::class, $category, ['method' => 'PUT']);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $category->setUpdatedAt(new \DateTime());
-            $categoryRepository->save($category);
+            if ($this->categoryService->editCategory($category)) {
+                $this->addFlash('success', 'message_updated_successfully');
 
-            $this->addFlash('success', 'message_updated_successfully');
-
-            return $this->redirectToRoute('category_index');
+                return $this->redirectToRoute('category_index');
+            }
         }
 
         return $this->render(
@@ -159,14 +162,10 @@ class CategoryController extends AbstractController
     /**
      * Delete action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request            HTTP request
-     * @param \App\Entity\Category                      $category           Category entity
-     * @param \App\Repository\CategoryRepository        $categoryRepository Category repository
-     *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
-     *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @param Request $request HTTP request
+     * @param Category $category Category entity
+     * @param CategoryRepository $repository
+     * @return Response HTTP response
      *
      * @Route(
      *     "/{id}/delete",
@@ -175,7 +174,7 @@ class CategoryController extends AbstractController
      *     name="category_delete",
      * )
      */
-    public function delete(Request $request, Category $category, CategoryRepository $repository): Response
+    public function delete(Request $request, Category $category): Response
     {
         if ($category->getPosts()->count()) {
             $this->addFlash('warning', 'message_category_contains_posts');
@@ -191,7 +190,7 @@ class CategoryController extends AbstractController
         }
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $repository->delete($category);
+            $this->categoryService->delete($category);
             $this->addFlash('success', 'message_deleted_successfully');
 
             return $this->redirectToRoute('category_index');

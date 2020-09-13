@@ -3,11 +3,6 @@
 
 {% block body %}
 
-{#{% if app.user.avatar.filename is defined and app.user.avatar.filename|length %}#}
-{#    <img class="nav-profile-img" src="{{ asset('uploads/avatars/'~ app.user.avatar.filename) }}">#}
-{#{% endif %}#}
-{#    {% if app.user.avatar.filename is defined and app.user.avatar.filename|length %}#}
-
     <div class="starter-template" style="padding: 3rem 1.5rem;text-align: center;">
     {% if app.user.avatar.filename is defined and app.user.avatar.filename|length %}
         <div class = "nav-profile-img">
@@ -36,7 +31,5 @@
                 </button>
             </a>
     </div>
-{#    {% endif %}#}
-
 
 {% endblock %}

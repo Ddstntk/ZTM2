@@ -45,15 +45,15 @@ class TagRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param $id
-     *
+     * @param $tagId
+     * @return Tag|null
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function findOneById($id): ?Tag
+    public function findOneById($tagId): ?Tag
     {
         return $this->createQueryBuilder('t')
             ->andWhere('t.id = :id')
-            ->setParameter('id', $id)
+            ->setParameter('id', $tagId)
             ->getQuery()
             ->getOneOrNullResult()
             ;

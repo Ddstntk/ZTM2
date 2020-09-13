@@ -16,12 +16,13 @@ class TagService
     /**
      * Tag repository.
      *
-     * @var \App\Repository\TagRepository
+     * @var TagRepository
      */
     private $tagRepository;
 
     /**
      * TagService constructor.
+     * @param TagRepository $tagRepository
      */
     public function __construct(TagRepository $tagRepository)
     {
@@ -31,12 +32,12 @@ class TagService
     /**
      * Find tag by Id.
      *
-     * @param int $id Tag Id
-     *
+     * @param int $tagId
      * @return \App\Entity\Tag|null Tag entity
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function findOneById(int $id): ?Tag
+    public function findOneById(int $tagId): ?Tag
     {
-        return $this->tagRepository->findOneById($id);
+        return $this->tagRepository->findOneById($tagId);
     }
 }

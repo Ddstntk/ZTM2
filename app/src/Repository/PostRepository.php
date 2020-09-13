@@ -11,6 +11,8 @@ use App\Entity\Tag;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Doctrine\ORM\QueryBuilder;
 
 /**
@@ -37,7 +39,7 @@ class PostRepository extends ServiceEntityRepository
     /**
      * PostRepository constructor.
      *
-     * @param \Doctrine\Common\Persistence\ManagerRegistry $registry Manager registry
+     * @param ManagerRegistry $registry Manager registry
      */
     public function __construct(ManagerRegistry $registry)
     {
@@ -47,10 +49,10 @@ class PostRepository extends ServiceEntityRepository
     /**
      * Save record.
      *
-     * @param \App\Entity\Post $post Post entity
+     * @param Post $post Post entity
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     public function save(Post $post): void
     {
@@ -61,10 +63,10 @@ class PostRepository extends ServiceEntityRepository
     /**
      * Delete record.
      *
-     * @param \App\Entity\Post $post Post entity
+     * @param Post $post Post entity
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     public function delete(Post $post): void
     {
@@ -75,10 +77,7 @@ class PostRepository extends ServiceEntityRepository
     /**
      * Delete by author record.
      *
-     * @param \App\Entity\Post $post Post entity
-     *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @param $user_id
      */
     public function deleteByAuthor($user_id): void
     {
@@ -96,13 +95,13 @@ class PostRepository extends ServiceEntityRepository
      *
      * @param array $filters Filters array
      *
-     * @return \Doctrine\ORM\QueryBuilder Query builder
+     * @return QueryBuilder Query builder
      */
     public function queryAll(array $filters = []): QueryBuilder
     {
         $queryBuilder = $this->getOrCreateQueryBuilder()
             ->select(
-                'partial post.{id, createdAt, updatedAt, title}',
+                'partial post.{id, createdAt, updatedAt, title, image}',
                 'partial category.{id, title}',
                 'partial tags.{id, title}'
             )
@@ -117,9 +116,9 @@ class PostRepository extends ServiceEntityRepository
     /**
      * Get or create new query builder.
      *
-     * @param \Doctrine\ORM\QueryBuilder|null $queryBuilder Query builder
+     * @param QueryBuilder|null $queryBuilder Query builder
      *
-     * @return \Doctrine\ORM\QueryBuilder Query builder
+     * @return QueryBuilder Query builder
      */
     private function getOrCreateQueryBuilder(QueryBuilder $queryBuilder = null): QueryBuilder
     {
@@ -132,7 +131,7 @@ class PostRepository extends ServiceEntityRepository
      * @param \App\Entity\User $user    User entity
      * @param array            $filters Filters array
      *
-     * @return \Doctrine\ORM\QueryBuilder Query builder
+     * @return QueryBuilder Query builder
      */
     public function queryByAuthor(User $user, array $filters = []): QueryBuilder
     {
@@ -146,10 +145,10 @@ class PostRepository extends ServiceEntityRepository
     /**
      * Apply filters to paginated list.
      *
-     * @param \Doctrine\ORM\QueryBuilder $queryBuilder Query builder
+     * @param QueryBuilder $queryBuilder Query builder
      * @param array                      $filters      Filters array
      *
-     * @return \Doctrine\ORM\QueryBuilder Query builder
+     * @return QueryBuilder Query builder
      */
     private function applyFiltersToList(QueryBuilder $queryBuilder, array $filters = []): QueryBuilder
     {

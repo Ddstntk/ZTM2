@@ -37,19 +37,6 @@
     </div>
     <div class="container">
 
-{#        <a href="{{ url('post_index', {'filters.category_id' : post.category.id}) }}" title="{{ post.category.title }}">#}
-{#            {{ post.category.title }}#}
-{#        </a>#}
-{#        {% if post.tags is defined and post.tags|length %}#}
-{#            {% for tag in post.tags %}#}
-{#                <a href="{{ url('post_index', {'filters.tag_id' : tag.id}) }}" title="{{ tag.title }}">#}
-{#                    {{ tag.title }}#}
-{#                </a>#}
-{#            {% endfor %}#}
-{#        {% else %}#}
-{#            &nbsp;#}
-{#        {% endif %}#}
-
         <div class="row">
             {% for post in pagination.items %}
             <div class="col-md-4">
@@ -61,6 +48,8 @@
                         <img class="card-img-top" src="{{ asset('uploads/post_images/church.jpeg') }}">
                     {% endif %}
                         {#                    <img class="card-img-top" data-src="holder.js/100px225?theme=thumb&bg=55595c&fg=eceeef&text=Thumbnail" alt="Card image cap">#}
+{#                    <h1>{{ post.image }}</h1>#}
+
                     <div class="card-body">
                         <h5 class="card-title">{{ post.title }}</h5>
 {#                        <p class="card-text">{{ post.comment }}</p>#}

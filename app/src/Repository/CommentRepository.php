@@ -32,31 +32,6 @@ class CommentRepository extends ServiceEntityRepository
         parent::__construct($registry, Comment::class);
     }
 
-    // /**
-    //  * @return Comment[] Returns an array of Comment objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-
-
-    /**
-     * Save record.
-     *
-     * @param \App\Entity\Post $post Post entity
-     *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
-     */
     public function save(Comment $comment): void
     {
         $this->_em->persist($comment);
@@ -117,37 +92,25 @@ class CommentRepository extends ServiceEntityRepository
     /**
      * Delete by Id.
      *
-     * @param $postIds
+     * @param $comId
      */
-    public function deleteById($id): void
+    public function deleteById($comId): void
     {
         $this->createQueryBuilder('c')
             ->delete()
             ->andWhere('c.id = :val')
-            ->setParameter('val', $id)
+            ->setParameter('val', $comId)
             ->getQuery()
             ->execute()
         ;
     }
 
-    /*
-    public function findOneBySomeField($value): ?Comment
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
-
     /**
      * Get or create new query builder.
      *
-     * @param \Doctrine\ORM\QueryBuilder|null $queryBuilder Query builder
+     * @param QueryBuilder|null $queryBuilder Query builder
      *
-     * @return \Doctrine\ORM\QueryBuilder Query builder
+     * @return QueryBuilder Query builder
      */
     private function getOrCreateQueryBuilder(QueryBuilder $queryBuilder = null): QueryBuilder
     {
@@ -157,7 +120,7 @@ class CommentRepository extends ServiceEntityRepository
     /**
      * Query all comments.
      *
-     * @return \Doctrine\ORM\QueryBuilder Query builder
+     * @return QueryBuilder Query builder
      */
     public function queryAll(): QueryBuilder
     {

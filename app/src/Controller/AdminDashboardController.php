@@ -11,6 +11,8 @@ use App\Form\UserType;
 use App\Repository\CommentRepository;
 use App\Repository\PostRepository;
 use App\Repository\UserRepository;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,11 +29,11 @@ class AdminDashboardController extends AbstractController
     /**
      * Index action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request        HTTP request
-     * @param \App\Repository\UserRepository            $UserRepository User repository
-     * @param \Knp\Component\Pager\PaginatorInterface   $paginator      Paginator
+     * @param Request $request HTTP request
+     * @param UserRepository $userRepository
+     * @param PaginatorInterface $paginator Paginator
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @return Response HTTP response
      *
      * @Route(
      *     "/index",
@@ -56,9 +58,9 @@ class AdminDashboardController extends AbstractController
     /**
      * Show action.
      *
-     * @param \App\Entity\User $user User entity
-     *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @param Request $request
+     * @param UserRepository $userRepository
+     * @return Response HTTP response
      *
      * @Route(
      *     "/user/",
@@ -69,8 +71,8 @@ class AdminDashboardController extends AbstractController
      */
     public function show(Request $request, UserRepository $userRepository): Response
     {
-        $id = $request->query->getInt('id');
-        $user = $userRepository->findOneBy(['id' => $id]);
+        $userId = $request->query->getInt('id');
+        $user = $userRepository->findOneBy(['id' => $userId]);
 
         return $this->render(
             'admin/show.html.twig',
@@ -81,14 +83,14 @@ class AdminDashboardController extends AbstractController
     /**
      * Edit action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request        HTTP request
-     * @param \App\Entity\User                          $user           User entity
-     * @param \App\Repository\UserRepository            $userRepository User repository
+     * @param Request $request        HTTP request
+     * @param User $user           User entity
+     * @param UserRepository $userRepository User repository
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @return Response HTTP response
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      *
      * @Route(
      *     "/{id}/edit",
@@ -123,15 +125,16 @@ class AdminDashboardController extends AbstractController
     /**
      * Delete action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request        HTTP request
-     * @param \App\Entity\User                          $user           User entity
-     * @param \App\Repository\UserRepository            $userRepository User repository
+     * @param Request $request HTTP request
+     * @param User $user User entity
+     * @param UserRepository $userRepository User repository
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @param PostRepository $postRepository
+     * @param CommentRepository $commentRepository
+     * @return Response HTTP response
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
-     *
+     * @throws ORMException
+     * @throws OptimisticLockException
      * @Route(
      *     "/{id}/delete",
      *     methods={"GET", "DELETE"},
@@ -155,8 +158,8 @@ class AdminDashboardController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $commentRepository->deleteByAuthor($user->getId());
-            $post_ids = $postRepository->queryByAuthor($user);
-            $commentRepository->deleteByPost($post_ids);
+            $postIds = $postRepository->queryByAuthor($user);
+            $commentRepository->deleteByPost($postIds);
             $postRepository->deleteByAuthor($user->getId());
             $userRepository->delete($user);
             $this->addFlash('success', 'message_deleted_successfully');
@@ -176,10 +179,11 @@ class AdminDashboardController extends AbstractController
     /**
      * Index comments.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request   HTTP request
-     * @param \Knp\Component\Pager\PaginatorInterface   $paginator Paginator
+     * @param Request $request HTTP request
+     * @param PaginatorInterface $paginator Paginator
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @param CommentRepository $commentRepository
+     * @return Response HTTP response
      *
      * @Route(
      *     "/comment_index",
@@ -207,9 +211,9 @@ class AdminDashboardController extends AbstractController
     /**
      * Delete action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request HTTP request
-     *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @param Comment $comment
+     * @param CommentRepository $commentRepository
+     * @return Response HTTP response
      *
      * @Route(
      *     "/comment/{id}/delete",
@@ -217,7 +221,7 @@ class AdminDashboardController extends AbstractController
      *     name="comment_delete",
      * )
      */
-    public function deleteComment(Request $request, Comment $comment, CommentRepository $commentRepository): Response
+    public function deleteComment(Comment $comment, CommentRepository $commentRepository): Response
     {
         $commentRepository->deleteById($comment->getId());
 

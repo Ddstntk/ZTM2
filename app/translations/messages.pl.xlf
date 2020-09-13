@@ -286,12 +286,18 @@
             <source>ROLE_USER</source>
             <target> Użytkownik </target>
             </trans-unit>
-
+            <trans-unit id="message_deleted_successfully">
+            <source>message_deleted_successfully</source>
+            <target> Usunięto </target>
+            </trans-unit>
             <trans-unit id="ROLE_USERROLE_ADMIN">
             <source>ROLE_USERROLE_ADMIN</source>
             <target>Administrator</target>
             </trans-unit>
-
+            <trans-unit id="comment_add">
+            <source>comment_add</source>
+            <target>Skomentuj</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

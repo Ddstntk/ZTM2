@@ -5,37 +5,10 @@
 {% endblock %}
 
 {% block body %}
-{#    <h1>{{ 'title_post_details'|trans({'%id%': post.id|default('')}) }}</h1>#}
-{#    {% if post is defined and post|length %}#}
-{#        <dl class="dl-horizontal">#}
-{#            <dt>{{ 'label_id'|trans }}</dt>#}
-{#            <dd>{{ post.id }}</dd>#}
-{#            <dt>{{ 'label_created_at'|trans }}</dt>#}
-{#            <dd>{{ post.createdAt|format_date('long') }}</dd>#}
-{#            <dt>{{ 'label_updated_at'|trans }}</dt>#}
-{#            <dd>{{ post.updatedAt|format_date('long') }}</dd>#}
-{#            <dt>{{ 'label_category'|trans }}</dt>#}
-{#            <dd>{{  post.category.title }}</dd>#}
-{#            <dt>{{ 'label_title'|trans }}</dt>#}
-{#            <dd>{{  post.title }}</dd>#}
-{#            <dt>{{ 'label_comment'|trans }}</dt>#}
-{#            <dd>{{ post.comment|markdown_to_html }}</dd>#}
-{#        </dl>#}
-{#        <p>#}
-{#            <a href="{{ url('post_index') }}" title="{{ 'action_back_to_list'|trans }}">#}
-{#                {{ 'action_back_to_list'|trans }}#}
-{#            </a>#}
-{#        </p>#}
-{#    {% else %}#}
-{#        <p>#}
-{#            {{ 'message_item_not_found'|trans }}#}
-{#        </p>#}
-{#    {% endif %}#}
 
     <!-- Main jumbotron for a primary marketing message or call to action -->
     {% if post is defined and post|length %}
     {% if post.image is defined and post.image|length %}
-
         <div class="jumbotron" style="background-image: url('{{ asset('uploads/avatars/'~ post.image)}}');background-size: cover;">
         <div class="container">
             <h1 class="display-3" style=""><mark>{{ post.title }}</mark></h1>
@@ -70,7 +43,7 @@
             action: url('post_show',{id:post.id})
         },
         form: form,
-        submit_label: 'post_show'|trans,
+        submit_label: 'comment_add'|trans,
     } %}
 
     {% if comments is defined and comments|length %}

@@ -2,32 +2,14 @@
 
 {% block body %}
 
-
-{#        <div class="user-container">#}
-{#            <i class="fas fa-user-edit fa-5x"></i>#}
-{#        </div>#}
-
-{#        <hr />#}
-
-{#        {{ form_start(form) }}#}
-{#        {{ form_row(form.email, { 'attr': {'class': 'form-control'} }) }}#}
-{#        {{ form_row(form.plainPassword.first, { 'attr': {'class': 'form-control'} }) }}#}
-{#        {{ form_row(form.plainPassword.second, { 'attr': {'class': 'form-control'} }) }}#}
-
-{#        <div class="register-btn-container">#}
-{#            <button class="btn btn-danger" id="return-to-dash-btn" type="button">Cancel!</button>#}
-{#            <button class="btn btn-primary" type="submit">Update!</button>#}
-{#        </div>#}
-{#        {{ form_end(form) }}#}
-
     {% include 'default/_form.html.twig' with {
         page_title: 'action_passwd',
         attr: {
-            method: 'POST',
-            action: url('user_passwd')
+            method: 'EDIT',
+            action: url('user_edit')
         },
         form: form,
-        submit_label: 'user_passwd'|trans,
+        submit_label: 'user_edit'|trans,
         back_to_list_path: 'user_show',
     } %}
 

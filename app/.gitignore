@@ -117,8 +117,8 @@ fabric.properties
 !var/sessions/.gitkeep
 
 # Logs (Symfony4)
-/var/log/*
-!var/log/.gitkeep
+/log/*
+!log/.gitkeep
 
 # Parameters
 /app/config/parameters.yml

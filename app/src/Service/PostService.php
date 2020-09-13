@@ -5,8 +5,11 @@
 
 namespace App\Service;
 
-use App\Entity\Post;
+use App\Entity\Category;
+use App\Repository\CommentRepository;
 use App\Repository\PostRepository;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -19,14 +22,14 @@ class PostService
     /**
      * Category service.
      *
-     * @var \App\Service\CategoryService
+     * @var CategoryService
      */
     private $categoryService;
 
     /**
      * Tag service.
      *
-     * @var \App\Service\TagService
+     * @var TagService
      */
     private $tagService;
     /**
@@ -37,18 +40,24 @@ class PostService
      * @var PostRepository
      */
     private $postRepository;
+    private $commentRepository;
+    private $fileUploader;
 
     /**
      * PostService constructor.
      *
-     * @param \App\Repository\PostRepository          $postRepository  Post repository
-     * @param \Knp\Component\Pager\PaginatorInterface $paginator       Paginator
-     * @param \App\Service\CategoryService            $categoryService Category service
-     * @param \App\Service\TagService                 $tagService      Tag service
+     * @param PostRepository $postRepository Post repository
+     * @param PaginatorInterface $paginator Paginator
+     * @param CommentRepository $commentRepository
+     * @param FileUploader $fileUploader
+     * @param CategoryService $categoryService Category service
+     * @param TagService $tagService Tag service
      */
     public function __construct(
         PostRepository $postRepository,
         PaginatorInterface $paginator,
+        CommentRepository $commentRepository,
+        FileUploader $fileUploader,
         CategoryService $categoryService,
         TagService $tagService
     ) {
@@ -56,19 +65,9 @@ class PostService
         $this->paginator = $paginator;
         $this->categoryService = $categoryService;
         $this->tagService = $tagService;
+        $this->commentRepository = $commentRepository;
+        $this->fileUploader = $fileUploader;
     }
-
-//    /**
-//     * Find post by Id.
-//     *
-//     * @param int $id Post Id
-//     *
-//     * @return \App\Entity\Post|null Post entity
-//     */
-//    public function findOneById(int $id): ?Post
-//    {
-//        return $this->postRepository->findOneById($id);
-//    }
 
     /**
      * Prepare filters for the posts list.
@@ -89,13 +88,6 @@ class PostService
             }
         }
 
-//        if (isset($filters['tag_id']) && is_numeric($filters['tag_id'])) {
-//            $tag = $this->tagService->findOneById($filters['tag_id']);
-//            if (null !== $tag) {
-//                $resultFilters['tag'] = $tag;
-//            }
-//        }
-
         return $resultFilters;
     }
 
@@ -103,12 +95,12 @@ class PostService
      * Create paginated list.
      *
      * @param int                                                 $page    Page number
-     * @param \Symfony\Component\Security\Core\User\UserInterface $user    User entity
+     * @param UserInterface $user    User entity
      * @param array                                               $filters Filters array
      *
-     * @return \Knp\Component\Pager\Pagination\PaginationInterface Paginated list
+     * @return PaginationInterface Paginated list
      */
-    public function createPaginatedList(int $page, UserInterface $user, array $filters = []): PaginationInterface
+    public function createPaginatedList(int $page, array $filters = []): PaginationInterface
     {
         $filters = $this->prepareFilters($filters);
 
@@ -122,11 +114,65 @@ class PostService
     /**
      * Get categories.
      *
-     * @return \App\Entity\Category[] Paginated list
+     * @return Category[] Paginated list
      */
     public function getCategories(): array
     {
         return
             $this->categoryService->findAll();
+    }
+
+    /**
+     * @param $comment
+     * @param $post
+     */
+    public function addComment($comment, $post, $user)
+    {
+        $comment->setUserId($user);
+        $comment->setPostId($post);
+        $this->commentRepository->save($comment);
+    }
+
+    /**
+     * @param $post
+     * @param $formfile
+     * @param $user
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    public function createPost($post, $formfile, $user)
+    {
+        $imageFilename = $this->fileUploader->upload(
+            $formfile
+        );
+        $post->setImage($imageFilename);
+
+        $post->setAuthor($user);
+        $this->postRepository->save($post);
+    }
+
+    /**
+     * @param $post
+     * @param $formfile
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    public function editPost($post, $formfile)
+    {
+        $imageFilename = $this->fileUploader->upload(
+            $formfile
+        );
+        $post->setImage($imageFilename);
+        $this->postRepository->save($post);
+    }
+
+    /**
+     * @param $post
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    public function delete($post)
+    {
+        $this->postRepository->delete($post);
     }
 }

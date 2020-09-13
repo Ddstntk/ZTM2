@@ -9,6 +9,9 @@ use App\Entity\Avatar;
 use App\Form\AvatarType;
 use App\Repository\AvatarRepository;
 use App\Service\FileUploader;
+use App\Service\AvatarService;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,41 +28,55 @@ class AvatarController extends AbstractController
     /**
      * Avatar repository.
      *
-     * @var \App\Repository\AvatarRepository
+     * @var AvatarRepository
      */
     private $avatarRepository;
 
     /**
      * File uploader.
      *
-     * @var \App\Service\FileUploader
+     * @var FileUploader
      */
     private $fileUploader;
     private $filesystem;
 
     /**
+     * Avatar service
+     *
+     * @var AvatarService
+     */
+    private $avatarService;
+
+    /**
      * AvatarController constructor.
      *
-     * @param \App\Repository\AvatarRepository         $avatarRepository Avatar repository
-     * @param \Symfony\Component\Filesystem\Filesystem $filesystem       Filesystem component
-     * @param \App\Service\FileUploader                $fileUploader     File uploader
+     * @param AvatarRepository $avatarRepository Avatar repository
+     * @param Filesystem $filesystem       Filesystem component
+     * @param FileUploader $fileUploader     File uploader
+     * @param AvatarService $avatarService  Avatar Service
+     *
      */
-    public function __construct(AvatarRepository $avatarRepository, Filesystem $filesystem, FileUploader $fileUploader)
-    {
+    public function __construct(
+        AvatarRepository $avatarRepository,
+        Filesystem $filesystem,
+        FileUploader $fileUploader,
+        AvatarService $avatarService
+    ) {
         $this->avatarRepository = $avatarRepository;
         $this->filesystem = $filesystem;
         $this->fileUploader = $fileUploader;
+        $this->avatarService = $avatarService;
     }
 
     /**
      * Create action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request HTTP request
+     * @param Request $request HTTP request
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @return Response HTTP response
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      *
      * @Route(
      *     "/create",
@@ -72,18 +89,13 @@ class AvatarController extends AbstractController
         $avatar = new Avatar();
         $form = $this->createForm(AvatarType::class, $avatar);
         $form->handleRequest($request);
+        $user = $this->getUser();
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $avatarFilename = $this->fileUploader->upload(
-                $form->get('file')->getData()
-            );
-            $avatar->setUser($this->getUser());
-            $avatar->setFilename($avatarFilename);
-            $this->avatarRepository->save($avatar);
-
-            $this->addFlash('success', 'message_created_successfully');
-
-            return $this->redirectToRoute('post_index');
+            if ($this->avatarService->createAvatar($form, $avatar, $user)) {
+                $this->addFlash('success', 'message_created_successfully');
+                return $this->redirectToRoute('post_index');
+            }
         }
 
         return $this->render(
@@ -93,15 +105,15 @@ class AvatarController extends AbstractController
     }
 
     /**
-     * Create action.
+     * Edit action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request HTTP request
-     * @param \App\Entity\Avatar                        $avatar  Avatar
+     * @param Request $request HTTP request
+     * @param Avatar $avatar  Avatar
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @return Response HTTP response
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      *
      * @Route(
      *     "/edit",
@@ -118,20 +130,13 @@ class AvatarController extends AbstractController
         $avatar = $this->getUser()->getAvatar();
         $form = $this->createForm(AvatarType::class, $avatar);
         $form->handleRequest($request);
+        $filename = $this->getParameter('avatars_directory').'/'.$avatar->getFilename();
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->filesystem->remove(
-                $this->getParameter('avatars_directory').'/'.$avatar->getFilename()
-            );
-            $avatarFilename = $this->fileUploader->upload(
-                $form->get('file')->getData()
-            );
-            $avatar->setFilename($avatarFilename);
-            $this->avatarRepository->save($avatar);
-
-            $this->addFlash('success', 'message_updated_successfully');
-
-            return $this->redirectToRoute('post_index');
+            if ($this->avatarService->editAvatar($form, $avatar, $filename)) {
+                $this->addFlash('success', 'message_updated_successfully');
+                return $this->redirectToRoute('post_index');
+            }
         }
 
         return $this->render(
