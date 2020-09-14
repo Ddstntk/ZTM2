@@ -1,6 +1,17 @@
 <?php
 /**
- * Post repository.
+ * PHP Version 7.2
+ * Post Repository.
+ *
+ * @category  Social_Network
+ *
+ * @author    Konrad Szewczuk <konrad3szewczuk@gmail.com>
+ *
+ * @copyright 2020 Konrad Szewczuk
+ *
+ * @license   https://opensource.org/licenses/MIT MIT license
+ *
+ * @see      wierzba.wzks.uj.edu.pl/~16_szewczuk
  */
 
 namespace App\Repository;
@@ -77,14 +88,14 @@ class PostRepository extends ServiceEntityRepository
     /**
      * Delete by author record.
      *
-     * @param $user_id
+     * @param $userId
      */
-    public function deleteByAuthor($user_id): void
+    public function deleteByAuthor($userId): void
     {
         $this->createQueryBuilder('p')
             ->delete()
             ->andWhere('p.author = :val')
-            ->setParameter('val', $user_id)
+            ->setParameter('val', $userId)
             ->getQuery()
             ->execute()
             ;
@@ -114,28 +125,26 @@ class PostRepository extends ServiceEntityRepository
     }
 
     /**
-     * Get or create new query builder.
-     *
-     * @param QueryBuilder|null $queryBuilder Query builder
+     * Query all records.
      *
      * @return QueryBuilder Query builder
      */
-    private function getOrCreateQueryBuilder(QueryBuilder $queryBuilder = null): QueryBuilder
+    public function classicQueryAll(): QueryBuilder
     {
-        return $queryBuilder ?? $this->createQueryBuilder('post');
+        return $this->getOrCreateQueryBuilder();
     }
+
 
     /**
      * Query posts by author.
      *
-     * @param \App\Entity\User $user    User entity
-     * @param array            $filters Filters array
+     * @param User $user User entity
      *
      * @return QueryBuilder Query builder
      */
-    public function queryByAuthor(User $user, array $filters = []): QueryBuilder
+    public function findByAuthor(User $user): QueryBuilder
     {
-        $queryBuilder = $this->queryAll($filters);
+        $queryBuilder = $this->classicQueryAll();
         $queryBuilder->andWhere('post.author = :author')
             ->setParameter('author', $user);
 
@@ -146,7 +155,7 @@ class PostRepository extends ServiceEntityRepository
      * Apply filters to paginated list.
      *
      * @param QueryBuilder $queryBuilder Query builder
-     * @param array                      $filters      Filters array
+     * @param array        $filters      Filters array
      *
      * @return QueryBuilder Query builder
      */
@@ -163,5 +172,17 @@ class PostRepository extends ServiceEntityRepository
         }
 
         return $queryBuilder;
+    }
+
+    /**
+     * Get or create new query builder.
+     *
+     * @param QueryBuilder|null $queryBuilder Query builder
+     *
+     * @return QueryBuilder Query builder
+     */
+    private function getOrCreateQueryBuilder(QueryBuilder $queryBuilder = null): QueryBuilder
+    {
+        return $queryBuilder ?? $this->createQueryBuilder('post');
     }
 }

@@ -1,4 +1,18 @@
 <?php
+/**
+ * PHP Version 7.2
+ * User Repository.
+ *
+ * @category  Social_Network
+ *
+ * @author    Konrad Szewczuk <konrad3szewczuk@gmail.com>
+ *
+ * @copyright 2020 Konrad Szewczuk
+ *
+ * @license   https://opensource.org/licenses/MIT MIT license
+ *
+ * @see      wierzba.wzks.uj.edu.pl/~16_szewczuk
+ */
 
 namespace App\Repository;
 
@@ -31,6 +45,10 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
      */
     const PAGINATOR_ITEMS_PER_PAGE = 10;
 
+    /**
+     * UserRepository constructor.
+     * @param ManagerRegistry $registry
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, User::class);
@@ -38,8 +56,10 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 
     /**
      * Used to upgrade (rehash) the user's password automatically over time.
+     *
      * @param UserInterface $user
-     * @param string $newEncodedPassword
+     * @param string        $newEncodedPassword
+     *
      * @throws ORMException
      * @throws OptimisticLockException
      */
@@ -58,6 +78,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
      * Used to upgrade (rehash) the user's password automatically over time.
      *
      * @param UserInterface $user
+     *
      * @throws ORMException
      * @throws OptimisticLockException
      */
@@ -84,6 +105,9 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 
     /**
      * Find    onne  by  id.
+     *
+     * @param $userId
+     *
      * @return int|mixed|string
      */
     public function findOneById($userId)
@@ -94,18 +118,6 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->getQuery()
             ->getResult()
             ;
-    }
-
-    /**
-     * Get or create new query builder.
-     *
-     * @param QueryBuilder|null $queryBuilder Query builder
-     *
-     * @return QueryBuilder Query builder
-     */
-    private function getOrCreateQueryBuilder(QueryBuilder $queryBuilder = null): QueryBuilder
-    {
-        return $queryBuilder ?? $this->createQueryBuilder('user');
     }
 
     /**
@@ -120,5 +132,17 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     {
         $this->_em->remove($user);
         $this->_em->flush($user);
+    }
+
+    /**
+     * Get or create new query builder.
+     *
+     * @param QueryBuilder|null $queryBuilder Query builder
+     *
+     * @return QueryBuilder Query builder
+     */
+    private function getOrCreateQueryBuilder(QueryBuilder $queryBuilder = null): QueryBuilder
+    {
+        return $queryBuilder ?? $this->createQueryBuilder('user');
     }
 }

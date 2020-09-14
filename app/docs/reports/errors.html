@@ -1,0 +1,1417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+    <meta charset="utf-8"/>
+    <title> &raquo; Compilation errors</title>
+    <meta name="author" content=""/>
+    <meta name="description" content=""/>
+
+    <link href="../css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
+    <link href="../css/font-awesome.min.css" rel="stylesheet">
+    <link href="../css/prism.css" rel="stylesheet" media="all"/>
+    <link href="../css/template.css" rel="stylesheet" media="all"/>
+    <!--[if lt IE 9]>
+    <script src="../js/html5.js"></script>
+    <![endif]-->
+    <script src="../js/jquery-1.11.0.min.js"></script>
+    <script src="../js/ui/1.10.4/jquery-ui.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/jquery.smooth-scroll.js"></script>
+    <script src="../js/prism.min.js"></script>
+    <!-- TODO: Add http://jscrollpane.kelvinluck.com/ to style the scrollbars for browsers not using webkit-->
+    <link rel="shortcut icon" href="../images/favicon.ico"/>
+    <link rel="apple-touch-icon" href="../images/apple-touch-icon.png"/>
+    <link rel="apple-touch-icon" sizes="72x72" href="../images/apple-touch-icon-72x72.png"/>
+    <link rel="apple-touch-icon" sizes="114x114" href="../images/apple-touch-icon-114x114.png"/>
+</head>
+<body>
+
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <i class="icon-ellipsis-vertical"></i>
+            </a>
+            <a class="brand" href="../index.html">API Documentation</a>
+
+            <div class="nav-collapse">
+                <ul class="nav pull-right">                    <li class="dropdown">
+                        <a href="../index.html" class="dropdown-toggle" data-toggle="dropdown">
+                            API Documentation <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">                            <li><a href="../namespaces/App.html">\App</a></li>                            <li><a href="../namespaces/DoctrineMigrations.html">\DoctrineMigrations</a></li>                        </ul>
+                    </li>                    <li class="dropdown" id="charts-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Charts <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../graphs/class.html">
+                                    <i class="icon-list-alt"></i>&#160;Class hierarchy diagram
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown" id="reports-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Reports <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../reports/errors.html">                                    <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">180</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../reports/markers.html">                                    <i class="icon-list-alt"></i>&#160;Markers <span class="label label-info pull-right">0</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../reports/deprecated.html">                                    <i class="icon-list-alt"></i>&#160;Deprecated <span class="label label-info pull-right">0</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--<div class="go_to_top">-->
+    <!--<a href="#___" style="color: inherit">Back to top&#160;&#160;<i class="icon-upload icon-white"></i></a>-->
+    <!--</div>-->
+</div>
+
+<div id="___" class="container-fluid">    <section class="row-fluid">
+        <div class="span2 sidebar">
+
+            <ul class="side-nav nav nav-list">
+                <li class="nav-header">Navigation</li>                        <li><a href="#Form/RegistrationFormType.php"><i class="icon-file"></i>Form/RegistrationFormType.php</a></li>                        <li><a href="#Form/AdminUserType.php"><i class="icon-file"></i>Form/AdminUserType.php</a></li>                        <li><a href="#Form/UserType.php"><i class="icon-file"></i>Form/UserType.php</a></li>                        <li><a href="#Form/ChangePasswordType.php"><i class="icon-file"></i>Form/ChangePasswordType.php</a></li>                        <li><a href="#DataFixtures/AppFixtures.php"><i class="icon-file"></i>DataFixtures/AppFixtures.php</a></li>                        <li><a href="#Service/PostService.php"><i class="icon-file"></i>Service/PostService.php</a></li>                        <li><a href="#Service/AvatarService.php"><i class="icon-file"></i>Service/AvatarService.php</a></li>                        <li><a href="#Service/RegistrationService.php"><i class="icon-file"></i>Service/RegistrationService.php</a></li>                        <li><a href="#Service/AdminService.php"><i class="icon-file"></i>Service/AdminService.php</a></li>                        <li><a href="#Service/CategoryService.php"><i class="icon-file"></i>Service/CategoryService.php</a></li>                        <li><a href="#Service/TagService.php"><i class="icon-file"></i>Service/TagService.php</a></li>                        <li><a href="#Service/UserService.php"><i class="icon-file"></i>Service/UserService.php</a></li>                        <li><a href="#Migrations/Version20200903115708.php"><i class="icon-file"></i>Migrations/Version20200903115708.php</a></li>                        <li><a href="#Migrations/Version20200831201428.php"><i class="icon-file"></i>Migrations/Version20200831201428.php</a></li>                        <li><a href="#Migrations/Version20200831195329.php"><i class="icon-file"></i>Migrations/Version20200831195329.php</a></li>                        <li><a href="#Controller/CategoryController.php"><i class="icon-file"></i>Controller/CategoryController.php</a></li>                        <li><a href="#Controller/RegistrationController.php"><i class="icon-file"></i>Controller/RegistrationController.php</a></li>                        <li><a href="#Controller/SecurityController.php"><i class="icon-file"></i>Controller/SecurityController.php</a></li>                        <li><a href="#Controller/UserController.php"><i class="icon-file"></i>Controller/UserController.php</a></li>                        <li><a href="#Controller/PostController.php"><i class="icon-file"></i>Controller/PostController.php</a></li>                        <li><a href="#Controller/AvatarController.php"><i class="icon-file"></i>Controller/AvatarController.php</a></li>                        <li><a href="#Controller/AdminDashboardController.php"><i class="icon-file"></i>Controller/AdminDashboardController.php</a></li>                        <li><a href="#Repository/AvatarRepository.php"><i class="icon-file"></i>Repository/AvatarRepository.php</a></li>                        <li><a href="#Repository/UserRepository.php"><i class="icon-file"></i>Repository/UserRepository.php</a></li>                        <li><a href="#Repository/CommentRepository.php"><i class="icon-file"></i>Repository/CommentRepository.php</a></li>                        <li><a href="#Repository/CategoryRepository.php"><i class="icon-file"></i>Repository/CategoryRepository.php</a></li>                        <li><a href="#Repository/TagRepository.php"><i class="icon-file"></i>Repository/TagRepository.php</a></li>                        <li><a href="#Security/LoginFormAuthenticator.php"><i class="icon-file"></i>Security/LoginFormAuthenticator.php</a></li>                        <li><a href="#Entity/Comment.php"><i class="icon-file"></i>Entity/Comment.php</a></li>                        <li><a href="#Entity/Avatar.php"><i class="icon-file"></i>Entity/Avatar.php</a></li>                        <li><a href="#Entity/Post.php"><i class="icon-file"></i>Entity/Post.php</a></li>                        <li><a href="#Entity/User.php"><i class="icon-file"></i>Entity/User.php</a></li>                        <li><a href="#Entity/Category.php"><i class="icon-file"></i>Entity/Category.php</a></li>                        <li><a href="#Entity/Tag.php"><i class="icon-file"></i>Entity/Tag.php</a></li>                        <li><a href="#Kernel.php"><i class="icon-file"></i>Kernel.php</a></li>            </ul>
+        </div>
+
+        <div class="span10 offset2">
+            <ul class="breadcrumb">
+                <li><a href="../"><i class="icon-remove-sign"></i></a><span class="divider">\</span></li>
+                <li>Compilation Errors</li>
+            </ul>                <div class="package-contents">                        <a name="Form/RegistrationFormType.php" id="Form/RegistrationFormType.php"></a>
+                        <h3>
+                            <i class="icon-file"></i>Form/RegistrationFormType.php
+                            <small style="float: right;padding-right: 10px;">3</small>
+                        </h3>
+                        <div>
+                            <table class="table markers table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Line</th>
+                                    <th>Description</th>
+                                </tr>
+                                </thead>
+                                <tbody>                                    <tr>
+                                        <td>error</td>
+                                        <td>36</td>
+                                        <td>Argument $builder is missing from the Docblock of buildForm</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>36</td>
+                                        <td>Argument $options is missing from the Docblock of buildForm</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>64</td>
+                                        <td>Argument $resolver is missing from the Docblock of configureOptions</td>
+                                    </tr>                            </tbody>
+                            </table>
+                        </div>                </div>                <div class="package-contents">                        <a name="Form/AdminUserType.php" id="Form/AdminUserType.php"></a>
+                        <h3>
+                            <i class="icon-file"></i>Form/AdminUserType.php
+                            <small style="float: right;padding-right: 10px;">3</small>
+                        </h3>
+                        <div>
+                            <table class="table markers table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Line</th>
+                                    <th>Description</th>
+                                </tr>
+                                </thead>
+                                <tbody>                                    <tr>
+                                        <td>error</td>
+                                        <td>33</td>
+                                        <td>Argument $builder is missing from the Docblock of buildForm</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>33</td>
+                                        <td>Argument $options is missing from the Docblock of buildForm</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>44</td>
+                                        <td>Argument $resolver is missing from the Docblock of configureOptions</td>
+                                    </tr>                            </tbody>
+                            </table>
+                        </div>                </div>                <div class="package-contents">                        <a name="Form/UserType.php" id="Form/UserType.php"></a>
+                        <h3>
+                            <i class="icon-file"></i>Form/UserType.php
+                            <small style="float: right;padding-right: 10px;">3</small>
+                        </h3>
+                        <div>
+                            <table class="table markers table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Line</th>
+                                    <th>Description</th>
+                                </tr>
+                                </thead>
+                                <tbody>                                    <tr>
+                                        <td>error</td>
+                                        <td>32</td>
+                                        <td>Argument $builder is missing from the Docblock of buildForm</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>32</td>
+                                        <td>Argument $options is missing from the Docblock of buildForm</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>42</td>
+                                        <td>Argument $resolver is missing from the Docblock of configureOptions</td>
+                                    </tr>                            </tbody>
+                            </table>
+                        </div>                </div>                <div class="package-contents">                </div>                <div class="package-contents">                </div>                <div class="package-contents">                        <a name="Form/ChangePasswordType.php" id="Form/ChangePasswordType.php"></a>
+                        <h3>
+                            <i class="icon-file"></i>Form/ChangePasswordType.php
+                            <small style="float: right;padding-right: 10px;">3</small>
+                        </h3>
+                        <div>
+                            <table class="table markers table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Line</th>
+                                    <th>Description</th>
+                                </tr>
+                                </thead>
+                                <tbody>                                    <tr>
+                                        <td>error</td>
+                                        <td>34</td>
+                                        <td>Argument $builder is missing from the Docblock of buildForm</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>34</td>
+                                        <td>Argument $options is missing from the Docblock of buildForm</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>47</td>
+                                        <td>Argument $resolver is missing from the Docblock of configureOptions</td>
+                                    </tr>                            </tbody>
+                            </table>
+                        </div>                </div>                <div class="package-contents">                </div>                <div class="package-contents">                </div>                <div class="package-contents">                </div>                <div class="package-contents">                </div>                <div class="package-contents">                </div>                <div class="package-contents">                </div>                <div class="package-contents">                </div>                <div class="package-contents">                </div>                <div class="package-contents">                        <a name="DataFixtures/AppFixtures.php" id="DataFixtures/AppFixtures.php"></a>
+                        <h3>
+                            <i class="icon-file"></i>DataFixtures/AppFixtures.php
+                            <small style="float: right;padding-right: 10px;">4</small>
+                        </h3>
+                        <div>
+                            <table class="table markers table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Line</th>
+                                    <th>Description</th>
+                                </tr>
+                                </thead>
+                                <tbody>                                    <tr>
+                                        <td>error</td>
+                                        <td>0</td>
+                                        <td>No summary was found for this file</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>8</td>
+                                        <td>No summary for class \App\DataFixtures\AppFixtures</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>10</td>
+                                        <td>Argument $manager is missing from the Docblock of load</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>10</td>
+                                        <td>No summary for method load()</td>
+                                    </tr>                            </tbody>
+                            </table>
+                        </div>                </div>                <div class="package-contents">                </div>                <div class="package-contents">                        <a name="Service/PostService.php" id="Service/PostService.php"></a>
+                        <h3>
+                            <i class="icon-file"></i>Service/PostService.php
+                            <small style="float: right;padding-right: 10px;">21</small>
+                        </h3>
+                        <div>
+                            <table class="table markers table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Line</th>
+                                    <th>Description</th>
+                                </tr>
+                                </thead>
+                                <tbody>                                    <tr>
+                                        <td>error</td>
+                                        <td>67</td>
+                                        <td>Name of argument $commentRepository does not match with the DocBlock&#039;s name $categoryService in __construct()</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>67</td>
+                                        <td>The type hint of the argument is incorrect for the type definition of the @param tag with argument $commentRepository in __construct()</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>67</td>
+                                        <td>Name of argument $fileUploader does not match with the DocBlock&#039;s name $tagService in __construct()</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>67</td>
+                                        <td>The type hint of the argument is incorrect for the type definition of the @param tag with argument $fileUploader in __construct()</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>67</td>
+                                        <td>Argument $categoryService is missing from the Docblock of __construct</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>67</td>
+                                        <td>Name of argument $categoryService does not match with the DocBlock&#039;s name $tagService in __construct()</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>67</td>
+                                        <td>The type hint of the argument is incorrect for the type definition of the @param tag with argument $categoryService in __construct()</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>67</td>
+                                        <td>Argument $tagService is missing from the Docblock of __construct</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>114</td>
+                                        <td>Name of argument $filters does not match with the DocBlock&#039;s name $user in createPaginatedList()</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>114</td>
+                                        <td>The type hint of the argument is incorrect for the type definition of the @param tag with argument $filters in createPaginatedList()</td>
+                                    </tr>                                    <tr>
+                                        <td>notice</td>
+                                        <td>114</td>
+                                        <td>Parameter $user could not be found in createPaginatedList()</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>140</td>
+                                        <td>Argument $user is missing from the Docblock of addComment</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>140</td>
+                                        <td>Name of argument $user does not match with the DocBlock&#039;s name $post in addComment()</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>140</td>
+                                        <td>No summary for method addComment()</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>155</td>
+                                        <td>No summary for method createPost()</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>173</td>
+                                        <td>No summary for method editPost()</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>188</td>
+                                        <td>No summary for method delete()</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>49</td>
+                                        <td>No summary for property $paginator</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>53</td>
+                                        <td>No summary for property $postRepository</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>55</td>
+                                        <td>No summary for property $commentRepository</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>57</td>
+                                        <td>No summary for property $fileUploader</td>
+                                    </tr>                            </tbody>
+                            </table>
+                        </div>                </div>                <div class="package-contents">                        <a name="Service/AvatarService.php" id="Service/AvatarService.php"></a>
+                        <h3>
+                            <i class="icon-file"></i>Service/AvatarService.php
+                            <small style="float: right;padding-right: 10px;">1</small>
+                        </h3>
+                        <div>
+                            <table class="table markers table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Line</th>
+                                    <th>Description</th>
+                                </tr>
+                                </thead>
+                                <tbody>                                    <tr>
+                                        <td>error</td>
+                                        <td>0</td>
+                                        <td>No summary was found for this file</td>
+                                    </tr>                            </tbody>
+                            </table>
+                        </div>                </div>                <div class="package-contents">                </div>                <div class="package-contents">                        <a name="Service/RegistrationService.php" id="Service/RegistrationService.php"></a>
+                        <h3>
+                            <i class="icon-file"></i>Service/RegistrationService.php
+                            <small style="float: right;padding-right: 10px;">5</small>
+                        </h3>
+                        <div>
+                            <table class="table markers table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Line</th>
+                                    <th>Description</th>
+                                </tr>
+                                </thead>
+                                <tbody>                                    <tr>
+                                        <td>error</td>
+                                        <td>33</td>
+                                        <td>Argument $passwordEncoder is missing from the Docblock of __construct</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>33</td>
+                                        <td>Argument $userRepository is missing from the Docblock of __construct</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>48</td>
+                                        <td>No summary for method register()</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>27</td>
+                                        <td>No summary for property $userRepository</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>28</td>
+                                        <td>No summary for property $passwordEncoder</td>
+                                    </tr>                            </tbody>
+                            </table>
+                        </div>                </div>                <div class="package-contents">                        <a name="Service/AdminService.php" id="Service/AdminService.php"></a>
+                        <h3>
+                            <i class="icon-file"></i>Service/AdminService.php
+                            <small style="float: right;padding-right: 10px;">24</small>
+                        </h3>
+                        <div>
+                            <table class="table markers table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Line</th>
+                                    <th>Description</th>
+                                </tr>
+                                </thead>
+                                <tbody>                                    <tr>
+                                        <td>error</td>
+                                        <td>70</td>
+                                        <td>Name of argument $commentRepository does not match with the DocBlock&#039;s name $categoryService in __construct()</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>70</td>
+                                        <td>The type hint of the argument is incorrect for the type definition of the @param tag with argument $commentRepository in __construct()</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>70</td>
+                                        <td>Name of argument $fileUploader does not match with the DocBlock&#039;s name $tagService in __construct()</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>70</td>
+                                        <td>The type hint of the argument is incorrect for the type definition of the @param tag with argument $fileUploader in __construct()</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>70</td>
+                                        <td>Argument $categoryService is missing from the Docblock of __construct</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>70</td>
+                                        <td>Name of argument $categoryService does not match with the DocBlock&#039;s name $tagService in __construct()</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>70</td>
+                                        <td>The type hint of the argument is incorrect for the type definition of the @param tag with argument $categoryService in __construct()</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>70</td>
+                                        <td>Argument $tagService is missing from the Docblock of __construct</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>70</td>
+                                        <td>Argument $encoder is missing from the Docblock of __construct</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>70</td>
+                                        <td>Name of argument $encoder does not match with the DocBlock&#039;s name $tagService in __construct()</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>70</td>
+                                        <td>The type hint of the argument is incorrect for the type definition of the @param tag with argument $encoder in __construct()</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>70</td>
+                                        <td>Argument $userRepository is missing from the Docblock of __construct</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>70</td>
+                                        <td>Name of argument $userRepository does not match with the DocBlock&#039;s name $tagService in __construct()</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>70</td>
+                                        <td>The type hint of the argument is incorrect for the type definition of the @param tag with argument $userRepository in __construct()</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>96</td>
+                                        <td>No summary for method delete()</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>116</td>
+                                        <td>Name of argument $newData does not match with the DocBlock&#039;s name $oldPassword in change()</td>
+                                    </tr>                                    <tr>
+                                        <td>notice</td>
+                                        <td>116</td>
+                                        <td>Parameter $oldPassword could not be found in change()</td>
+                                    </tr>                                    <tr>
+                                        <td>notice</td>
+                                        <td>116</td>
+                                        <td>Parameter $newPassword could not be found in change()</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>49</td>
+                                        <td>No summary for property $paginator</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>53</td>
+                                        <td>No summary for property $userRepository</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>57</td>
+                                        <td>No summary for property $postRepository</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>58</td>
+                                        <td>No summary for property $commentRepository</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>59</td>
+                                        <td>No summary for property $fileUploader</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>60</td>
+                                        <td>No summary for property $encoder</td>
+                                    </tr>                            </tbody>
+                            </table>
+                        </div>                </div>                <div class="package-contents">                        <a name="Service/CategoryService.php" id="Service/CategoryService.php"></a>
+                        <h3>
+                            <i class="icon-file"></i>Service/CategoryService.php
+                            <small style="float: right;padding-right: 10px;">1</small>
+                        </h3>
+                        <div>
+                            <table class="table markers table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Line</th>
+                                    <th>Description</th>
+                                </tr>
+                                </thead>
+                                <tbody>                                    <tr>
+                                        <td>error</td>
+                                        <td>0</td>
+                                        <td>No summary was found for this file</td>
+                                    </tr>                            </tbody>
+                            </table>
+                        </div>                </div>                <div class="package-contents">                        <a name="Service/TagService.php" id="Service/TagService.php"></a>
+                        <h3>
+                            <i class="icon-file"></i>Service/TagService.php
+                            <small style="float: right;padding-right: 10px;">1</small>
+                        </h3>
+                        <div>
+                            <table class="table markers table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Line</th>
+                                    <th>Description</th>
+                                </tr>
+                                </thead>
+                                <tbody>                                    <tr>
+                                        <td>error</td>
+                                        <td>0</td>
+                                        <td>No summary was found for this file</td>
+                                    </tr>                            </tbody>
+                            </table>
+                        </div>                </div>                <div class="package-contents">                        <a name="Service/UserService.php" id="Service/UserService.php"></a>
+                        <h3>
+                            <i class="icon-file"></i>Service/UserService.php
+                            <small style="float: right;padding-right: 10px;">25</small>
+                        </h3>
+                        <div>
+                            <table class="table markers table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Line</th>
+                                    <th>Description</th>
+                                </tr>
+                                </thead>
+                                <tbody>                                    <tr>
+                                        <td>error</td>
+                                        <td>66</td>
+                                        <td>Name of argument $commentRepository does not match with the DocBlock&#039;s name $categoryService in __construct()</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>66</td>
+                                        <td>The type hint of the argument is incorrect for the type definition of the @param tag with argument $commentRepository in __construct()</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>66</td>
+                                        <td>Name of argument $fileUploader does not match with the DocBlock&#039;s name $tagService in __construct()</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>66</td>
+                                        <td>The type hint of the argument is incorrect for the type definition of the @param tag with argument $fileUploader in __construct()</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>66</td>
+                                        <td>Argument $categoryService is missing from the Docblock of __construct</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>66</td>
+                                        <td>Name of argument $categoryService does not match with the DocBlock&#039;s name $tagService in __construct()</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>66</td>
+                                        <td>The type hint of the argument is incorrect for the type definition of the @param tag with argument $categoryService in __construct()</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>66</td>
+                                        <td>Argument $tagService is missing from the Docblock of __construct</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>66</td>
+                                        <td>Argument $encoder is missing from the Docblock of __construct</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>66</td>
+                                        <td>Name of argument $encoder does not match with the DocBlock&#039;s name $tagService in __construct()</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>66</td>
+                                        <td>The type hint of the argument is incorrect for the type definition of the @param tag with argument $encoder in __construct()</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>66</td>
+                                        <td>Argument $userRepository is missing from the Docblock of __construct</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>66</td>
+                                        <td>Name of argument $userRepository does not match with the DocBlock&#039;s name $tagService in __construct()</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>66</td>
+                                        <td>The type hint of the argument is incorrect for the type definition of the @param tag with argument $userRepository in __construct()</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>119</td>
+                                        <td>Name of argument $user does not match with the DocBlock&#039;s name $post in editUser()</td>
+                                    </tr>                                    <tr>
+                                        <td>notice</td>
+                                        <td>119</td>
+                                        <td>Parameter $post could not be found in editUser()</td>
+                                    </tr>                                    <tr>
+                                        <td>notice</td>
+                                        <td>119</td>
+                                        <td>Parameter $formfile could not be found in editUser()</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>119</td>
+                                        <td>No summary for method editUser()</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>130</td>
+                                        <td>No summary for method delete()</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>48</td>
+                                        <td>No summary for property $paginator</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>52</td>
+                                        <td>No summary for property $postRepository</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>53</td>
+                                        <td>No summary for property $commentRepository</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>54</td>
+                                        <td>No summary for property $fileUploader</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>55</td>
+                                        <td>No summary for property $encoder</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>56</td>
+                                        <td>No summary for property $userRepository</td>
+                                    </tr>                            </tbody>
+                            </table>
+                        </div>                </div>                <div class="package-contents">                        <a name="Migrations/Version20200903115708.php" id="Migrations/Version20200903115708.php"></a>
+                        <h3>
+                            <i class="icon-file"></i>Migrations/Version20200903115708.php
+                            <small style="float: right;padding-right: 10px;">6</small>
+                        </h3>
+                        <div>
+                            <table class="table markers table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Line</th>
+                                    <th>Description</th>
+                                </tr>
+                                </thead>
+                                <tbody>                                    <tr>
+                                        <td>error</td>
+                                        <td>0</td>
+                                        <td>No summary was found for this file</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>15</td>
+                                        <td>No summary for method getDescription()</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>20</td>
+                                        <td>Argument $schema is missing from the Docblock of up</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>20</td>
+                                        <td>No summary for method up()</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>28</td>
+                                        <td>Argument $schema is missing from the Docblock of down</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>28</td>
+                                        <td>No summary for method down()</td>
+                                    </tr>                            </tbody>
+                            </table>
+                        </div>                </div>                <div class="package-contents">                        <a name="Migrations/Version20200831201428.php" id="Migrations/Version20200831201428.php"></a>
+                        <h3>
+                            <i class="icon-file"></i>Migrations/Version20200831201428.php
+                            <small style="float: right;padding-right: 10px;">6</small>
+                        </h3>
+                        <div>
+                            <table class="table markers table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Line</th>
+                                    <th>Description</th>
+                                </tr>
+                                </thead>
+                                <tbody>                                    <tr>
+                                        <td>error</td>
+                                        <td>0</td>
+                                        <td>No summary was found for this file</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>15</td>
+                                        <td>No summary for method getDescription()</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>20</td>
+                                        <td>Argument $schema is missing from the Docblock of up</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>20</td>
+                                        <td>No summary for method up()</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>28</td>
+                                        <td>Argument $schema is missing from the Docblock of down</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>28</td>
+                                        <td>No summary for method down()</td>
+                                    </tr>                            </tbody>
+                            </table>
+                        </div>                </div>                <div class="package-contents">                        <a name="Migrations/Version20200831195329.php" id="Migrations/Version20200831195329.php"></a>
+                        <h3>
+                            <i class="icon-file"></i>Migrations/Version20200831195329.php
+                            <small style="float: right;padding-right: 10px;">6</small>
+                        </h3>
+                        <div>
+                            <table class="table markers table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Line</th>
+                                    <th>Description</th>
+                                </tr>
+                                </thead>
+                                <tbody>                                    <tr>
+                                        <td>error</td>
+                                        <td>0</td>
+                                        <td>No summary was found for this file</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>15</td>
+                                        <td>No summary for method getDescription()</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>20</td>
+                                        <td>Argument $schema is missing from the Docblock of up</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>20</td>
+                                        <td>No summary for method up()</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>30</td>
+                                        <td>Argument $schema is missing from the Docblock of down</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>30</td>
+                                        <td>No summary for method down()</td>
+                                    </tr>                            </tbody>
+                            </table>
+                        </div>                </div>                <div class="package-contents">                        <a name="Controller/CategoryController.php" id="Controller/CategoryController.php"></a>
+                        <h3>
+                            <i class="icon-file"></i>Controller/CategoryController.php
+                            <small style="float: right;padding-right: 10px;">3</small>
+                        </h3>
+                        <div>
+                            <table class="table markers table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Line</th>
+                                    <th>Description</th>
+                                </tr>
+                                </thead>
+                                <tbody>                                    <tr>
+                                        <td>notice</td>
+                                        <td>154</td>
+                                        <td>Parameter $categoryRepository could not be found in edit()</td>
+                                    </tr>                                    <tr>
+                                        <td>notice</td>
+                                        <td>192</td>
+                                        <td>Parameter $repository could not be found in delete()</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>40</td>
+                                        <td>No summary for property $categoryService</td>
+                                    </tr>                            </tbody>
+                            </table>
+                        </div>                </div>                <div class="package-contents">                        <a name="Controller/RegistrationController.php" id="Controller/RegistrationController.php"></a>
+                        <h3>
+                            <i class="icon-file"></i>Controller/RegistrationController.php
+                            <small style="float: right;padding-right: 10px;">7</small>
+                        </h3>
+                        <div>
+                            <table class="table markers table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Line</th>
+                                    <th>Description</th>
+                                </tr>
+                                </thead>
+                                <tbody>                                    <tr>
+                                        <td>error</td>
+                                        <td>36</td>
+                                        <td>Argument $registrationService is missing from the Docblock of __construct</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>36</td>
+                                        <td>No summary for method __construct()</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>48</td>
+                                        <td>Argument $request is missing from the Docblock of register</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>48</td>
+                                        <td>Argument $guardHandler is missing from the Docblock of register</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>48</td>
+                                        <td>Argument $authenticator is missing from the Docblock of register</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>48</td>
+                                        <td>No summary for method register()</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>34</td>
+                                        <td>No summary for property $registrationService</td>
+                                    </tr>                            </tbody>
+                            </table>
+                        </div>                </div>                <div class="package-contents">                        <a name="Controller/SecurityController.php" id="Controller/SecurityController.php"></a>
+                        <h3>
+                            <i class="icon-file"></i>Controller/SecurityController.php
+                            <small style="float: right;padding-right: 10px;">4</small>
+                        </h3>
+                        <div>
+                            <table class="table markers table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Line</th>
+                                    <th>Description</th>
+                                </tr>
+                                </thead>
+                                <tbody>                                    <tr>
+                                        <td>error</td>
+                                        <td>24</td>
+                                        <td>No summary for class \App\Controller\SecurityController</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>29</td>
+                                        <td>Argument $authenticationUtils is missing from the Docblock of login</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>29</td>
+                                        <td>No summary for method login()</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>40</td>
+                                        <td>No summary for method logout()</td>
+                                    </tr>                            </tbody>
+                            </table>
+                        </div>                </div>                <div class="package-contents">                        <a name="Controller/UserController.php" id="Controller/UserController.php"></a>
+                        <h3>
+                            <i class="icon-file"></i>Controller/UserController.php
+                            <small style="float: right;padding-right: 10px;">4</small>
+                        </h3>
+                        <div>
+                            <table class="table markers table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Line</th>
+                                    <th>Description</th>
+                                </tr>
+                                </thead>
+                                <tbody>                                    <tr>
+                                        <td>error</td>
+                                        <td>40</td>
+                                        <td>Argument $userService is missing from the Docblock of __construct</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>40</td>
+                                        <td>No summary for method __construct()</td>
+                                    </tr>                                    <tr>
+                                        <td>notice</td>
+                                        <td>80</td>
+                                        <td>Parameter $userRepository could not be found in changePassword()</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>38</td>
+                                        <td>No summary for property $userService</td>
+                                    </tr>                            </tbody>
+                            </table>
+                        </div>                </div>                <div class="package-contents">                        <a name="Controller/PostController.php" id="Controller/PostController.php"></a>
+                        <h3>
+                            <i class="icon-file"></i>Controller/PostController.php
+                            <small style="float: right;padding-right: 10px;">9</small>
+                        </h3>
+                        <div>
+                            <table class="table markers table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Line</th>
+                                    <th>Description</th>
+                                </tr>
+                                </thead>
+                                <tbody>                                    <tr>
+                                        <td>error</td>
+                                        <td>59</td>
+                                        <td>Argument $postService is missing from the Docblock of __construct</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>59</td>
+                                        <td>Name of argument $postService does not match with the DocBlock&#039;s name $fileUploader in __construct()</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>59</td>
+                                        <td>The type hint of the argument is incorrect for the type definition of the @param tag with argument $postService in __construct()</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>112</td>
+                                        <td>Argument $commentRepository is missing from the Docblock of show</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>112</td>
+                                        <td>Name of argument $commentRepository does not match with the DocBlock&#039;s name $post in show()</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>112</td>
+                                        <td>The type hint of the argument is incorrect for the type definition of the @param tag with argument $commentRepository in show()</td>
+                                    </tr>                                    <tr>
+                                        <td>notice</td>
+                                        <td>153</td>
+                                        <td>Parameter $postRepository could not be found in create()</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>50</td>
+                                        <td>No summary for property $filesystem</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>51</td>
+                                        <td>No summary for property $postService</td>
+                                    </tr>                            </tbody>
+                            </table>
+                        </div>                </div>                <div class="package-contents">                        <a name="Controller/AvatarController.php" id="Controller/AvatarController.php"></a>
+                        <h3>
+                            <i class="icon-file"></i>Controller/AvatarController.php
+                            <small style="float: right;padding-right: 10px;">2</small>
+                        </h3>
+                        <div>
+                            <table class="table markers table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Line</th>
+                                    <th>Description</th>
+                                </tr>
+                                </thead>
+                                <tbody>                                    <tr>
+                                        <td>notice</td>
+                                        <td>135</td>
+                                        <td>Parameter $avatar could not be found in edit()</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>52</td>
+                                        <td>No summary for property $filesystem</td>
+                                    </tr>                            </tbody>
+                            </table>
+                        </div>                </div>                <div class="package-contents">                        <a name="Controller/AdminDashboardController.php" id="Controller/AdminDashboardController.php"></a>
+                        <h3>
+                            <i class="icon-file"></i>Controller/AdminDashboardController.php
+                            <small style="float: right;padding-right: 10px;">15</small>
+                        </h3>
+                        <div>
+                            <table class="table markers table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Line</th>
+                                    <th>Description</th>
+                                </tr>
+                                </thead>
+                                <tbody>                                    <tr>
+                                        <td>error</td>
+                                        <td>47</td>
+                                        <td>Argument $adminService is missing from the Docblock of __construct</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>66</td>
+                                        <td>Name of argument $userRepository does not match with the DocBlock&#039;s name $paginator in index()</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>66</td>
+                                        <td>The type hint of the argument is incorrect for the type definition of the @param tag with argument $userRepository in index()</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>66</td>
+                                        <td>Argument $paginator is missing from the Docblock of index</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>92</td>
+                                        <td>Argument $request is missing from the Docblock of show</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>92</td>
+                                        <td>Argument $userRepository is missing from the Docblock of show</td>
+                                    </tr>                                    <tr>
+                                        <td>notice</td>
+                                        <td>166</td>
+                                        <td>Parameter $userRepository could not be found in delete()</td>
+                                    </tr>                                    <tr>
+                                        <td>notice</td>
+                                        <td>166</td>
+                                        <td>Parameter $postRepository could not be found in delete()</td>
+                                    </tr>                                    <tr>
+                                        <td>notice</td>
+                                        <td>166</td>
+                                        <td>Parameter $commentRepository could not be found in delete()</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>207</td>
+                                        <td>Argument $commentRepository is missing from the Docblock of indexComments</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>207</td>
+                                        <td>Name of argument $commentRepository does not match with the DocBlock&#039;s name $paginator in indexComments()</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>207</td>
+                                        <td>The type hint of the argument is incorrect for the type definition of the @param tag with argument $commentRepository in indexComments()</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>235</td>
+                                        <td>Argument $comment is missing from the Docblock of deleteComment</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>235</td>
+                                        <td>Argument $commentRepository is missing from the Docblock of deleteComment</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>42</td>
+                                        <td>No summary for property $adminService</td>
+                                    </tr>                            </tbody>
+                            </table>
+                        </div>                </div>                <div class="package-contents">                        <a name="Repository/AvatarRepository.php" id="Repository/AvatarRepository.php"></a>
+                        <h3>
+                            <i class="icon-file"></i>Repository/AvatarRepository.php
+                            <small style="float: right;padding-right: 10px;">1</small>
+                        </h3>
+                        <div>
+                            <table class="table markers table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Line</th>
+                                    <th>Description</th>
+                                </tr>
+                                </thead>
+                                <tbody>                                    <tr>
+                                        <td>error</td>
+                                        <td>0</td>
+                                        <td>No summary was found for this file</td>
+                                    </tr>                            </tbody>
+                            </table>
+                        </div>                </div>                <div class="package-contents">                        <a name="Repository/UserRepository.php" id="Repository/UserRepository.php"></a>
+                        <h3>
+                            <i class="icon-file"></i>Repository/UserRepository.php
+                            <small style="float: right;padding-right: 10px;">7</small>
+                        </h3>
+                        <div>
+                            <table class="table markers table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Line</th>
+                                    <th>Description</th>
+                                </tr>
+                                </thead>
+                                <tbody>                                    <tr>
+                                        <td>error</td>
+                                        <td>35</td>
+                                        <td>No summary for class \App\Repository\UserRepository</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>48</td>
+                                        <td>Argument $registry is missing from the Docblock of __construct</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>48</td>
+                                        <td>No summary for method __construct()</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>59</td>
+                                        <td>Argument $user is missing from the Docblock of upgradePassword</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>59</td>
+                                        <td>Argument $newEncodedPassword is missing from the Docblock of upgradePassword</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>76</td>
+                                        <td>Argument $user is missing from the Docblock of save</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>102</td>
+                                        <td>Argument $userId is missing from the Docblock of findOneById</td>
+                                    </tr>                            </tbody>
+                            </table>
+                        </div>                </div>                <div class="package-contents">                        <a name="Repository/CommentRepository.php" id="Repository/CommentRepository.php"></a>
+                        <h3>
+                            <i class="icon-file"></i>Repository/CommentRepository.php
+                            <small style="float: right;padding-right: 10px;">6</small>
+                        </h3>
+                        <div>
+                            <table class="table markers table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Line</th>
+                                    <th>Description</th>
+                                </tr>
+                                </thead>
+                                <tbody>                                    <tr>
+                                        <td>error</td>
+                                        <td>30</td>
+                                        <td>No summary for class \App\Repository\CommentRepository</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>43</td>
+                                        <td>Argument $registry is missing from the Docblock of __construct</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>43</td>
+                                        <td>No summary for method __construct()</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>48</td>
+                                        <td>Argument $comment is missing from the Docblock of save</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>48</td>
+                                        <td>No summary for method save()</td>
+                                    </tr>                                    <tr>
+                                        <td>error</td>
+                                        <td>63</td>
+                                        <td>No summary for method findByPost()</td>
+                                    </tr>                            </tbody>
+                            </table>
+                        </div>                </div>                <div class="package-contents">                </div>                <div class="package-contents">                        <a name="Repository/CategoryRepository.php" id="Repository/CategoryRepository.php"></a>
+                        <h3>
+                            <i class="icon-file"></i>Repository/CategoryRepository.php
+                            <small style="float: right;padding-right: 10px;">1</small>
+                        </h3>
+                        <div>
+                            <table class="table markers table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Line</th>
+                                    <th>Description</th>
+                                </tr>
+                                </thead>
+                                <tbody>                                    <tr>
+                                        <td>error</td>
+                                        <td>0</td>
+                                        <td>No summary was found for this file</td>
+                                    </tr>                            </tbody>
+                            </table>
+                        </div>                </div>                <div class="package-contents">                        <a name="Repository/TagRepository.php" id="Repository/TagRepository.php"></a>
+                        <h3>
+                            <i class="icon-file"></i>Repository/TagRepository.php
+                            <small style="float: right;padding-right: 10px;">1</small>
+                        </h3>
+                        <div>
+                            <table class="table markers table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Line</th>
+                                    <th>Description</th>
+                                </tr>
+                                </thead>
+                                <tbody>                                    <tr>
+                                        <td>error</td>
+                                        <td>0</td>
+                                        <td>No summary was found for this file</td>
+                                    </tr>                            </tbody>
+                            </table>
+                        </div>                </div>                <div class="package-contents">                        <a name="Security/LoginFormAuthenticator.php" id="Security/LoginFormAuthenticator.php"></a>
+                        <h3>
+                            <i class="icon-file"></i>Security/LoginFormAuthenticator.php
+                            <small style="float: right;padding-right: 10px;">1</small>
+                        </h3>
+                        <div>
+                            <table class="table markers table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Line</th>
+                                    <th>Description</th>
+                                </tr>
+                                </thead>
+                                <tbody>                                    <tr>
+                                        <td>error</td>
+                                        <td>0</td>
+                                        <td>No summary was found for this file</td>
+                                    </tr>                            </tbody>
+                            </table>
+                        </div>                </div>                <div class="package-contents">                </div>                <div class="package-contents">                        <a name="Entity/Comment.php" id="Entity/Comment.php"></a>
+                        <h3>
+                            <i class="icon-file"></i>Entity/Comment.php
+                            <small style="float: right;padding-right: 10px;">1</small>
+                        </h3>
+                        <div>
+                            <table class="table markers table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Line</th>
+                                    <th>Description</th>
+                                </tr>
+                                </thead>
+                                <tbody>                                    <tr>
+                                        <td>error</td>
+                                        <td>0</td>
+                                        <td>No summary was found for this file</td>
+                                    </tr>                            </tbody>
+                            </table>
+                        </div>                </div>                <div class="package-contents">                        <a name="Entity/Avatar.php" id="Entity/Avatar.php"></a>
+                        <h3>
+                            <i class="icon-file"></i>Entity/Avatar.php
+                            <small style="float: right;padding-right: 10px;">1</small>
+                        </h3>
+                        <div>
+                            <table class="table markers table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Line</th>
+                                    <th>Description</th>
+                                </tr>
+                                </thead>
+                                <tbody>                                    <tr>
+                                        <td>error</td>
+                                        <td>0</td>
+                                        <td>No summary was found for this file</td>
+                                    </tr>                            </tbody>
+                            </table>
+                        </div>                </div>                <div class="package-contents">                        <a name="Entity/Post.php" id="Entity/Post.php"></a>
+                        <h3>
+                            <i class="icon-file"></i>Entity/Post.php
+                            <small style="float: right;padding-right: 10px;">1</small>
+                        </h3>
+                        <div>
+                            <table class="table markers table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Line</th>
+                                    <th>Description</th>
+                                </tr>
+                                </thead>
+                                <tbody>                                    <tr>
+                                        <td>error</td>
+                                        <td>0</td>
+                                        <td>No summary was found for this file</td>
+                                    </tr>                            </tbody>
+                            </table>
+                        </div>                </div>                <div class="package-contents">                        <a name="Entity/User.php" id="Entity/User.php"></a>
+                        <h3>
+                            <i class="icon-file"></i>Entity/User.php
+                            <small style="float: right;padding-right: 10px;">1</small>
+                        </h3>
+                        <div>
+                            <table class="table markers table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Line</th>
+                                    <th>Description</th>
+                                </tr>
+                                </thead>
+                                <tbody>                                    <tr>
+                                        <td>error</td>
+                                        <td>0</td>
+                                        <td>No summary was found for this file</td>
+                                    </tr>                            </tbody>
+                            </table>
+                        </div>                </div>                <div class="package-contents">                        <a name="Entity/Category.php" id="Entity/Category.php"></a>
+                        <h3>
+                            <i class="icon-file"></i>Entity/Category.php
+                            <small style="float: right;padding-right: 10px;">1</small>
+                        </h3>
+                        <div>
+                            <table class="table markers table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Line</th>
+                                    <th>Description</th>
+                                </tr>
+                                </thead>
+                                <tbody>                                    <tr>
+                                        <td>error</td>
+                                        <td>0</td>
+                                        <td>No summary was found for this file</td>
+                                    </tr>                            </tbody>
+                            </table>
+                        </div>                </div>                <div class="package-contents">                        <a name="Entity/Tag.php" id="Entity/Tag.php"></a>
+                        <h3>
+                            <i class="icon-file"></i>Entity/Tag.php
+                            <small style="float: right;padding-right: 10px;">1</small>
+                        </h3>
+                        <div>
+                            <table class="table markers table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Line</th>
+                                    <th>Description</th>
+                                </tr>
+                                </thead>
+                                <tbody>                                    <tr>
+                                        <td>error</td>
+                                        <td>0</td>
+                                        <td>No summary was found for this file</td>
+                                    </tr>                            </tbody>
+                            </table>
+                        </div>                </div>                <div class="package-contents">                        <a name="Kernel.php" id="Kernel.php"></a>
+                        <h3>
+                            <i class="icon-file"></i>Kernel.php
+                            <small style="float: right;padding-right: 10px;">1</small>
+                        </h3>
+                        <div>
+                            <table class="table markers table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Line</th>
+                                    <th>Description</th>
+                                </tr>
+                                </thead>
+                                <tbody>                                    <tr>
+                                        <td>error</td>
+                                        <td>0</td>
+                                        <td>No summary was found for this file</td>
+                                    </tr>                            </tbody>
+                            </table>
+                        </div>                </div>        </div>
+    </section>
+    <footer class="row-fluid">
+        <section class="span10 offset2">
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <section class="row-fluid footer-sections">
+                        <section class="span4">                            <h1><i class="icon-code"></i></h1>
+                            <div>
+                                <ul>                                        <li><a href="../namespaces/App.html">\App</a></li>                                        <li><a href="../namespaces/DoctrineMigrations.html">\DoctrineMigrations</a></li>                                </ul>
+                            </div>
+                        </section>
+                        <section class="span4">                            <h1><i class="icon-bar-chart"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="../graphs/class.html">Class Hierarchy Diagram</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                        <section class="span4">                            <h1><i class="icon-pushpin"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="../reports/errors.html">Errors</a></li>
+                                    <li><a href="../reports/markers.html">Markers</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                    </section>
+                </section>
+            </section>
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <hr />
+                    Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
+                    onSeptember 14th, 2020 at 01:41.
+                </section>
+            </section>
+        </section>
+    </footer>
+</div>
+
+</body>
+</html>

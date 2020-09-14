@@ -41,6 +41,7 @@
       "ext-cassandra": "*"
     },
     "require-dev": {
+        "phpdocumentor/phpdocumentor": "2.*",
         "doctrine/doctrine-fixtures-bundle": "^3.3",
         "escapestudios/symfony2-coding-standard": "^3.11",
         "friendsofphp/php-cs-fixer": "^2.16",

@@ -1,6 +1,17 @@
 <?php
 /**
+ * PHP Version 7.2
  * User controller.
+ *
+ * @category  Social_Network
+ *
+ * @author    Konrad Szewczuk <konrad3szewczuk@gmail.com>
+ *
+ * @copyright 2020 Konrad Szewczuk
+ *
+ * @license   https://opensource.org/licenses/MIT MIT license
+ *
+ * @see      wierzba.wzks.uj.edu.pl/~16_szewczuk
  */
 
 namespace App\Controller;
@@ -24,17 +35,22 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class UserController extends AbstractController
 {
+    /**
+     * @var UserService
+     */
     private $userService;
 
-    public function __construct(
-        UserService $userService
-    ) {
+    /**
+     * UserController constructor.
+     * @param UserService $userService
+     */
+    public function __construct(UserService $userService)
+    {
         $this->userService = $userService;
     }
+
     /**
      * Show action.
-     *
-     * @param \App\Entity\User $user User entity
      *
      * @return Response HTTP response
      *
@@ -54,11 +70,12 @@ class UserController extends AbstractController
     /**
      * Change password action.
      *
-     * @param Request $request        HTTP request
-     * @param UserRepository            $userRepository User repository
+     * @param Request $request HTTP request
      *
      * @return Response HTTP response
      *
+     * @throws ORMException
+     * @throws OptimisticLockException
      *
      * @Route(
      *     "/password",
@@ -66,9 +83,8 @@ class UserController extends AbstractController
      *     name="user_passwd",
      * )
      */
-    public function changePassword(
-        Request $request
-    ): Response {
+    public function changePassword(Request $request): Response
+    {
         $user = $this->getUser();
         $form = $this->createForm(ChangePasswordType::class);
         $form->handleRequest($request);
@@ -82,6 +98,7 @@ class UserController extends AbstractController
             } else {
                 $this->addFlash('danger', 'message_wrong_password');
             }
+
             return $this->redirectToRoute('user_show');
         }
 
@@ -98,10 +115,12 @@ class UserController extends AbstractController
      * Edit action.
      *
      * @param Request $request HTTP request
+     *
      * @return Response HTTP response
      *
      * @throws ORMException
      * @throws OptimisticLockException
+     *
      * @Route(
      *     "/edit",
      *     methods={"GET", "EDIT"},

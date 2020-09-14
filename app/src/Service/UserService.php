@@ -1,6 +1,17 @@
 <?php
 /**
- * User service.
+ * PHP Version 7.2
+ * User Service.
+ *
+ * @category  Social_Network
+ *
+ * @author    Konrad Szewczuk <konrad3szewczuk@gmail.com>
+ *
+ * @copyright 2020 Konrad Szewczuk
+ *
+ * @license   https://opensource.org/licenses/MIT MIT license
+ *
+ * @see      wierzba.wzks.uj.edu.pl/~16_szewczuk
  */
 
 namespace App\Service;
@@ -39,33 +50,37 @@ class UserService
      * @var UserRepository
      */
     private $postRepository;
+    /**
+     * @var CommentRepository
+     */
     private $commentRepository;
+    /**
+     * @var FileUploader
+     */
     private $fileUploader;
+    /**
+     * @var UserPasswordEncoderInterface
+     */
     private $encoder;
+    /**
+     * @var UserRepository
+     */
     private $userRepository;
 
     /**
      * UserService constructor.
      *
-     * @param UserRepository $postRepository User repository
-     * @param PaginatorInterface $paginator Paginator
-     * @param CommentRepository $commentRepository
-     * @param FileUploader $fileUploader
-     * @param CategoryService $categoryService Category service
-     * @param TagService $tagService Tag service
+     * @param UserRepository               $postRepository    User repository
+     * @param PaginatorInterface           $paginator         Paginator
+     * @param CommentRepository            $commentRepository
+     * @param FileUploader                 $fileUploader
+     * @param CategoryService              $categoryService   Category service
+     * @param TagService                   $tagService        Tag service
      * @param UserPasswordEncoderInterface $encoder
-     * @param UserRepository $userRepository
+     * @param UserRepository               $userRepository
      */
-    public function __construct(
-        UserRepository $postRepository,
-        PaginatorInterface $paginator,
-        CommentRepository $commentRepository,
-        FileUploader $fileUploader,
-        CategoryService $categoryService,
-        TagService $tagService,
-        UserPasswordEncoderInterface $encoder,
-        UserRepository $userRepository
-    ) {
+    public function __construct(UserRepository $postRepository, PaginatorInterface $paginator, CommentRepository $commentRepository, FileUploader $fileUploader, CategoryService $categoryService, TagService $tagService, UserPasswordEncoderInterface $encoder, UserRepository $userRepository)
+    {
         $this->postRepository = $postRepository;
         $this->paginator = $paginator;
         $this->categoryService = $categoryService;
@@ -76,34 +91,38 @@ class UserService
         $this->userRepository = $userRepository;
     }
 
-
     /**
      * Get categories.
      *
      * @param $user
      * @param $oldPassword
      * @param $newPassword
+     *
      * @return bool Paginated list
+     *
      * @throws ORMException
      * @throws OptimisticLockException
      */
     public function checkAndChange($user, $oldPassword, $newPassword): bool
     {
+        $result = false;
         $isPassValid = $this->encoder->isPasswordValid($user, $oldPassword, $user->getSalt());
 
         if ($isPassValid) {
             $newPasswordEncoded = $this->encoder->encodePassword($user, $newPassword);
             $this->userRepository->upgradePassword($user, $newPasswordEncoded);
-            return true;
+
+            $result = true;
         } else {
-            return false;
+            $result = false;
         }
+
+        return $result;
     }
 
-
     /**
-     * @param $post
-     * @param $formfile
+     * @param $user
+     *
      * @throws ORMException
      * @throws OptimisticLockException
      */
@@ -114,6 +133,7 @@ class UserService
 
     /**
      * @param $post
+     *
      * @throws ORMException
      * @throws OptimisticLockException
      */

@@ -1,6 +1,17 @@
 <?php
 /**
- * Comment type.
+ * PHP Version 7.2
+ * Comment Type.
+ *
+ * @category  Social_Network
+ *
+ * @author    Konrad Szewczuk <konrad3szewczuk@gmail.com>
+ *
+ * @copyright 2020 Konrad Szewczuk
+ *
+ * @license   https://opensource.org/licenses/MIT MIT license
+ *
+ * @see      wierzba.wzks.uj.edu.pl/~16_szewczuk
  */
 
 namespace App\Form;
@@ -43,7 +54,7 @@ class CommentType extends AbstractType
      * @see FormTypeExtensionInterface::buildForm()
      *
      * @param FormBuilderInterface $builder The form builder
-     * @param array                                        $options The options
+     * @param array                $options The options
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {

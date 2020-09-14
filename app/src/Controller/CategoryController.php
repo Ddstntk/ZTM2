@@ -1,6 +1,17 @@
 <?php
 /**
+ * PHP Version 7.2
  * Category controller.
+ *
+ * @category  Social_Network
+ *
+ * @author    Konrad Szewczuk <konrad3szewczuk@gmail.com>
+ *
+ * @copyright 2020 Konrad Szewczuk
+ *
+ * @license   https://opensource.org/licenses/MIT MIT license
+ *
+ * @see      wierzba.wzks.uj.edu.pl/~16_szewczuk
  */
 
 namespace App\Controller;
@@ -23,7 +34,6 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class CategoryController extends AbstractController
 {
-
     /**
      * @var CategoryService
      */
@@ -34,9 +44,8 @@ class CategoryController extends AbstractController
      *
      * @param CategoryService $categoryService Category Service
      */
-    public function __construct(
-        CategoryService $categoryService
-    ) {
+    public function __construct(CategoryService $categoryService)
+    {
         $this->categoryService = $categoryService;
     }
 
@@ -44,6 +53,7 @@ class CategoryController extends AbstractController
      * Index action.
      *
      * @param Request $request HTTP request
+     *
      * @return Response HTTP response
      *
      * @Route(
@@ -52,9 +62,8 @@ class CategoryController extends AbstractController
      *     name="category_index",
      * )
      */
-    public function index(
-        Request $request
-    ): Response {
+    public function index(Request $request): Response
+    {
         $page = $request->query->getInt('page', 1);
 
         return $this->render(
@@ -89,10 +98,12 @@ class CategoryController extends AbstractController
      * Create action.
      *
      * @param Request $request HTTP request
+     *
      * @return Response HTTP response
      *
      * @throws ORMException
      * @throws OptimisticLockException
+     *
      * @Route(
      *     "/create",
      *     methods={"GET", "POST"},
@@ -108,6 +119,7 @@ class CategoryController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             if ($this->categoryService->createCategory($category)) {
                 $this->addFlash('success', 'message_created_successfully');
+
                 return $this->redirectToRoute('category_index');
             }
         }
@@ -121,9 +133,8 @@ class CategoryController extends AbstractController
     /**
      * Edit action.
      *
-     * @param Request $request            HTTP request
-     * @param Category $category           Category entity
-     * @param CategoryRepository $categoryRepository Category repository
+     * @param Request  $request  HTTP request
+     * @param Category $category Category entity
      *
      * @return Response HTTP response
      *
@@ -162,10 +173,13 @@ class CategoryController extends AbstractController
     /**
      * Delete action.
      *
-     * @param Request $request HTTP request
+     * @param Request  $request  HTTP request
      * @param Category $category Category entity
-     * @param CategoryRepository $repository
+     *
      * @return Response HTTP response
+     *
+     * @throws ORMException
+     * @throws OptimisticLockException
      *
      * @Route(
      *     "/{id}/delete",

@@ -1,6 +1,17 @@
 <?php
 /**
- * Category entity.
+ * PHP Version 7.2
+ * Category Entity.
+ *
+ * @category  Social_Network
+ *
+ * @author    Konrad Szewczuk <konrad3szewczuk@gmail.com>
+ *
+ * @copyright 2020 Konrad Szewczuk
+ *
+ * @license   https://opensource.org/licenses/MIT MIT license
+ *
+ * @see      wierzba.wzks.uj.edu.pl/~16_szewczuk
  */
 
 namespace App\Entity;
@@ -111,6 +122,9 @@ class Category
      */
     private $code;
 
+    /**
+     * Constructor
+     */
     public function __construct()
     {
         $this->posts = new ArrayCollection();
@@ -194,6 +208,11 @@ class Category
         return $this->posts;
     }
 
+    /**
+     * @param Post $post
+     *
+     * @return $this
+     */
     public function addPost(Post $post): self
     {
         if (!$this->posts->contains($post)) {
@@ -204,6 +223,11 @@ class Category
         return $this;
     }
 
+    /**
+     * @param Post $post
+     *
+     * @return $this
+     */
     public function removePost(Post $post): self
     {
         if ($this->posts->contains($post)) {
@@ -217,11 +241,19 @@ class Category
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getCode(): ?string
     {
         return $this->code;
     }
 
+    /**
+     * @param string|null $code
+     *
+     * @return $this
+     */
     public function setCode(?string $code): self
     {
         $this->code = $code;

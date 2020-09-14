@@ -1,6 +1,17 @@
 <?php
 /**
+ * PHP Version 7.2
  * Post controller.
+ *
+ * @category  Social_Network
+ *
+ * @author    Konrad Szewczuk <konrad3szewczuk@gmail.com>
+ *
+ * @copyright 2020 Konrad Szewczuk
+ *
+ * @license   https://opensource.org/licenses/MIT MIT license
+ *
+ * @see      wierzba.wzks.uj.edu.pl/~16_szewczuk
  */
 
 namespace App\Controller;
@@ -36,15 +47,21 @@ class PostController extends AbstractController
      * @var FileUploader
      */
     private $fileUploader;
+    /**
+     * @var Filesystem
+     */
     private $filesystem;
+    /**
+     * @var PostService
+     */
     private $postService;
 
     /**
      * PostController constructor.
      *
-     * @param Filesystem $filesystem Filesystem component
+     * @param Filesystem   $filesystem   Filesystem component
      * @param FileUploader $fileUploader File uploader
-     * @param PostService $postService
+     * @param PostService  $postService
      */
     public function __construct(Filesystem $filesystem, FileUploader $fileUploader, PostService $postService)
     {
@@ -57,6 +74,7 @@ class PostController extends AbstractController
      * Index action.
      *
      * @param Request $request HTTP request
+     *
      * @return Response HTTP response
      *
      * @Route(
@@ -73,7 +91,6 @@ class PostController extends AbstractController
         $category = $this->postService->getCategories();
         $pagination = $this->postService->createPaginatedList(
             $request->query->getInt('page', 1),
-            $this->getUser(),
             $filters
         );
 
@@ -87,10 +104,11 @@ class PostController extends AbstractController
     /**
      * Show action.
      *
-     * @param Request $request HTTP request
-     * @param Post $post Post entity
+     * @param Request           $request           HTTP request
+     * @param Post              $post              Post entity
      *
      * @param CommentRepository $commentRepository
+     *
      * @return Response HTTP response
      *
      * @Route(
@@ -113,8 +131,8 @@ class PostController extends AbstractController
 //            return $this->redirectToRoute('post_show');
         }
 
-        $post_id = $post->getId();
-        $comments = $commentRepository->findByPost($post_id);
+        $postId = $post->getId();
+        $comments = $commentRepository->findByPost($postId);
 
         return $this->render(
             'post/show.html.twig',
@@ -127,8 +145,7 @@ class PostController extends AbstractController
     /**
      * Create action.
      *
-     * @param Request $request        HTTP request
-     * @param PostRepository $postRepository Post repository
+     * @param Request $request HTTP request
      *
      * @return Response HTTP response
      *
@@ -161,12 +178,11 @@ class PostController extends AbstractController
         );
     }
 
-
     /**
      * Edit action.
      *
-     * @param Request $request        HTTP request
-     * @param Post $post           Post entity
+     * @param Request $request HTTP request
+     * @param Post    $post    Post entity
      *
      * @return Response HTTP response
      *
@@ -193,6 +209,7 @@ class PostController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->postService->editPost($post, $formfile);
             $this->addFlash('success', 'message_updated_successfully');
+
             return $this->redirectToRoute('post_index');
         }
 
@@ -209,11 +226,13 @@ class PostController extends AbstractController
      * Delete action.
      *
      * @param Request $request HTTP request
-     * @param Post $post Post entity
+     * @param Post    $post    Post entity
+     *
      * @return Response HTTP response
      *
      * @throws ORMException
      * @throws OptimisticLockException
+     *
      * @Route(
      *     "/{id}/delete",
      *     methods={"GET", "DELETE"},

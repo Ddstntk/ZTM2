@@ -1,6 +1,17 @@
 <?php
 /**
- * Post service.
+ * PHP Version 7.2
+ * Post Service.
+ *
+ * @category  Social_Network
+ *
+ * @author    Konrad Szewczuk <konrad3szewczuk@gmail.com>
+ *
+ * @copyright 2020 Konrad Szewczuk
+ *
+ * @license   https://opensource.org/licenses/MIT MIT license
+ *
+ * @see      wierzba.wzks.uj.edu.pl/~16_szewczuk
  */
 
 namespace App\Service;
@@ -12,7 +23,6 @@ use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\PaginatorInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Class PostService.
@@ -40,27 +50,27 @@ class PostService
      * @var PostRepository
      */
     private $postRepository;
+    /**
+     * @var CommentRepository
+     */
     private $commentRepository;
+    /**
+     * @var FileUploader
+     */
     private $fileUploader;
 
     /**
      * PostService constructor.
      *
-     * @param PostRepository $postRepository Post repository
-     * @param PaginatorInterface $paginator Paginator
-     * @param CommentRepository $commentRepository
-     * @param FileUploader $fileUploader
-     * @param CategoryService $categoryService Category service
-     * @param TagService $tagService Tag service
+     * @param PostRepository     $postRepository    Post repository
+     * @param PaginatorInterface $paginator         Paginator
+     * @param CommentRepository  $commentRepository
+     * @param FileUploader       $fileUploader
+     * @param CategoryService    $categoryService   Category service
+     * @param TagService         $tagService        Tag service
      */
-    public function __construct(
-        PostRepository $postRepository,
-        PaginatorInterface $paginator,
-        CommentRepository $commentRepository,
-        FileUploader $fileUploader,
-        CategoryService $categoryService,
-        TagService $tagService
-    ) {
+    public function __construct(PostRepository $postRepository, PaginatorInterface $paginator, CommentRepository $commentRepository, FileUploader $fileUploader, CategoryService $categoryService, TagService $tagService)
+    {
         $this->postRepository = $postRepository;
         $this->paginator = $paginator;
         $this->categoryService = $categoryService;
@@ -70,33 +80,10 @@ class PostService
     }
 
     /**
-     * Prepare filters for the posts list.
-     *
-     * @param array $filters Raw filters from request
-     *
-     * @return array Result array of filters
-     */
-    private function prepareFilters(array $filters): array
-    {
-        $resultFilters = [];
-        if (isset($filters['category_id']) && is_numeric($filters['category_id'])) {
-            $category = $this->categoryService->findOneById(
-                $filters['category_id']
-            );
-            if (null !== $category) {
-                $resultFilters['category'] = $category;
-            }
-        }
-
-        return $resultFilters;
-    }
-
-    /**
      * Create paginated list.
      *
-     * @param int                                                 $page    Page number
-     * @param UserInterface $user    User entity
-     * @param array                                               $filters Filters array
+     * @param int   $page    Page number
+     * @param array $filters Filters array
      *
      * @return PaginationInterface Paginated list
      */
@@ -125,6 +112,7 @@ class PostService
     /**
      * @param $comment
      * @param $post
+     * @param $user
      */
     public function addComment($comment, $post, $user)
     {
@@ -137,6 +125,7 @@ class PostService
      * @param $post
      * @param $formfile
      * @param $user
+     *
      * @throws ORMException
      * @throws OptimisticLockException
      */
@@ -154,6 +143,7 @@ class PostService
     /**
      * @param $post
      * @param $formfile
+     *
      * @throws ORMException
      * @throws OptimisticLockException
      */
@@ -168,11 +158,34 @@ class PostService
 
     /**
      * @param $post
+     *
      * @throws ORMException
      * @throws OptimisticLockException
      */
     public function delete($post)
     {
         $this->postRepository->delete($post);
+    }
+
+    /**
+     * Prepare filters for the posts list.
+     *
+     * @param array $filters Raw filters from request
+     *
+     * @return array Result array of filters
+     */
+    private function prepareFilters(array $filters): array
+    {
+        $resultFilters = [];
+        if (isset($filters['category_id']) && is_numeric($filters['category_id'])) {
+            $category = $this->categoryService->findOneById(
+                $filters['category_id']
+            );
+            if (null !== $category) {
+                $resultFilters['category'] = $category;
+            }
+        }
+
+        return $resultFilters;
     }
 }

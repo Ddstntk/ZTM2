@@ -1,0 +1,147 @@
+<?php
+/**
+ * PHP Version 7.2
+ * User controller.
+ *
+ * @category  Social_Network
+ *
+ * @author    Konrad Szewczuk <konrad3szewczuk@gmail.com>
+ *
+ * @copyright 2020 Konrad Szewczuk
+ *
+ * @license   https://opensource.org/licenses/MIT MIT license
+ *
+ * @see      wierzba.wzks.uj.edu.pl/~16_szewczuk
+ */
+
+namespace App\Controller;
+
+use App\Entity\User;
+use App\Form\ChangePasswordType;
+use App\Form\UserType;
+use App\Repository\UserRepository;
+use App\Service\UserService;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+
+/**
+ * Class UserController.
+ *
+ * @Route("/user")
+ */
+class UserController extends AbstractController
+{
+    private $userService;
+
+    public function __construct(
+        UserService $userService
+    ) {
+        $this->userService = $userService;
+    }
+
+    /**
+     * Show action.
+     *
+     * @param \App\Entity\User $user User entity
+     *
+     * @return Response HTTP response
+     *
+     * @Route(
+     *     "/me",
+     *     methods={"GET"},
+     *     name="user_show",
+     * )
+     */
+    public function show(): Response
+    {
+        return $this->render(
+            'user/show.html.twig'
+        );
+    }
+
+    /**
+     * Change password action.
+     *
+     * @param Request        $request        HTTP request
+     * @param UserRepository $userRepository User repository
+     *
+     * @return Response HTTP response
+     *
+     * @Route(
+     *     "/password",
+     *     methods={"GET", "POST"},
+     *     name="user_passwd",
+     * )
+     */
+    public function changePassword(
+        Request $request
+    ): Response {
+        $user = $this->getUser();
+        $form = $this->createForm(ChangePasswordType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $newData = $form->getData();
+            $oldPassword = $newData['password'];
+            $newPassword = $newData['plainPassword'];
+            if ($this->userService->checkAndChange($user, $oldPassword, $newPassword)) {
+                $this->addFlash('success', 'message_updated_successfully');
+            } else {
+                $this->addFlash('danger', 'message_wrong_password');
+            }
+
+            return $this->redirectToRoute('user_show');
+        }
+
+        return $this->render(
+            'user/password.html.twig',
+            [
+                'form' => $form->createView(),
+                'user' => $user,
+            ]
+        );
+    }
+
+    /**
+     * Edit action.
+     *
+     * @param Request $request HTTP request
+     *
+     * @return Response HTTP response
+     *
+     * @throws ORMException
+     * @throws OptimisticLockException
+     *
+     * @Route(
+     *     "/edit",
+     *     methods={"GET", "EDIT"},
+     *     name="user_edit",
+     * )
+     */
+    public function edit(Request $request): Response
+    {
+        $user = $this->getUser();
+        $form = $this->createForm(UserType::class, $user, ['method' => 'EDIT']);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->userService->editUser($user);
+
+            $this->addFlash('success', 'message_updated_successfully');
+
+            return $this->redirectToRoute('user_show');
+        }
+
+        return $this->render(
+            'user/edit.html.twig',
+            [
+                'form' => $form->createView(),
+                'user' => $user,
+            ]
+        );
+    }
+}
+

@@ -50,9 +50,9 @@ class UserFixtures extends AbstractBaseFixtures
                     'user1234'
                 )
             );
-//            $avatar = new Avatar();
-//            $avatar->setFilename("avatarPlaceHolder.jpg");
-//            $user->setAvatar($avatar);
+            //            $avatar = new Avatar();
+            //            $avatar->setFilename("avatarPlaceHolder.jpg");
+            //            $user->setAvatar($avatar);
             return $user;
         });
 

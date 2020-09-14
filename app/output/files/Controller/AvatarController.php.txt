@@ -1,0 +1,161 @@
+<?php
+/**
+ * PHP Version 7.2
+ * Avatar controller.
+ *
+ * @category  Social_Network
+ *
+ * @author    Konrad Szewczuk <konrad3szewczuk@gmail.com>
+ *
+ * @copyright 2020 Konrad Szewczuk
+ *
+ * @license   https://opensource.org/licenses/MIT MIT license
+ *
+ * @see      wierzba.wzks.uj.edu.pl/~16_szewczuk
+ */
+
+namespace App\Controller;
+
+use App\Entity\Avatar;
+use App\Form\AvatarType;
+use App\Repository\AvatarRepository;
+use App\Service\AvatarService;
+use App\Service\FileUploader;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+
+/**
+ * Class AvatarController.
+ *
+ * @Route("/avatar")
+ */
+class AvatarController extends AbstractController
+{
+    /**
+     * Avatar repository.
+     *
+     * @var AvatarRepository
+     */
+    private $avatarRepository;
+
+    /**
+     * File uploader.
+     *
+     * @var FileUploader
+     */
+    private $fileUploader;
+    /**
+     * @var Filesystem
+     */
+    private $filesystem;
+
+    /**
+     * Avatar service.
+     *
+     * @var AvatarService
+     */
+    private $avatarService;
+
+    /**
+     * AvatarController constructor.
+     *
+     * @param AvatarRepository $avatarRepository Avatar repository
+     * @param Filesystem       $filesystem       Filesystem component
+     * @param FileUploader     $fileUploader     File uploader
+     * @param AvatarService    $avatarService    Avatar Service
+     */
+    public function __construct(AvatarRepository $avatarRepository, Filesystem $filesystem, FileUploader $fileUploader, AvatarService $avatarService)
+    {
+        $this->avatarRepository = $avatarRepository;
+        $this->filesystem = $filesystem;
+        $this->fileUploader = $fileUploader;
+        $this->avatarService = $avatarService;
+    }
+
+    /**
+     * Create action.
+     *
+     * @param Request $request HTTP request
+     *
+     * @return Response HTTP response
+     *
+     * @throws ORMException
+     * @throws OptimisticLockException
+     *
+     * @Route(
+     *     "/create",
+     *     name="avatar_create",
+     *     methods={"GET", "POST"}
+     * )
+     */
+    public function create(Request $request): Response
+    {
+        $avatar = new Avatar();
+        $form = $this->createForm(AvatarType::class, $avatar);
+        $form->handleRequest($request);
+        $user = $this->getUser();
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            if ($this->avatarService->createAvatar($form, $avatar, $user)) {
+                $this->addFlash('success', 'message_created_successfully');
+
+                return $this->redirectToRoute('post_index');
+            }
+        }
+
+        return $this->render(
+            'avatar/create.html.twig',
+            ['form' => $form->createView()]
+        );
+    }
+
+    /**
+     * Edit action.
+     *
+     * @param Request $request HTTP request
+     *
+     * @return Response HTTP response
+     *
+     * @throws ORMException
+     * @throws OptimisticLockException
+     *
+     * @Route(
+     *     "/edit",
+     *     name="avatar_edit",
+     *     methods={"GET", "POST"}
+     * )
+     */
+    public function edit(Request $request): Response
+    {
+        if (!$this->getUser()->getAvatar()) {
+            return $this->redirectToRoute('avatar_create');
+        }
+
+        $avatar = $this->getUser()->getAvatar();
+        $form = $this->createForm(AvatarType::class, $avatar);
+        $form->handleRequest($request);
+        $filename = $this->getParameter('avatars_directory').'/'.$avatar->getFilename();
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            if ($this->avatarService->editAvatar($form, $avatar, $filename)) {
+                $this->addFlash('success', 'message_updated_successfully');
+
+                return $this->redirectToRoute('post_index');
+            }
+        }
+
+        return $this->render(
+            'avatar/edit.html.twig',
+            [
+                'form' => $form->createView(),
+                'avatar' => $avatar,
+            ]
+        );
+    }
+}
+

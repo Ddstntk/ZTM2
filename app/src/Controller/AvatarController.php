@@ -1,6 +1,17 @@
 <?php
 /**
+ * PHP Version 7.2
  * Avatar controller.
+ *
+ * @category  Social_Network
+ *
+ * @author    Konrad Szewczuk <konrad3szewczuk@gmail.com>
+ *
+ * @copyright 2020 Konrad Szewczuk
+ *
+ * @license   https://opensource.org/licenses/MIT MIT license
+ *
+ * @see      wierzba.wzks.uj.edu.pl/~16_szewczuk
  */
 
 namespace App\Controller;
@@ -8,8 +19,8 @@ namespace App\Controller;
 use App\Entity\Avatar;
 use App\Form\AvatarType;
 use App\Repository\AvatarRepository;
-use App\Service\FileUploader;
 use App\Service\AvatarService;
+use App\Service\FileUploader;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -38,10 +49,13 @@ class AvatarController extends AbstractController
      * @var FileUploader
      */
     private $fileUploader;
+    /**
+     * @var Filesystem
+     */
     private $filesystem;
 
     /**
-     * Avatar service
+     * Avatar service.
      *
      * @var AvatarService
      */
@@ -51,17 +65,12 @@ class AvatarController extends AbstractController
      * AvatarController constructor.
      *
      * @param AvatarRepository $avatarRepository Avatar repository
-     * @param Filesystem $filesystem       Filesystem component
-     * @param FileUploader $fileUploader     File uploader
-     * @param AvatarService $avatarService  Avatar Service
-     *
+     * @param Filesystem       $filesystem       Filesystem component
+     * @param FileUploader     $fileUploader     File uploader
+     * @param AvatarService    $avatarService    Avatar Service
      */
-    public function __construct(
-        AvatarRepository $avatarRepository,
-        Filesystem $filesystem,
-        FileUploader $fileUploader,
-        AvatarService $avatarService
-    ) {
+    public function __construct(AvatarRepository $avatarRepository, Filesystem $filesystem, FileUploader $fileUploader, AvatarService $avatarService)
+    {
         $this->avatarRepository = $avatarRepository;
         $this->filesystem = $filesystem;
         $this->fileUploader = $fileUploader;
@@ -94,6 +103,7 @@ class AvatarController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             if ($this->avatarService->createAvatar($form, $avatar, $user)) {
                 $this->addFlash('success', 'message_created_successfully');
+
                 return $this->redirectToRoute('post_index');
             }
         }
@@ -108,7 +118,6 @@ class AvatarController extends AbstractController
      * Edit action.
      *
      * @param Request $request HTTP request
-     * @param Avatar $avatar  Avatar
      *
      * @return Response HTTP response
      *
@@ -135,6 +144,7 @@ class AvatarController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             if ($this->avatarService->editAvatar($form, $avatar, $filename)) {
                 $this->addFlash('success', 'message_updated_successfully');
+
                 return $this->redirectToRoute('post_index');
             }
         }

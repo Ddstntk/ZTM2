@@ -1,6 +1,17 @@
 <?php
 /**
- * Tag service.
+ * PHP Version 7.2
+ * Tag Service.
+ *
+ * @category  Social_Network
+ *
+ * @author    Konrad Szewczuk <konrad3szewczuk@gmail.com>
+ *
+ * @copyright 2020 Konrad Szewczuk
+ *
+ * @license   https://opensource.org/licenses/MIT MIT license
+ *
+ * @see      wierzba.wzks.uj.edu.pl/~16_szewczuk
  */
 
 namespace App\Service;
@@ -33,7 +44,9 @@ class TagService
      * Find tag by Id.
      *
      * @param int $tagId
+     *
      * @return \App\Entity\Tag|null Tag entity
+     *
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function findOneById(int $tagId): ?Tag

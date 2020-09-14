@@ -1,6 +1,17 @@
 <?php
 /**
- * Avatar service.
+ * PHP Version 7.2
+ * Avatar Service.
+ *
+ * @category  Social_Network
+ *
+ * @author    Konrad Szewczuk <konrad3szewczuk@gmail.com>
+ *
+ * @copyright 2020 Konrad Szewczuk
+ *
+ * @license   https://opensource.org/licenses/MIT MIT license
+ *
+ * @see      wierzba.wzks.uj.edu.pl/~16_szewczuk
  */
 
 namespace App\Service;
@@ -9,7 +20,6 @@ use App\Entity\Avatar;
 use App\Repository\AvatarRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
-use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
@@ -25,26 +35,28 @@ class AvatarService
     private $avatarRepository;
 
     /**
-     * File uploader
+     * File uploader.
      *
-     * @var App\Service\FileUploader;
+     * @var FileUploader;
      */
     private $fileUploader;
-    private $filesystem;
 
+    /**
+     * Filesystem.
+     *
+     * @var;
+     */
+    private $filesystem;
 
     /**
      * AvatarService constructor.
      *
      * @param AvatarRepository $avatarRepository Avatar repository
-     * @param Filesystem $filesystem Filesystem component
-     * @param FileUploader $fileUploader
+     * @param Filesystem       $filesystem       Filesystem component
+     * @param FileUploader     $fileUploader
      */
-    public function __construct(
-        AvatarRepository $avatarRepository,
-        Filesystem $filesystem,
-        FileUploader $fileUploader
-    ) {
+    public function __construct(AvatarRepository $avatarRepository, Filesystem $filesystem, FileUploader $fileUploader)
+    {
         $this->avatarRepository = $avatarRepository;
         $this->fileUploader = $fileUploader;
         $this->filesystem = $filesystem;
@@ -53,7 +65,7 @@ class AvatarService
     /**
      * Find avatar by Id.
      *
-     * @param int $id Avatar Id
+     * @param int $avatarId
      *
      * @return Avatar|null Avatar entity
      */
@@ -78,7 +90,9 @@ class AvatarService
      * @param $form
      * @param $avatar
      * @param $user
+     *
      * @return bool
+     *
      * @throws ORMException
      * @throws OptimisticLockException
      */
@@ -90,6 +104,7 @@ class AvatarService
         $avatar->setUser($user);
         $avatar->setFilename($avatarFilename);
         $this->avatarRepository->save($avatar);
+
         return true;
     }
 
@@ -99,7 +114,9 @@ class AvatarService
      * @param $form
      * @param $avatar
      * @param $filename
+     *
      * @return bool
+     *
      * @throws ORMException
      * @throws OptimisticLockException
      */
@@ -113,6 +130,7 @@ class AvatarService
         );
         $avatar->setFilename($avatarFilename);
         $this->avatarRepository->save($avatar);
+
         return true;
     }
 }

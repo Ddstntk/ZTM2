@@ -1,16 +1,29 @@
 <?php
 /**
- * Admin Dashboard controller.
+ * PHP Version 7.2
+ * Admin controller.
+ *
+ * @category  Social_Network
+ *
+ * @author    Konrad Szewczuk <konrad3szewczuk@gmail.com>
+ *
+ * @copyright 2020 Konrad Szewczuk
+ *
+ * @license   https://opensource.org/licenses/MIT MIT license
+ *
+ * @see      wierzba.wzks.uj.edu.pl/~16_szewczuk
  */
 
 namespace App\Controller;
 
 use App\Entity\Comment;
 use App\Entity\User;
+use App\Form\AdminUserType;
 use App\Form\UserType;
 use App\Repository\CommentRepository;
 use App\Repository\PostRepository;
 use App\Repository\UserRepository;
+use App\Service\AdminService;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Knp\Component\Pager\PaginatorInterface;
@@ -27,11 +40,25 @@ use Symfony\Component\Routing\Annotation\Route;
 class AdminDashboardController extends AbstractController
 {
     /**
+     * @var AdminService
+     */
+    private $adminService;
+
+    /**
+     * PostController constructor.
+     * @param AdminService $adminService
+     */
+    public function __construct(AdminService $adminService)
+    {
+        $this->adminService = $adminService;
+    }
+
+    /**
      * Index action.
      *
-     * @param Request $request HTTP request
-     * @param UserRepository $userRepository
-     * @param PaginatorInterface $paginator Paginator
+     * @param Request            $request        HTTP request
+     * @param UserRepository     $userRepository
+     * @param PaginatorInterface $paginator      Paginator
      *
      * @return Response HTTP response
      *
@@ -58,8 +85,9 @@ class AdminDashboardController extends AbstractController
     /**
      * Show action.
      *
-     * @param Request $request
+     * @param Request        $request
      * @param UserRepository $userRepository
+     *
      * @return Response HTTP response
      *
      * @Route(
@@ -83,8 +111,8 @@ class AdminDashboardController extends AbstractController
     /**
      * Edit action.
      *
-     * @param Request $request        HTTP request
-     * @param User $user           User entity
+     * @param Request        $request        HTTP request
+     * @param User           $user           User entity
      * @param UserRepository $userRepository User repository
      *
      * @return Response HTTP response
@@ -96,21 +124,21 @@ class AdminDashboardController extends AbstractController
      *     "/{id}/edit",
      *     methods={"GET", "PUT"},
      *     requirements={"id": "[1-9]\d*"},
-     *     name="user_edit",
+     *     name="admin_user_edit",
      * )
      */
     public function edit(Request $request, User $user, UserRepository $userRepository): Response
     {
-        $form = $this->createForm(UserType::class, $user, ['method' => 'PUT']);
+        $form = $this->createForm(AdminUserType::class, $user, ['method' => 'PUT']);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $user->setUpdatedAt(new \DateTime());
-            $userRepository->save($user);
+            $newData = $form->getData();
+            $this->adminService->change($user, $newData);
 
             $this->addFlash('success', 'message_updated_successfully');
 
-            return $this->redirectToRoute('user_index');
+            return $this->redirectToRoute('admin_index');
         }
 
         return $this->render(
@@ -126,15 +154,13 @@ class AdminDashboardController extends AbstractController
      * Delete action.
      *
      * @param Request $request HTTP request
-     * @param User $user User entity
-     * @param UserRepository $userRepository User repository
+     * @param User    $user    User entity
      *
-     * @param PostRepository $postRepository
-     * @param CommentRepository $commentRepository
      * @return Response HTTP response
      *
      * @throws ORMException
      * @throws OptimisticLockException
+     *
      * @Route(
      *     "/{id}/delete",
      *     methods={"GET", "DELETE"},
@@ -142,13 +168,8 @@ class AdminDashboardController extends AbstractController
      *     name="user_delete",
      * )
      */
-    public function delete(
-        Request $request,
-        User $user,
-        UserRepository $userRepository,
-        PostRepository $postRepository,
-        CommentRepository $commentRepository
-    ): Response {
+    public function delete(Request $request, User $user): Response
+    {
         $form = $this->createForm(UserType::class, $user, ['method' => 'DELETE']);
         $form->handleRequest($request);
 
@@ -157,11 +178,7 @@ class AdminDashboardController extends AbstractController
         }
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $commentRepository->deleteByAuthor($user->getId());
-            $postIds = $postRepository->queryByAuthor($user);
-            $commentRepository->deleteByPost($postIds);
-            $postRepository->deleteByAuthor($user->getId());
-            $userRepository->delete($user);
+            $this->adminService->delete($user);
             $this->addFlash('success', 'message_deleted_successfully');
 
             return $this->redirectToRoute('admin_index');
@@ -179,10 +196,11 @@ class AdminDashboardController extends AbstractController
     /**
      * Index comments.
      *
-     * @param Request $request HTTP request
-     * @param PaginatorInterface $paginator Paginator
+     * @param Request            $request           HTTP request
+     * @param PaginatorInterface $paginator         Paginator
      *
-     * @param CommentRepository $commentRepository
+     * @param CommentRepository  $commentRepository
+     *
      * @return Response HTTP response
      *
      * @Route(
@@ -191,11 +209,8 @@ class AdminDashboardController extends AbstractController
      *     name="admin_index_comments",
      * )
      */
-    public function indexComments(
-        Request $request,
-        PaginatorInterface $paginator,
-        CommentRepository $commentRepository
-    ): Response {
+    public function indexComments(Request $request, PaginatorInterface $paginator, CommentRepository $commentRepository): Response
+    {
         $pagination = $paginator->paginate(
             $commentRepository->findAll(),
             $request->query->getInt('page', 1),
@@ -211,8 +226,9 @@ class AdminDashboardController extends AbstractController
     /**
      * Delete action.
      *
-     * @param Comment $comment
+     * @param Comment           $comment
      * @param CommentRepository $commentRepository
+     *
      * @return Response HTTP response
      *
      * @Route(

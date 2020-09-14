@@ -1,6 +1,17 @@
 <?php
 /**
- * User entity.
+ * PHP Version 7.2
+ * User Entity.
+ *
+ * @category  Social_Network
+ *
+ * @author    Konrad Szewczuk <konrad3szewczuk@gmail.com>
+ *
+ * @copyright 2020 Konrad Szewczuk
+ *
+ * @license   https://opensource.org/licenses/MIT MIT license
+ *
+ * @see      wierzba.wzks.uj.edu.pl/~16_szewczuk
  */
 
 namespace App\Entity;
@@ -104,7 +115,7 @@ class User implements UserInterface
 
     /**
      * @ORM\OneToMany(targetEntity=Comment::class,
-     *     mappedBy="user_id", cascade={"persist", "remove"}, orphanRemoval=true)
+     *     mappedBy="userId", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     private $comments;
 
@@ -113,6 +124,9 @@ class User implements UserInterface
      */
     private $nickname;
 
+    /**
+     * User constructor.
+     */
     public function __construct()
     {
         $this->comments = new ArrayCollection();
@@ -225,11 +239,19 @@ class User implements UserInterface
         // $this->plainPassword = null;
     }
 
+    /**
+     * @return Avatar|null
+     */
     public function getAvatar(): ?Avatar
     {
         return $this->avatar;
     }
 
+    /**
+     * @param Avatar $avatar
+     *
+     * @return $this
+     */
     public function setAvatar(Avatar $avatar): self
     {
         $this->avatar = $avatar;
@@ -250,6 +272,11 @@ class User implements UserInterface
         return $this->comments;
     }
 
+    /**
+     * @param Comment $comment
+     *
+     * @return $this
+     */
     public function addComment(Comment $comment): self
     {
         if (!$this->comments->contains($comment)) {
@@ -260,6 +287,11 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @param Comment $comment
+     *
+     * @return $this
+     */
     public function removeComment(Comment $comment): self
     {
         if ($this->comments->contains($comment)) {
@@ -273,11 +305,19 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getNickname(): ?string
     {
         return $this->nickname;
     }
 
+    /**
+     * @param string $nickname
+     *
+     * @return $this
+     */
     public function setNickname(string $nickname): self
     {
         $this->nickname = $nickname;

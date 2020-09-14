@@ -1,0 +1,131 @@
+<?php
+/**
+ * PHP Version 7.2
+ * Admin Service.
+ *
+ * @category  Social_Network
+ *
+ * @author    Konrad Szewczuk <konrad3szewczuk@gmail.com>
+ *
+ * @copyright 2020 Konrad Szewczuk
+ *
+ * @license   https://opensource.org/licenses/MIT MIT license
+ *
+ * @see      wierzba.wzks.uj.edu.pl/~16_szewczuk
+ */
+
+namespace App\Service;
+
+use App\Entity\Category;
+use App\Repository\CommentRepository;
+use App\Repository\PostRepository;
+use App\Repository\UserRepository;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
+use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+
+/**
+ * Class UserService.
+ */
+class AdminService
+{
+    /**
+     * Category service.
+     *
+     * @var CategoryService
+     */
+    private $categoryService;
+
+    /**
+     * Tag service.
+     *
+     * @var TagService
+     */
+    private $tagService;
+    /**
+     * @var PaginatorInterface
+     */
+    private $paginator;
+    /**
+     * @var UserRepository
+     */
+    private $userRepository;
+    /**
+     * @var PostRepository
+     */
+    private $postRepository;
+    private $commentRepository;
+    private $fileUploader;
+    private $encoder;
+
+    /**
+     * UserService constructor.
+     *
+     * @param UserRepository     $postRepository  User repository
+     * @param PaginatorInterface $paginator       Paginator
+     * @param CategoryService    $categoryService Category service
+     * @param TagService         $tagService      Tag service
+     */
+    public function __construct(
+        PostRepository $postRepository,
+        PaginatorInterface $paginator,
+        CommentRepository $commentRepository,
+        FileUploader $fileUploader,
+        CategoryService $categoryService,
+        TagService $tagService,
+        UserPasswordEncoderInterface $encoder,
+        UserRepository $userRepository
+    ) {
+        $this->postRepository = $postRepository;
+        $this->paginator = $paginator;
+        $this->categoryService = $categoryService;
+        $this->tagService = $tagService;
+        $this->commentRepository = $commentRepository;
+        $this->fileUploader = $fileUploader;
+        $this->encoder = $encoder;
+        $this->userRepository = $userRepository;
+    }
+
+    /**
+     * @param $user
+     *
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    public function delete($user)
+    {
+        $this->commentRepository->deleteByAuthor($user->getId());
+        $postIds = $this->postRepository->findByAuthor($user);
+        $this->commentRepository->deleteByPost($postIds);
+//        $this->commentRepository->deleteByAuthor($user->getId());
+        $this->postRepository->deleteByAuthor($user->getId());
+        $this->userRepository->delete($user);
+    }
+
+    /**
+     * Get categories.
+     *
+     * @param $user
+     * @param $oldPassword
+     * @param $newPassword
+     *
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    public function change($user, $newData): void
+    {
+//        $isPassValid = $this->encoder->isPasswordValid($user, $oldPassword, $user->getSalt());
+
+//        if ($isPassValid) {
+
+        $newPasswordEncoded = $this->encoder->encodePassword($user, $newData->getPassword());
+        $this->userRepository->upgradePassword($user, $newPasswordEncoded);
+        $this->userRepository->save($user);
+//            return true;
+//        } else {
+//            return false;
+//        }
+    }
+}
+

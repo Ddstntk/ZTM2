@@ -1,4 +1,18 @@
 <?php
+/**
+ * PHP Version 7.2
+ * User Type.
+ *
+ * @category  Social_Network
+ *
+ * @author    Konrad Szewczuk <konrad3szewczuk@gmail.com>
+ *
+ * @copyright 2020 Konrad Szewczuk
+ *
+ * @license   https://opensource.org/licenses/MIT MIT license
+ *
+ * @see      wierzba.wzks.uj.edu.pl/~16_szewczuk
+ */
 
 namespace App\Form;
 
@@ -28,7 +42,7 @@ class UserType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-//            'data_class' => User::class,
+            //            'data_class' => User::class,
         ]);
     }
 }

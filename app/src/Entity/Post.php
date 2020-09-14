@@ -1,6 +1,17 @@
 <?php
 /**
- * Post entity.
+ * PHP Version 7.2
+ * Post Entity.
+ *
+ * @category  Social_Network
+ *
+ * @author    Konrad Szewczuk <konrad3szewczuk@gmail.com>
+ *
+ * @copyright 2020 Konrad Szewczuk
+ *
+ * @license   https://opensource.org/licenses/MIT MIT license
+ *
+ * @see      wierzba.wzks.uj.edu.pl/~16_szewczuk
  */
 
 namespace App\Entity;
@@ -10,6 +21,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class Post.
@@ -61,6 +73,12 @@ class Post
      *     type="string",
      *     length=255,
      * )
+     * @Assert\Type(type="string")
+     * @Assert\NotBlank
+     * @Assert\Length(
+     *     min="3",
+     *     max="64",
+     * )
      */
     private $title;
 
@@ -107,7 +125,7 @@ class Post
 
     /**
      * @ORM\OneToMany(targetEntity=Comment::class,
-     *     mappedBy="post_id", cascade={"persist", "remove"}, orphanRemoval=true)
+     *     mappedBy="postId")
      */
     private $comments;
 
@@ -249,11 +267,19 @@ class Post
         }
     }
 
+    /**
+     * @return User|null
+     */
     public function getAuthor(): ?User
     {
         return $this->author;
     }
 
+    /**
+     * @param User|null $author
+     *
+     * @return $this
+     */
     public function setAuthor(?User $author): self
     {
         $this->author = $author;
@@ -261,11 +287,19 @@ class Post
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getComment(): ?string
     {
         return $this->comment;
     }
 
+    /**
+     * @param string|null $comment
+     *
+     * @return $this
+     */
     public function setComment(?string $comment): self
     {
         $this->comment = $comment;
@@ -281,6 +315,11 @@ class Post
         return $this->comments;
     }
 
+    /**
+     * @param Comment $comment
+     *
+     * @return $this
+     */
     public function addComment(Comment $comment): self
     {
         if (!$this->comments->contains($comment)) {
@@ -291,6 +330,11 @@ class Post
         return $this;
     }
 
+    /**
+     * @param Comment $comment
+     *
+     * @return $this
+     */
     public function removeComment(Comment $comment): self
     {
         if ($this->comments->contains($comment)) {
@@ -304,11 +348,19 @@ class Post
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getImage(): ?string
     {
         return $this->image;
     }
 
+    /**
+     * @param string|null $image
+     *
+     * @return $this
+     */
     public function setImage(?string $image): self
     {
         $this->image = $image;

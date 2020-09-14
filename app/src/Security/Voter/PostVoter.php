@@ -67,15 +67,18 @@ class PostVoter extends Voter
 
         // ... (check conditions and return true to grant permission) ...
         switch ($attribute) {
-            case 'CREATE':
-                if (
-//                    $subject->getAuthor() === $user or
-                    in_array('ROLE_ADMIN', $user->getRoles())) {
-                    return true;
-                }
+            default:
+                return false;
                 break;
             case 'VIEW':
                 return true;
+                break;
+            case 'CREATE':
+                if (
+//                    $subject->getAuthor() === $user or
+                in_array('ROLE_ADMIN', $user->getRoles())) {
+                    return true;
+                }
                 break;
             case 'EDIT':
                 if (
@@ -91,9 +94,6 @@ class PostVoter extends Voter
                     in_array('ROLE_ADMIN', $user->getRoles())) {
                     return true;
                 }
-                break;
-            default:
-                return false;
                 break;
         }
 

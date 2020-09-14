@@ -1,0 +1,264 @@
+<?php
+/**
+ * PHP Version 7.2
+ * Post controller.
+ *
+ * @category  Social_Network
+ *
+ * @author    Konrad Szewczuk <konrad3szewczuk@gmail.com>
+ *
+ * @copyright 2020 Konrad Szewczuk
+ *
+ * @license   https://opensource.org/licenses/MIT MIT license
+ *
+ * @see      wierzba.wzks.uj.edu.pl/~16_szewczuk
+ */
+
+namespace App\Controller;
+
+use App\Entity\Comment;
+use App\Entity\Post;
+use App\Form\CommentType;
+use App\Form\PostType;
+use App\Repository\CommentRepository;
+use App\Repository\PostRepository;
+use App\Service\FileUploader;
+use App\Service\PostService;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+
+/**
+ * Class PostController.
+ *
+ * @Route("/post")
+ */
+class PostController extends AbstractController
+{
+    /**
+     * File uploader.
+     *
+     * @var FileUploader
+     */
+    private $fileUploader;
+    private $filesystem;
+    private $postService;
+
+    /**
+     * PostController constructor.
+     *
+     * @param Filesystem   $filesystem   Filesystem component
+     * @param FileUploader $fileUploader File uploader
+     */
+    public function __construct(Filesystem $filesystem, FileUploader $fileUploader, PostService $postService)
+    {
+        $this->filesystem = $filesystem;
+        $this->fileUploader = $fileUploader;
+        $this->postService = $postService;
+    }
+
+    /**
+     * Index action.
+     *
+     * @param Request $request HTTP request
+     *
+     * @return Response HTTP response
+     *
+     * @Route(
+     *     "/",
+     *     methods={"GET"},
+     *     name="post_index",
+     * )
+     */
+    public function index(Request $request): Response
+    {
+        $filters = [];
+        $filters['category_id'] = $request->query->getInt('filters_category_id');
+        $filters['tag_id'] = $request->query->getInt('filters_tag_id');
+        $category = $this->postService->getCategories();
+        $pagination = $this->postService->createPaginatedList(
+            $request->query->getInt('page', 1),
+            $filters
+        );
+
+        return $this->render(
+            'post/index.html.twig',
+            ['pagination' => $pagination,
+                'category' => $category, ]
+        );
+    }
+
+    /**
+     * Show action.
+     *
+     * @param Request $request HTTP request
+     * @param Post    $post    Post entity
+     *
+     * @return Response HTTP response
+     *
+     * @Route(
+     *     "/{id}",
+     *     methods={"GET", "POST"},
+     *     name="post_show",
+     *     requirements={"id": "[1-9]\d*"},
+     * )
+     */
+    public function show(Request $request, Post $post, CommentRepository $commentRepository): Response
+    {
+        $comment = new Comment();
+        $user = $this->getUser();
+        $form = $this->createForm(CommentType::class, $comment);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->postService->addComment($comment, $post, $user);
+            $this->addFlash('success', 'message_created_successfully');
+
+//            return $this->redirectToRoute('post_show');
+        }
+
+        $post_id = $post->getId();
+        $comments = $commentRepository->findByPost($post_id);
+
+        return $this->render(
+            'post/show.html.twig',
+            ['post' => $post,
+                'comments' => $comments,
+                'form' => $form->createView(), ]
+        );
+    }
+
+    /**
+     * Create action.
+     *
+     * @param Request        $request        HTTP request
+     * @param PostRepository $postRepository Post repository
+     *
+     * @return Response HTTP response
+     *
+     * @throws ORMException
+     * @throws OptimisticLockException
+     *
+     * @Route(
+     *     "/create",
+     *     methods={"GET", "POST"},
+     *     name="post_create",
+     * )
+     */
+    public function create(Request $request): Response
+    {
+        $post = new Post();
+        $form = $this->createForm(PostType::class, $post);
+        $form->handleRequest($request);
+        $formfile = $form->get('file')->getData();
+        $user = $this->getUser();
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->postService->createPost($post, $formfile, $user);
+            $this->addFlash('success', 'message_created_successfully');
+
+            return $this->redirectToRoute('post_index');
+        }
+
+        return $this->render(
+            'post/create.html.twig',
+            ['form' => $form->createView()]
+        );
+    }
+
+    /**
+     * Edit action.
+     *
+     * @param Request $request HTTP request
+     * @param Post    $post    Post entity
+     *
+     * @return Response HTTP response
+     *
+     * @throws ORMException
+     * @throws OptimisticLockException
+     *
+     * @Route(
+     *     "/{id}/edit",
+     *     methods={"GET", "PUT"},
+     *     requirements={"id": "[1-9]\d*"},
+     *     name="post_edit",
+     * )
+     * @IsGranted(
+     *     "EDIT",
+     *     subject="post",
+     * )
+     */
+    public function edit(Request $request, Post $post): Response
+    {
+        $form = $this->createForm(PostType::class, $post, ['method' => 'PUT']);
+        $form->handleRequest($request);
+        $formfile = $form->get('file')->getData();
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->postService->editPost($post, $formfile);
+            $this->addFlash('success', 'message_updated_successfully');
+
+            return $this->redirectToRoute('post_index');
+        }
+
+        return $this->render(
+            'post/edit.html.twig',
+            [
+                'form' => $form->createView(),
+                'post' => $post,
+            ]
+        );
+    }
+
+    /**
+     * Delete action.
+     *
+     * @param Request $request HTTP request
+     * @param Post    $post    Post entity
+     *
+     * @return Response HTTP response
+     *
+     * @throws ORMException
+     * @throws OptimisticLockException
+     *
+     * @Route(
+     *     "/{id}/delete",
+     *     methods={"GET", "DELETE"},
+     *     requirements={"id": "[1-9]\d*"},
+     *     name="post_delete",
+     * )
+     * @IsGranted(
+     *     "DELETE",
+     *     subject="post",
+     * )
+     */
+    public function delete(Request $request, Post $post): Response
+    {
+        $form = $this->createForm(FormType::class, $post, ['method' => 'DELETE']);
+        $form->handleRequest($request);
+
+        if ($request->isMethod('DELETE') && !$form->isSubmitted()) {
+            $form->submit($request->request->get($form->getName()));
+        }
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->postService->delete($post);
+            $this->addFlash('success', 'message_deleted_successfully');
+
+            return $this->redirectToRoute('post_index');
+        }
+
+        return $this->render(
+            'post/delete.html.twig',
+            [
+                'form' => $form->createView(),
+                'post' => $post,
+            ]
+        );
+    }
+}
+

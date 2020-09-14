@@ -1,31 +1,46 @@
 <?php
 /**
- * Registration service.
+ * PHP Version 7.2
+ * Registration Service.
+ *
+ * @category  Social_Network
+ *
+ * @author    Konrad Szewczuk <konrad3szewczuk@gmail.com>
+ *
+ * @copyright 2020 Konrad Szewczuk
+ *
+ * @license   https://opensource.org/licenses/MIT MIT license
+ *
+ * @see      wierzba.wzks.uj.edu.pl/~16_szewczuk
  */
 
 namespace App\Service;
 
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use App\Repository\UserRepository;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
  * Class RegistrationService.
  */
 class RegistrationService
 {
+    /**
+     * @var UserRepository
+     */
     private $userRepository;
+
+    /**
+     * @var UserPasswordEncoderInterface
+     */
     private $passwordEncoder;
 
     /**
      * RegistrationService constructor.
-     *
      * @param UserPasswordEncoderInterface $passwordEncoder
-     * @param UserRepository $userRepository
+     * @param UserRepository               $userRepository
      */
-    public function __construct(
-        UserPasswordEncoderInterface $passwordEncoder,
-        UserRepository $userRepository
-    ) {
+    public function __construct(UserPasswordEncoderInterface $passwordEncoder, UserRepository $userRepository)
+    {
         $this->passwordEncoder = $passwordEncoder;
         $this->userRepository = $userRepository;
     }
@@ -33,6 +48,7 @@ class RegistrationService
     /**
      * @param $user
      * @param $formdata
+     *
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */

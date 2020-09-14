@@ -1,6 +1,17 @@
 <?php
 /**
- * Category service.
+ * PHP Version 7.2
+ * Category Service.
+ *
+ * @category  Social_Network
+ *
+ * @author    Konrad Szewczuk <konrad3szewczuk@gmail.com>
+ *
+ * @copyright 2020 Konrad Szewczuk
+ *
+ * @license   https://opensource.org/licenses/MIT MIT license
+ *
+ * @see      wierzba.wzks.uj.edu.pl/~16_szewczuk
  */
 
 namespace App\Service;
@@ -23,8 +34,11 @@ class CategoryService
      * @var CategoryRepository
      */
     private $categoryRepository;
-
+    /**
+     * @var PaginatorInterface
+     */
     private $paginator;
+
     /**
      * CategoryService constructor.
      *
@@ -61,6 +75,7 @@ class CategoryService
 
     /**
      * @param $page
+     *
      * @return PaginationInterface
      */
     public function createPaginatedList($page)
@@ -74,30 +89,38 @@ class CategoryService
 
     /**
      * @param $category
+     *
      * @return bool
+     *
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function createCategory($category):bool
+    public function createCategory($category): bool
     {
         $this->categoryRepository->save($category);
+
         return true;
     }
 
     /**
      * @param $category
+     *
+     * @return bool
+     *
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function editCategory($category):bool
+    public function editCategory($category): bool
     {
         $category->setUpdatedAt(new \DateTime());
         $this->categoryRepository->save($category);
+
         return true;
     }
 
     /**
      * @param $category
+     *
      * @throws ORMException
      * @throws OptimisticLockException
      */

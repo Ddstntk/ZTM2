@@ -1,4 +1,18 @@
 <?php
+/**
+ * PHP Version 7.2
+ * Avatar Repository.
+ *
+ * @category  Social_Network
+ *
+ * @author    Konrad Szewczuk <konrad3szewczuk@gmail.com>
+ *
+ * @copyright 2020 Konrad Szewczuk
+ *
+ * @license   https://opensource.org/licenses/MIT MIT license
+ *
+ * @see      wierzba.wzks.uj.edu.pl/~16_szewczuk
+ */
 
 namespace App\Repository;
 
@@ -16,14 +30,20 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class AvatarRepository extends ServiceEntityRepository
 {
+    /**
+     * AvatarRepository constructor.
+     * @param ManagerRegistry $registry
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Avatar::class);
     }
 
     /**
-     * /* @return Avatar[] Returns an array of Avatar objects
-     * @return int|mixed|string
+     * /*
+     * @param $value
+     *
+     * @return Avatar[] Returns an array of Avatar objects
      */
     public function findByExampleField($value)
     {
@@ -37,6 +57,13 @@ class AvatarRepository extends ServiceEntityRepository
         ;
     }
 
+    /**
+     * @param $value
+     *
+     * @return Avatar|null
+     *
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
     public function findOneBySomeField($value): ?Avatar
     {
         return $this->createQueryBuilder('a')
